@@ -17,7 +17,7 @@ Người chơi điều khiển thanh trượt để đỡ bóng, phá hết gạ
 
 ## 📂 Cấu trúc thư mục 
 ```bash
-BallWarrior/
+BallWarrior/src/
  ├── Main.java
  │
  ├── core/                     # Lõi engine (tách biệt game)
