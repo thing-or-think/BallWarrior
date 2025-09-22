@@ -1,5 +1,7 @@
 package core;
 
+import game.GameScene;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,13 +9,18 @@ public class GameEngine extends JPanel implements Runnable{
     private Thread gameThread;
     private boolean running = false;
 
-    private final int WIDTH = 600;
-    private final int HEIGHT = 400;
+    private InputHandler input;
+    private GameScene gameScene;
 
     public GameEngine() {
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
-//        setFocusable(true);
-//        requestFocus();
+        setPreferredSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
+        setFocusable(true);
+        requestFocus();
+
+        input = new InputHandler();
+        addKeyListener(input);
+
+        gameScene = new GameScene(input);
     }
 
     public void start() {
@@ -44,7 +51,7 @@ public class GameEngine extends JPanel implements Runnable{
     }
 
     private void update() {
-
+        gameScene.update();
     }
 
     @Override
@@ -53,5 +60,7 @@ public class GameEngine extends JPanel implements Runnable{
 
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
+
+        gameScene.render(g);
     }
 }
