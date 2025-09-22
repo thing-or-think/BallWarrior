@@ -25,7 +25,7 @@ class GameFrame extends JFrame {
 }
 
 class GamePanel extends JPanel implements ActionListener, KeyListener {
-    private Timer timer;
+    private final Timer timer;
     private final int PANEL_WIDTH = 600;
     private final int PANEL_HEIGHT = 400;
 
@@ -39,9 +39,9 @@ class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     private boolean leftPressed = false, rightPressed = false;
 
-    private int brickRow = 5, brickCol = 8;
-    private int brickWidth = 60, brickHeight = 20;
-    private boolean[][] bricks;
+    private final int brickRow = 5, brickCol = 8;
+    private final int brickWidth = 60, brickHeight = 20;
+    private final boolean[][] bricks;
 
     public GamePanel() {
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
