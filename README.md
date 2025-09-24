@@ -17,52 +17,55 @@ Người chơi điều khiển thanh trượt để đỡ bóng, phá hết gạ
 
 ## 📂 Cấu trúc thư mục 
 ```bash
-BallWarrior/src/
- ├── Main.java
+BallWarrior/
+ ├── src/
+ │   ├── Main.java                  # Điểm khởi chạy game (tạo JFrame, gắn GameEngine)
+ │   │
+ │   ├── core/                      # Lõi engine (tách biệt logic Arkanoid)
+ │   │    ├── GameEngine.java       # Vòng lặp game (update, render, FPS)
+ │   │    ├── InputHandler.java     # Quản lý phím bấm, lưu trạng thái key
+ │   │    ├── ResourceLoader.java   # Load ảnh, âm thanh, font từ thư mục assets
+ │   │    └── SoundManager.java     # Quản lý âm thanh (phát nhạc, hiệu ứng sfx)
+ │   │
+ │   ├── game/                      # Logic gameplay Arkanoid
+ │   │    ├── GameScene.java        # Cảnh chơi chính (chứa ball, paddle, brick…)
+ │   │    ├── LevelManager.java     # Load level từ file (JSON/TXT)
+ │   │    ├── CollisionSystem.java  # Xử lý va chạm (ball - paddle - brick)
+ │   │    ├── ScoreSystem.java      # Quản lý điểm số, mạng
+ │   │    └── PowerUpSystem.java    # Quản lý item rơi ra, hiệu ứng power-up
+ │   │
+ │   ├── entity/                    # Các đối tượng trong game
+ │   │    ├── Entity.java           # Lớp cha (position, velocity, draw, update)
+ │   │    ├── Ball.java             # Quả bóng (di chuyển, nảy, va chạm)
+ │   │    ├── Paddle.java           # Thanh trượt điều khiển bằng phím
+ │   │    ├── Brick.java            # Gạch (có màu, độ bền, phá hủy)
+ │   │    └── PowerUp.java          # Item tăng sức mạnh (rơi ra từ Brick)
+ │   │
+ │   ├── ui/                        # Giao diện / scene phụ
+ │   │    ├── MenuScene.java        # Menu chính (Play, Exit…)
+ │   │    ├── HUD.java              # Heads-up display (điểm, mạng còn lại)
+ │   │    ├── PauseScene.java       # Màn hình tạm dừng game
+ │   │    └── GameOverScene.java    # Màn hình kết thúc (thua / thắng)
+ │   │
+ │   └── utils/                     # Tiện ích chung
+ │        ├── Constants.java        # Các hằng số (WIDTH, HEIGHT, tốc độ…)
+ │        └── Vector2D.java         # Class vector 2D (dx, dy, hỗ trợ toán học)
  │
- ├── core/                     # Lõi engine (tách biệt game)
- │    ├── GameEngine.java      # vòng lặp game (tick, render, update)
- │    ├── InputHandler.java    # quản lý phím bấm
- │    ├── ResourceLoader.java  # load ảnh, âm thanh, font
- │    └── SoundManager.java    # quản lý âm thanh (music, sfx)
+ ├── assets/                        # Tài nguyên (cùng bậc với src)
+ │   ├── images/                    # Hình ảnh
+ │   │    ├── ball.png
+ │   │    ├── paddle.png
+ │   │    └── brick_red.png
+ │   ├── sounds/                    # Âm thanh
+ │   │    ├── bounce.wav
+ │   │    ├── break.wav
+ │   │    └── powerup.wav
+ │   └── levels/                    # Map / màn chơi
+ │        ├── level1.txt
+ │        ├── level2.txt
+ │        └── level3.txt
  │
- ├── game/                     # Logic game Arkanoid
- │    ├── GameScene.java       # cảnh chính (arkanoid)
- │    ├── LevelManager.java    # load level từ file JSON/TXT
- │    ├── CollisionSystem.java # xử lý va chạm
- │    ├── ScoreSystem.java     # điểm số, mạng
- │    └── PowerUpSystem.java   # item rơi ra
- │
- ├── entity/                   # Đối tượng game
- │    ├── Ball.java
- │    ├── Paddle.java
- │    ├── Brick.java
- │    ├── PowerUp.java
- │    └── Entity.java          # class cha (position, velocity, draw/update)
- │
- ├── ui/                       # Giao diện / scene
- │    ├── MenuScene.java
- │    ├── HUD.java
- │    ├── PauseScene.java
- │    └── GameOverScene.java
- │
- ├── assets/                   # Tài nguyên
- │    ├── images/
- │    │    ├── ball.png
- │    │    ├── paddle.png
- │    │    └── brick_red.png
- │    ├── sounds/
- │    │    ├── bounce.wav
- │    │    ├── break.wav
- │    │    └── powerup.wav
- │    └── levels/
- │         ├── level1.txt
- │         ├── level2.txt
- │         └── level3.txt
- │
- └── utils/                    # Tiện ích
-      ├── Constants.java       # định nghĩa hằng số (WIDTH, HEIGHT…)
-      └── Vector2D.java        # class vector 2D (dx, dy)
+ └── README.md                      # Tài liệu mô tả project
 
 ```
 ---
