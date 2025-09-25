@@ -1,0 +1,32 @@
+name: Notify Changelog
+
+on:
+  push:
+    branches:
+      - master   # theo dõi master
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Extract last changelog section
+        id: changelog
+        run: |
+          # Đảo ngược file và lấy block cuối cùng bắt đầu bằng "## "
+          CONTENT=$(tac CHANGELOG.md | awk '/^## /{if (p) exit; p=1} p' | tac)
+          # Ghi multiline vào biến môi trường
+          {
+            echo 'CONTENT<<EOF'
+            echo "$CONTENT"
+            echo 'EOF'
+          } >> $GITHUB_ENV
+      - name: Send to Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"content\": \"📢 **New push to master!**\n\`\`\`\n$CONTENT\n\`\`\`\"}" \
+               ${{ secrets.DISCORD_WEBHOOK }}
