@@ -24,9 +24,17 @@ jobs:
 
       - name: Send to Discord
         run: |
-          # Escape các dấu quote trong CONTENT
-          ESCAPED_CONTENT=$(jq -Rn --arg content "$CONTENT" '{"content": $content}')
+          # Lấy version (giả sử version là dòng bắt đầu bằng ##)
+          VERSION=$(echo "$CONTENT" | head -n1 | sed 's/^## //')
+          
+          # Tạo message với version và lời chúc mừng
+          MESSAGE="🎉 **New version released: $VERSION! Congratulations!**\n\`\`\`\n$CONTENT\n\`\`\`"
+
+          # Escape các ký tự đặc biệt bằng jq
+          ESCAPED_MESSAGE=$(jq -Rn --arg content "$MESSAGE" '{"content": $content}')
+
+          # Gửi lên Discord
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "$ESCAPED_CONTENT" \
+               -d "$ESCAPED_MESSAGE" \
                ${{ secrets.DISCORD_WEBHOOK }}
