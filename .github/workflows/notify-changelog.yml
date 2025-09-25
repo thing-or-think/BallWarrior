@@ -3,7 +3,7 @@ name: Notify Changelog
 on:
   push:
     branches:
-      - master   # theo dõi master
+      - master
 
 jobs:
   changelog:
@@ -16,17 +16,17 @@ jobs:
       - name: Extract last changelog section
         id: changelog
         run: |
-          # Đảo ngược file và lấy block cuối cùng bắt đầu bằng "## "
           CONTENT=$(tac CHANGELOG.md | awk '/^## /{if (p) exit; p=1} p' | tac)
           # Ghi multiline vào biến môi trường
-          {
-            echo 'CONTENT<<EOF'
-            echo "$CONTENT"
-            echo 'EOF'
-          } >> $GITHUB_ENV
+          echo "CONTENT<<EOF" >> $GITHUB_ENV
+          echo "$CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Send to Discord
         run: |
+          # Escape các dấu quote trong CONTENT
+          ESCAPED_CONTENT=$(jq -Rn --arg content "$CONTENT" '{"content": $content}')
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\"content\": \"📢 **New push to master!**\n\`\`\`\n$CONTENT\n\`\`\`\"}" \
+               -d "$ESCAPED_CONTENT" \
                ${{ secrets.DISCORD_WEBHOOK }}
