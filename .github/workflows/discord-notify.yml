@@ -14,18 +14,22 @@ jobs:
       - name: Extract latest changelog (bottom block)
         id: changelog
         run: |
-          # Lấy tất cả dòng bắt đầu bằng "## [" và nhớ lại dòng cuối cùng
+          # Lấy số dòng bắt đầu của block changelog cuối cùng
           last=$(grep -n "^## \[" CHANGELOG.md | tail -1 | cut -d: -f1)
-          # Từ dòng đó đến EOF
+          # Lấy từ dòng đó đến hết file
           sed -n "${last},\$p" CHANGELOG.md > latest.log
-          
-          echo "content<<EOF" >> $GITHUB_OUTPUT
-          cat latest.log >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+
+          # Ghi ra output cho bước sau
+          {
+            echo "content<<EOF"
+            cat latest.log
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - name: Send to Discord
         run: |
+          # Gửi nội dung changelog dưới dạng code block để Discord hiển thị nguyên format
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\"content\": \"$(echo "${{ steps.changelog.outputs.content }}" | sed 's/"/\\"/g')\"}" \
+               -d "{\"content\": \"\`\`\`$(echo "${{ steps.changelog.outputs.content }}" | sed 's/"/\\"/g')\`\`\`\"}" \
                ${{ secrets.DISCORD_WEBHOOK }}
