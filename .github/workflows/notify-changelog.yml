@@ -17,20 +17,19 @@ jobs:
         id: changelog
         run: |
           CONTENT=$(tac CHANGELOG.md | awk '/^## /{if (p) exit; p=1} p' | tac)
-          # Ghi multiline vào biến môi trường
           echo "CONTENT<<EOF" >> $GITHUB_ENV
           echo "$CONTENT" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Send to Discord
         run: |
-          # Lấy version (giả sử version là dòng bắt đầu bằng ##)
+          # Lấy version (dòng đầu tiên, bỏ prefix "## ")
           VERSION=$(echo "$CONTENT" | head -n1 | sed 's/^## //')
-          
-          # Tạo message với version và lời chúc mừng
-          MESSAGE="🎉 **New version released: $VERSION! Congratulations!**\n\`\`\`\n$CONTENT\n\`\`\`"
 
-          # Escape các ký tự đặc biệt bằng jq
+          # Format message (dùng blockquote để đẹp hơn thay vì code block)
+          MESSAGE="🎉 **New version released: $VERSION! Congratulations!**\n\n> ${CONTENT//$'\n'/$'\n> '}"
+
+          # Escape JSON bằng jq
           ESCAPED_MESSAGE=$(jq -Rn --arg content "$MESSAGE" '{"content": $content}')
 
           # Gửi lên Discord
