@@ -16,14 +16,22 @@ jobs:
       - name: Extract last changelog section
         id: changelog
         run: |
-          CONTENT=$(tac CHANGELOG.md | awk '/^## /{if (p) exit; p=1} p' | tac)
+          CONTENT=$(awk '
+            /^## / { pos=NR }        # nhớ lại dòng ## cuối cùng
+            { lines[NR]=$0 }         # lưu toàn bộ dòng
+            END {
+              for (i=pos; i<=NR; i++) print lines[i]
+            }
+          ' CHANGELOG.md)
+
           # Ghi multiline vào biến môi trường
           echo "CONTENT<<EOF" >> $GITHUB_ENV
           echo "$CONTENT" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+
       - name: Send to Discord
         run: |
-          # Escape các dấu quote trong CONTENT
+          # Escape các dấu quote trong CONTENT thành JSON hợp lệ
           ESCAPED_CONTENT=$(jq -Rn --arg content "$CONTENT" '{"content": $content}')
           curl -H "Content-Type: application/json" \
                -X POST \
