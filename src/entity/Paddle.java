@@ -15,6 +15,13 @@ public class Paddle extends Entity {
     }
 
     @Override
+    public void clampPosition() {
+        if (position.x < 0) position.x = 0;
+        if (position.x + width > Constants.WIDTH) position.x = Constants.WIDTH - width;
+    }
+
+
+    @Override
     public void update() {
         velocity.x = 0;
 
@@ -24,6 +31,7 @@ public class Paddle extends Entity {
             velocity.x = Constants.PADDLE_SPEED;
         }
 
+        previousPosition.set(position.x, position.y);
         position.add(velocity);
 
         clampPosition();

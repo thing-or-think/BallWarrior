@@ -3,6 +3,7 @@ package core;
 public class Constants {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
+    public static final float COLLISION_EPSILON = 1e-6f;
 
     public static final int BALL_SIZE = 16;
     public static final int PADDLE_WIDTH = 100;

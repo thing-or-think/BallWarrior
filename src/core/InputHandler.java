@@ -7,6 +7,7 @@ public class InputHandler extends KeyAdapter {
 
     private boolean leftPressed = false;
     private boolean rightPressed = false;
+    private boolean spacePressed = false;
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -16,6 +17,8 @@ public class InputHandler extends KeyAdapter {
             leftPressed = true;
         } else if (key == KeyEvent.VK_RIGHT) {
             rightPressed = true;
+        } else if (key == KeyEvent.VK_SPACE) {
+            spacePressed = true;
         }
     }
 
@@ -27,6 +30,8 @@ public class InputHandler extends KeyAdapter {
             leftPressed = false;
         } else if (key == KeyEvent.VK_RIGHT) {
             rightPressed = false;
+        } else if (key == KeyEvent.VK_SPACE) {
+            spacePressed = false;
         }
     }
 
@@ -36,5 +41,9 @@ public class InputHandler extends KeyAdapter {
 
     public boolean isRightPressed() {
         return rightPressed;
+    }
+
+    public boolean isSpacePressed() {
+        return spacePressed;
     }
 }
