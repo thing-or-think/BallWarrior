@@ -3,8 +3,7 @@ name: Notify Changelog
 on:
   push:
     branches:
-      - master   # hoặc branch bạn muốn theo dõi
-
+      - master   # theo dõi master
 
 jobs:
   changelog:
@@ -20,14 +19,16 @@ jobs:
           # Đảo ngược file và lấy block cuối cùng bắt đầu bằng "## "
           CONTENT=$(tac CHANGELOG.md | awk '/^## /{if (p) exit; p=1} p' | tac)
 
-          # Escape ký tự đặc biệt để nhét vào JSON
-          CONTENT=$(echo "$CONTENT" | sed 's/"/\\"/g')
-
-          echo "CONTENT=$CONTENT" >> $GITHUB_ENV
+          # Ghi multiline vào biến môi trường
+          {
+            echo 'CONTENT<<EOF'
+            echo "$CONTENT"
+            echo 'EOF'
+          } >> $GITHUB_ENV
 
       - name: Send to Discord
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\"content\": \"📢 **New push to main!**\n\`\`\`\n$CONTENT\n\`\`\`\"}" \
+               -d "{\"content\": \"📢 **New push to master!**\n\`\`\`\n$CONTENT\n\`\`\`\"}" \
                ${{ secrets.DISCORD_WEBHOOK }}
