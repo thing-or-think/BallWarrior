@@ -30,12 +30,12 @@ public class CollisionSystem {
         };
     }
 
-    public static void handleBallCollision(Ball ball, Entity entity, boolean isPaddle) {
+    public static boolean handleBallCollision(Ball ball, Entity entity, boolean isPaddle) {
         Vector2D prev = ball.getPreviousPosition();
         Vector2D curr = ball.getPosition();
 
         if (prev.equals(curr)) {
-            return;
+            return false;
         }
 
         int w = ball.getWidth();
@@ -94,7 +94,9 @@ public class CollisionSystem {
             if (isPaddle) {
                 // logic riêng cho paddle
             }
+            return true;
         }
+        return false;
     }
 
     public static void handleBallInsideEntity(Ball ball, Entity entity) {

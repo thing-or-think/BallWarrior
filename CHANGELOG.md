@@ -44,6 +44,7 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 - Không có
 
 ---
+
 ## [0.0.3] - 2025-09-25
 ### Added
 - `MathUtils.java`: lớp tiện ích toán học 2D, bao gồm:
@@ -68,3 +69,28 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 
 ### Fixed
 - Sửa lỗi va chạm giữa `Ball` và `Paddle` để bóng không chui vào paddle khi di chuyển nhanh.
+
+---
+
+## [0.0.4] - 2025-09-25
+### Added
+- `Brick.java`: lớp gạch trong game, kế thừa từ `Entity`:
+    - Có thuộc tính `health` (độ bền – số lần cần đánh để phá vỡ).
+    - Có thuộc tính `color` (màu sắc của gạch).
+    - `update()`: gạch đứng yên, không di chuyển.
+    - `draw(Graphics g)`: vẽ gạch và viền đen bao quanh.
+    - `hit()`: giảm độ bền khi bị bóng đập trúng.
+    - `isDestroyed()`: trả về `true` nếu gạch bị phá hủy (health <= 0).
+- `GameScene`:
+    - Thêm danh sách `bricks` và logic tạo nhiều gạch.
+    - Thêm cơ chế `score` và `lives`.
+    - Thêm `resetBall()` để khởi tạo lại bóng khi mất mạng.
+- By: thing-or-think
+
+### Changed
+- `CollisionSystem.handleBallCollision(...)`:
+    - Giờ trả về `boolean` để báo có va chạm xảy ra hay không, giúp `GameScene` biết khi nào cần gọi `brick.hit()`, tính điểm hoặc xử lý logic khác.
+
+### Fixed
+- Xử lý khi bóng rơi ra ngoài màn hình: trừ mạng, đặt lại bóng thay vì tiếp tục chạy ngoài vùng chơi.
+
