@@ -32,20 +32,12 @@ public class GameScene {
         paddle.update();
         ball.update();
 
-        if (checkCollision(paddle, ball)) {
-            ball.bounceY();
-        }
+        CollisionSystem.handleBallCollision(ball, paddle, true);
+        CollisionSystem.handleBallInsideEntity(ball, paddle);
     }
 
     public void render(Graphics g) {
         paddle.draw(g);
         ball.draw(g);
-    }
-
-    private boolean checkCollision(Entity a, Entity b) {
-        return a.getX() < b.getX() + b.getWidth() &&
-                a.getX() + a.getWidth() > b.getX() &&
-                a.getY() < b.getY() + b.getHeight() &&
-                a.getY() + a.getHeight() > b.getY();
     }
 }

@@ -13,6 +13,10 @@ Người chơi điều khiển thanh trượt để đỡ bóng, phá hết gạ
 
 ![Demo Screenshot](./docs/screenshot.png) <!-- thay bằng ảnh thực tế -->
 
+### 🔹 Va chạm bóng – gạch
+Minh họa hệ thống Collision:
+
+<img src="./docs/collision_animation.gif" alt="Collision Demo" width="400"/>
 ---
 
 ## 📂 Cấu trúc thư mục 
@@ -48,6 +52,7 @@ BallWarrior/
  │   │    └── GameOverScene.java    # Màn hình kết thúc (thua / thắng)
  │   │
  │   └── utils/                     # Tiện ích chung
+ │        ├── MathUtils.java        # Hàm toán học 2D, giao điểm đoạn thẳng…
  │        ├── Constants.java        # Các hằng số (WIDTH, HEIGHT, tốc độ…)
  │        └── Vector2D.java         # Class vector 2D (dx, dy, hỗ trợ toán học)
  │

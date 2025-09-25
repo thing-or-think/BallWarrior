@@ -43,3 +43,28 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 ### Fixed
 - Không có
 
+---
+## [0.0.3] - 2025-09-25
+### Added
+- `MathUtils.java`: lớp tiện ích toán học 2D, bao gồm:
+    - `isBetween()`: kiểm tra một giá trị có nằm giữa hai giá trị với EPSILON.
+    - `getLineIntersection()`: tìm giao điểm của hai đoạn thẳng; trả về `Vector2D` nếu có, ngược lại trả về `null`.
+- `CollisionSystem.java`: quản lý tất cả va chạm giữa các thực thể trong game, bao gồm:
+  - Kiểm tra va chạm AABB giữa hai entity với EPSILON (`checkCollision`).
+  - Xử lý va chạm giữa `Ball` và các entity, tính giao điểm các cạnh, cập nhật vị trí và đảo chiều vận tốc (`handleBallCollision`).
+  - Xử lý trường hợp bóng bị chui vào entity, đẩy bóng ra sát cạnh và giới hạn vị trí trong màn hình (`handleBallInsideEntity`).
+- `Vector2D.java`: thêm các phương thức toán học và tiện ích cho vector 2D:
+    - `added()`, `subtracted()`: trả về vector mới sau khi cộng/trừ.
+    - `equals()`: so sánh vector với EPSILON để chống sai số float.
+    - `dot()`, `cross()`: tính tích vô hướng và tích chéo 2D.
+    - `length()`, `distance()`, `angle()`: tính độ dài, khoảng cách và góc giữa các vector.
+    - `multiply()`, `normalized()`: nhân vector với scalar, chuẩn hóa vector.
+    - `distancePointToLine()`: tính khoảng cách từ điểm tới đoạn thẳng.
+- `Constants.java`: thêm hằng số `COLLISION_EPSILON` để sử dụng trong các phép so sánh số thực, giúp xử lý va chạm chính xác hơn.
+- By: thing-or-think
+
+### Changed
+- Chuyển hàm `checkCollision(Entity a, Entity b)` từ `GameScene` sang `CollisionSystem` để tập trung quản lý tất cả va chạm trong một lớp riêng.
+
+### Fixed
+- Sửa lỗi va chạm giữa `Ball` và `Paddle` để bóng không chui vào paddle khi di chuyển nhanh.
