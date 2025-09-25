@@ -3,7 +3,7 @@ name: Notify Changelog
 on:
   push:
     branches:
-      - main   # hoặc branch bạn muốn theo dõi
+      - master   # hoặc branch bạn muốn theo dõi
 
 
 jobs:
