@@ -38,12 +38,6 @@ public class Ball extends Entity{
             position.y = 0;
             velocity.y = Math.abs(velocity.y);
         }
-
-        // Cạnh dưới
-        if (position.y + height >= Constants.HEIGHT) {
-            position.y = Constants.HEIGHT - height;
-            velocity.y = -Math.abs(velocity.y);
-        }
     }
 
 
