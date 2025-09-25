@@ -1,34 +1,31 @@
-name: Notify Changelog
+name: Notify Discord on Master Push
 
 on:
   push:
     branches:
-      - master   # theo dõi master
+      - master
 
 jobs:
-  changelog:
+  notify:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Extract last changelog section
+      - name: Extract latest changelog (bottom block)
         id: changelog
         run: |
-          # Đảo ngược file và lấy block cuối cùng bắt đầu bằng "## "
-          CONTENT=$(tac CHANGELOG.md | awk '/^## /{if (p) exit; p=1} p' | tac)
-
-          # Ghi multiline vào biến môi trường
-          {
-            echo 'CONTENT<<EOF'
-            echo "$CONTENT"
-            echo 'EOF'
-          } >> $GITHUB_ENV
+          # Lấy tất cả dòng bắt đầu bằng "## [" và nhớ lại dòng cuối cùng
+          last=$(grep -n "^## \[" CHANGELOG.md | tail -1 | cut -d: -f1)
+          # Từ dòng đó đến EOF
+          sed -n "${last},\$p" CHANGELOG.md > latest.log
+          
+          echo "content<<EOF" >> $GITHUB_OUTPUT
+          cat latest.log >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Send to Discord
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\"content\": \"📢 **New push to master!**\n\`\`\`\n$CONTENT\n\`\`\`\"}" \
+               -d "{\"content\": \"$(echo "${{ steps.changelog.outputs.content }}" | sed 's/"/\\"/g')\"}" \
                ${{ secrets.DISCORD_WEBHOOK }}
