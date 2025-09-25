@@ -94,3 +94,4 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 
 ### Fixed
 - Xử lý khi bóng rơi ra ngoài màn hình: trừ mạng, đặt lại bóng thay vì tiếp tục chạy ngoài vùng chơi.
+
