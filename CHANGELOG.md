@@ -91,6 +91,7 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 - `CollisionSystem.handleBallCollision(...)`:
     - Giờ trả về `boolean` để báo có va chạm xảy ra hay không, giúp `GameScene` biết khi nào cần gọi `brick.hit()`, tính điểm hoặc xử lý logic khác.
 
+
 ### Fixed
 - Xử lý khi bóng rơi ra ngoài màn hình: trừ mạng, đặt lại bóng thay vì tiếp tục chạy ngoài vùng chơi.
 
