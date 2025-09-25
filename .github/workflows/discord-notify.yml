@@ -9,27 +9,29 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      # 1. Checkout code
       - uses: actions/checkout@v3
 
-      - name: Extract latest changelog (bottom block)
+      # 2. Extract latest changelog (last block)
+      - name: Extract latest changelog
         id: changelog
         run: |
           # Lấy số dòng bắt đầu của block changelog cuối cùng
           last=$(grep -n "^## \[" CHANGELOG.md | tail -1 | cut -d: -f1)
           # Lấy từ dòng đó đến hết file
-          sed -n "${last},\$p" CHANGELOG.md > latest.log
+          changelog=$(sed -n "${last},\$p" CHANGELOG.md)
 
-          # Ghi ra output cho bước sau
-          {
-            echo "content<<EOF"
-            cat latest.log
-            echo "EOF"
-          } >> $GITHUB_OUTPUT
+          # Escape % để GitHub Output multi-line an toàn
+          changelog=${changelog//'%'/'%%'}
 
-      - name: Send to Discord
+          # Ghi ra output để bước sau dùng
+          echo "content=$changelog" >> $GITHUB_OUTPUT
+
+      # 3. Send to Discord
+      - name: Send changelog to Discord
         run: |
-          # Gửi nội dung changelog dưới dạng code block để Discord hiển thị nguyên format
+          # Dùng code block Markdown để hiển thị đẹp trên Discord
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\"content\": \"\`\`\`$(echo "${{ steps.changelog.outputs.content }}" | sed 's/"/\\"/g')\`\`\`\"}" \
+               -d "{\"content\": \"\`\`\`${{ steps.changelog.outputs.content }}\`\`\`\"}" \
                ${{ secrets.DISCORD_WEBHOOK }}
