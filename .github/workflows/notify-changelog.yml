@@ -16,25 +16,16 @@ jobs:
       - name: Extract last changelog section
         id: changelog
         run: |
-          # Lấy nguyên section changelog
           CONTENT=$(tac CHANGELOG.md | awk '/^## /{if (p) exit; p=1} p' | tac)
-          
-          # Bỏ dòng đầu tiên (version)
-          CONTENT_BODY=$(echo "$CONTENT" | tail -n +2)
-          
-          echo "CONTENT_BODY<<EOF" >> $GITHUB_ENV
-          echo "$CONTENT_BODY" >> $GITHUB_ENV
+          # Ghi multiline vào biến môi trường
+          echo "CONTENT<<EOF" >> $GITHUB_ENV
+          echo "$CONTENT" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-
       - name: Send to Discord
         run: |
-          VERSION=$(echo "$CONTENT" | head -n1 | sed 's/^## //')
-          
-          MESSAGE="🎉 **New version released: $VERSION! Congratulations!**\n\n> ${CONTENT_BODY//$'\n'/$'\n> '}"
-          
-          ESCAPED_MESSAGE=$(jq -Rn --arg content "$MESSAGE" '{"content": $content}')
-          
+          # Escape các dấu quote trong CONTENT
+          ESCAPED_CONTENT=$(jq -Rn --arg content "$CONTENT" '{"content": $content}')
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "$ESCAPED_MESSAGE" \
+               -d "$ESCAPED_CONTENT" \
                ${{ secrets.DISCORD_WEBHOOK }}
