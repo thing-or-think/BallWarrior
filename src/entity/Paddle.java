@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class Paddle extends Entity {
 
-    private InputHandler input;
+    private final InputHandler input;
 
     public Paddle(float x, float y, InputHandler input) {
         super(x, y, Constants.PADDLE_WIDTH, Constants.PADDLE_HEIGHT);

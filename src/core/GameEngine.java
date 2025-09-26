@@ -19,6 +19,8 @@ public class GameEngine extends JPanel implements Runnable{
 
         input = new InputHandler();
         addKeyListener(input);
+        addMouseMotionListener(input);
+        addMouseListener(input);
 
         gameScene = new GameScene(input);
     }

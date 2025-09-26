@@ -81,7 +81,7 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
     - `draw(Graphics g)`: vẽ gạch và viền đen bao quanh.
     - `hit()`: giảm độ bền khi bị bóng đập trúng.
     - `isDestroyed()`: trả về `true` nếu gạch bị phá hủy (health <= 0).
-- `GameScene`:
+- `GameScene.java`:
     - Thêm danh sách `bricks` và logic tạo nhiều gạch.
     - Thêm cơ chế `score` và `lives`.
     - Thêm `resetBall()` để khởi tạo lại bóng khi mất mạng.
@@ -94,3 +94,40 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 
 ### Fixed
 - Xử lý khi bóng rơi ra ngoài màn hình: trừ mạng, đặt lại bóng thay vì tiếp tục chạy ngoài vùng chơi.
+
+---
+
+## [0.0.5] - 2025-09-26
+### Added
+- `HUD.java`: lớp hiển thị thông tin HUD trên màn hình:
+    - `render(Graphics g, ScoreSystem scoreSystem)`: vẽ `Score` bên trái và `Lives` bên phải màn hình.
+- `LevelManager.java`: lớp chịu trách nhiệm đọc file level (dạng text) và sinh danh sách `Brick`:
+    - `load(String path)`: đọc file level, ký tự `'1'` => có gạch, ký tự khác => bỏ trống.
+    - Hỗ trợ tùy chỉnh vị trí bắt đầu, kích thước gạch, và khoảng cách giữa các gạch.
+- `ScoreSystem.java`: quản lý điểm và mạng của người chơi:
+    - `addScore(int points)`: cộng điểm.
+    - `getScore()`: trả về điểm hiện tại.
+    - `loseLife()`, `addLife()`: trừ hoặc cộng mạng.
+    - `getLives()`: trả về số mạng hiện tại.
+    - `isGameOver()`: kiểm tra hết mạng.
+- `InputHandler.java`: bổ sung xử lý chuột:
+    - `mouseMoved(MouseEvent e)`: cập nhật vị trí chuột khi di chuyển.
+    - `mouseDragged(MouseEvent e)`: cập nhật vị trí chuột khi kéo giữ.
+    - `mousePressed(MouseEvent e)`: xử lý khi nhấn chuột.
+    - `mouseReleased(MouseEvent e)`: xử lý khi thả chuột.
+    - `mouseClicked(MouseEvent e)`: xử lý khi click chuột.
+    - `mouseEntered(MouseEvent e)`: xử lý khi chuột đi vào cửa sổ game.
+    - `mouseExited(MouseEvent e)`: xử lý khi chuột rời khỏi cửa sổ game.
+    - Getter:
+        - `getMouseX()`: trả về hoành độ chuột hiện tại.
+        - `getMouseY()`: trả về tung độ chuột hiện tại.
+- `level1.txt`: file mô tả màn chơi đầu tiên, định nghĩa layout gạch bằng ký tự (`'1'` có gạch, `'0'` trống).
+
+### Changed
+- `GameScene.java`:
+    - Loại bỏ biến `score` và `lives` cục bộ, thay bằng `ScoreSystem` để quản lý điểm và mạng tập trung.
+    - Thêm gọi `HUD.render(...)` trong `render()` để hiển thị thông tin người chơi.
+    - Tích hợp `LevelManager` để load bricks từ file level.
+
+### Fixed
+- Dọn dẹp code `GameScene`: tránh trùng lặp dữ liệu (score, lives) giữa `GameScene` và `ScoreSystem`.

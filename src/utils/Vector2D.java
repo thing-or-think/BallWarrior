@@ -21,6 +21,9 @@ public class Vector2D {
     }
 
     // 4. ToString (hữu ích khi debug/log)
+    public String toString() {
+        return String.format("Vector2D(x=%.3f, y=%.3f)", this.x, this.y);
+    }
 
     // 5. Public methods chính
     public void add(Vector2D other) {

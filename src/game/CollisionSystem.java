@@ -55,10 +55,15 @@ public class CollisionSystem {
         int hitEdge = -1;
 
         for (int i = 0; i < edges.length; i++) {
-            nearestIntersection = MathUtils.getLineIntersection(ballEdges[i][0], ballEdges[i][1], edges[i][0], edges[i][1]);
-            if (nearestIntersection != null) {
-                hitEdge = i;
-                break;
+            Vector2D intersection = MathUtils.getLineIntersection(ballEdges[i][0], ballEdges[i][1], edges[i][0], edges[i][1]);
+            if (intersection != null) {
+                // tính khoảng cách từ ballEdges[i][0] đến intersection
+                double dist = ballEdges[i][0].distance(intersection);
+                if (dist < nearestDist) {
+                    nearestDist = dist;
+                    nearestIntersection = intersection;
+                    hitEdge = i;
+                }
             }
         }
 
