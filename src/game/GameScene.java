@@ -6,6 +6,8 @@ import entity.Ball;
 import entity.Brick;
 import entity.Paddle;
 import ui.HUD;
+import game.collision.CollisionSystem;
+import game.collision.CollisionResult;
 
 import java.awt.*;
 import java.util.List;
@@ -18,6 +20,7 @@ public class GameScene {
 
     private ScoreSystem scoreSystem;
     private LevelManager levelManager;
+    private CollisionSystem collisionSystem;
 
     public GameScene(InputHandler input) {
         init(input);
@@ -40,6 +43,13 @@ public class GameScene {
         scoreSystem = new ScoreSystem();
         levelManager = new LevelManager();
         bricks = levelManager.load("assets/levels/level1.txt");
+
+        // Khởi tạo CollisionSystem và đăng ký entity
+        collisionSystem = new CollisionSystem();
+        collisionSystem.register(paddle);
+        for (Brick brick : bricks) {
+            collisionSystem.register(brick);
+        }
     }
 
     /**
@@ -55,26 +65,27 @@ public class GameScene {
     /**
      * Cập nhật logic game mỗi frame:
      * - Paddle, Ball
-     * - Va chạm ball-paddle, ball-brick
+     * - Va chạm ball với colliders
      * - Mất mạng khi bóng rơi xuống đáy
      */
     public void update() {
         paddle.update();
         ball.update();
 
-        CollisionSystem.handleBallCollision(ball, paddle, true);
-        CollisionSystem.handleBallInsideEntity(ball, paddle);
-
-        for (Brick brick : bricks) {
-            if (!brick.isDestroyed() &&
-                    CollisionSystem.handleBallCollision(ball, brick, false)) {
-                brick.hit();
-                if (brick.isDestroyed()) {
-                    scoreSystem.addScore(100);
+        // Tìm va chạm gần nhất
+        CollisionResult result = collisionSystem.findNearestCollision(ball);
+        if (result != null) {
+            if (collisionSystem.resolveCollision(ball, result)) {
+                if (result.getEntity() instanceof Brick brick) {
+                    if (brick.isDestroyed()) {
+                        scoreSystem.addScore(100);
+                        collisionSystem.unregister(brick);
+                    }
                 }
             }
         }
 
+        // Mất mạng nếu bóng rơi khỏi màn
         if (ball.getY() > Constants.HEIGHT) {
             scoreSystem.loseLife();
             resetBall();

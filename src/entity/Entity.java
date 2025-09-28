@@ -47,6 +47,11 @@ public abstract class Entity {
         velocity.y = y;
     }
 
+    public void setVelocity(Vector2D other) {
+        this.velocity.x = other.x;
+        this.velocity.y = other.y;
+    }
+
     // 4. Protected/private helper methods
     protected void clampPosition() {
         if (position.x < 0) position.x = 0;

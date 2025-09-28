@@ -6,12 +6,13 @@ import utils.Vector2D;
 import java.awt.*;
 
 public class Ball extends Entity{
-
+    private int radius;
 
     public Ball(float x, float y) {
         super(x, y, Constants.BALL_SIZE, Constants.BALL_SIZE);
         this.velocity = new Vector2D(Constants.BALL_SPEED, -Constants.BALL_SPEED);
         this.previousPosition = new Vector2D(x, y);
+        this.radius = Constants.BALL_SIZE;
     }
 
     @Override
@@ -55,5 +56,9 @@ public class Ball extends Entity{
         velocity.x *= -1;
     }
 
+    public Vector2D getCenter() {
+        return new Vector2D(position.x + width / 2, position.y + height / 2);
+    }
 
+    public int getRadius() { return radius; }
 }

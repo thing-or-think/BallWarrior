@@ -14,25 +14,26 @@ public class Vector2D {
     }
 
     // 3. Getter / Setter
-
     public void set(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    // 4. ToString (hữu ích khi debug/log)
+    // 4. Override / Utility
+    @Override
     public String toString() {
         return String.format("Vector2D(x=%.3f, y=%.3f)", this.x, this.y);
     }
 
-    // 5. Public methods chính
+    public boolean equals(Vector2D other) {
+        return Math.abs(this.x - other.x) < Constants.COLLISION_EPSILON &&
+                Math.abs(this.y - other.y) < Constants.COLLISION_EPSILON;
+    }
+
+    // 5. Operations (in-place)
     public void add(Vector2D other) {
         this.x += other.x;
         this.y += other.y;
-    }
-
-    public Vector2D added(Vector2D other) {
-        return new Vector2D(this.x + other.x, this.y + other.y);
     }
 
     public void subtract(Vector2D other) {
@@ -40,12 +41,32 @@ public class Vector2D {
         this.y -= other.y;
     }
 
+    // 6. Operations (return new)
+    public Vector2D added(Vector2D other) {
+        return new Vector2D(this.x + other.x, this.y + other.y);
+    }
+
     public Vector2D subtracted(Vector2D other) {
         return new Vector2D(this.x - other.x, this.y - other.y);
     }
 
-    public boolean equals(Vector2D other) {
-        return Math.abs(this.x - other.x) < Constants.COLLISION_EPSILON && Math.abs(this.y - other.y) < Constants.COLLISION_EPSILON;
+    public Vector2D multiply(float k) {
+        return new Vector2D(this.x * k, this.y * k);
+    }
+
+    public Vector2D normalized() {
+        float len = (float) Math.sqrt(this.x * this.x + this.y * this.y);
+        if (len < Constants.COLLISION_EPSILON) return new Vector2D(0, 0);
+        return new Vector2D(this.x / len, this.y / len);
+    }
+
+    // 7. Math functions
+    public float length() {
+        return (float) Math.sqrt(x * x + y * y);
+    }
+
+    public float distance(Vector2D other) {
+        return this.subtracted(other).length();
     }
 
     public float dot(Vector2D other) {
@@ -54,14 +75,6 @@ public class Vector2D {
 
     public float cross(Vector2D other) {
         return this.x * other.y - this.y * other.x;
-    }
-
-    public float length() {
-        return (float) Math.sqrt(x * x + y * y);
-    }
-
-    public float distance(Vector2D other) {
-        return this.subtracted(other).length();
     }
 
     public float angle(Vector2D other) {
@@ -79,33 +92,27 @@ public class Vector2D {
         float angle = (float) Math.acos(cos); // độ lớn góc (0..π)
 
         // cross product 2D để xác định chiều
-        float cross = this.x * other.y - this.y * other.x;
-        if (cross < 0) {
-            angle = -angle; // đổi thành góc âm nếu quay theo chiều kim đồng hồ
+        if (this.cross(other) < 0) {
+            angle = -angle; // quay theo chiều kim đồng hồ thì âm
         }
 
-        return angle; // radian, (-π..π), ngược chiều kim đồng hồ là dương
+        return angle; // radian (-π..π)
     }
 
-    public Vector2D multiply(float k) {
+    // 8. Vector relation
+    public boolean isParallel(Vector2D other) {
+        return Math.abs(this.cross(other)) < Constants.COLLISION_EPSILON;
+    }
+
+    public Vector2D multiplied(float k) {
         return new Vector2D(this.x * k, this.y * k);
     }
 
-    public Vector2D normalized() {
-        float len = (float) Math.sqrt(this.x * this.x + this.y * this.y);
-        if (len == 0) return new Vector2D(0, 0);
-        return new Vector2D(this.x / len, this.y / len);
+    public Vector2D normalLeft() {
+        return new Vector2D(-this.y, this.x);
     }
 
-    public float distancePointToLine(Vector2D point, Vector2D lineStart, Vector2D lineEnd) {
-        Vector2D AB = lineEnd.subtracted(lineStart);
-        Vector2D AP = point.subtracted(lineStart);
-
-        float abLength = AB.length();
-        if (abLength < Constants.COLLISION_EPSILON) {
-            return AP.length();
-        }
-
-        return Math.abs(AB.cross(AP)) / abLength;
+    public Vector2D normalRight() {
+        return new Vector2D(this.y, -this.x);
     }
 }
