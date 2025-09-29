@@ -13,6 +13,11 @@ public class Vector2D {
         this.y = y;
     }
 
+    public Vector2D(Vector2D other) {
+        this.x = other.x;
+        this.y = other.y;
+    }
+
     // 3. Getter / Setter
     public void set(float x, float y) {
         this.x = x;

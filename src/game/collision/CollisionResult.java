@@ -29,7 +29,7 @@ public class CollisionResult {
     }
 
     public Vector2D getHitPoint() {
-        return hitPoint;
+        return new Vector2D(hitPoint);
     }
 
     public void setHitPoint(Vector2D hitPoint) {
@@ -37,7 +37,7 @@ public class CollisionResult {
     }
 
     public Vector2D getNormal() {
-        return normal;
+        return new Vector2D(normal);
     }
 
     public void setNormal(Vector2D normal) {
@@ -48,12 +48,12 @@ public class CollisionResult {
         return time;
     }
 
-    public void setT(float time) {
+    public void setTime(float time) {
         this.time = time;
     }
 
     public Vector2D getReflectedVelocity() {
-        return reflectedVelocity;
+        return new Vector2D(reflectedVelocity);
     }
 
     public void setReflectedVelocity(Vector2D reflectedVelocity) {

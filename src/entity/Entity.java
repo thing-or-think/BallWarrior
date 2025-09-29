@@ -37,6 +37,10 @@ public abstract class Entity {
         clampPosition();
     }
 
+    public void setPosition(Vector2D other) {
+        setPosition(other.x, other.y);
+    }
+
     public void setPreviousPosition(float x, float y) {
         previousPosition.x = x;
         previousPosition.y = y;
@@ -48,8 +52,7 @@ public abstract class Entity {
     }
 
     public void setVelocity(Vector2D other) {
-        this.velocity.x = other.x;
-        this.velocity.y = other.y;
+        setVelocity(other.x, other.y);
     }
 
     // 4. Protected/private helper methods
