@@ -15,16 +15,18 @@ import java.util.List;
  */
 public class CollisionSystem {
 
+    // ==================== Fields ====================
     private Paddle paddle;
-
     private final List<Entity> colliders;
 
+    // ==================== Constructor ====================
     public CollisionSystem(Paddle paddle) {
         this.colliders = new ArrayList<>();
         this.paddle = paddle;
     }
 
-    // Đăng ký entity có thể va chạm
+    // ==================== Public API ====================
+    /** Đăng ký entity có thể va chạm */
     public void register(Entity e) {
         if (e == null) return;
         if (!colliders.contains(e)) {
@@ -32,39 +34,68 @@ public class CollisionSystem {
         }
     }
 
-    // Hủy đăng ký entity
+    /** Hủy đăng ký entity */
     public void unregister(Entity e) {
         colliders.remove(e);
     }
 
-    /**
-     * Tìm va chạm gần nhất giữa Ball và toàn bộ colliders
-     */
+    /** Tìm va chạm gần nhất giữa Ball và toàn bộ colliders */
     public CollisionResult findNearestCollision(Ball ball) {
         if (ball == null || colliders.isEmpty()) return null;
         return checkBallVsEntities(ball, colliders);
     }
 
-    /**
-     * Kiểm tra va chạm Ball với danh sách entity (Paddle, Brick…)
-     */
+    /** Xử lý kết quả va chạm, trả về true nếu bóng thay đổi trạng thái */
+    public boolean resolveCollision(Ball ball, CollisionResult result) {
+        if (CircleVsAABB.handleBallInsideEntity(ball, paddle) || result == null || ball == null || !result.isValid())
+            return false;
+
+        Vector2D prev = ball.getPreviousPosition();
+        Vector2D curr = ball.getPosition();
+        Vector2D travel = curr.subtracted(prev);
+
+        // Di chuyển bóng đến gần điểm va chạm
+        float t = Math.max(0f, Math.min(1f, result.getTime() - 0.01f));
+        Vector2D newCenter = prev.added(travel.multiplied(t));
+        ball.setPosition(newCenter);
+
+        // Đẩy bóng ra khỏi mặt va chạm 1 epsilon
+        Vector2D pushOut = result.getNormal().normalized().multiplied(Constants.COLLISION_EPSILON);
+        ball.setPosition(ball.getPosition().added(pushOut));
+
+        // Cập nhật vận tốc sau phản xạ
+        ball.setVelocity(result.getReflectedVelocity());
+
+        // Xử lý hiệu ứng tùy loại entity
+        Entity hit = result.getEntity();
+        if (hit instanceof Brick) {
+            ((Brick) hit).hit();
+        } else if (hit instanceof Paddle) {
+            CircleVsAABB.handleBallInsideEntity(ball, hit);
+            // Có thể thêm logic điều chỉnh góc theo vị trí chạm
+        }
+
+        return true;
+    }
+
+    // ==================== Private Helpers ====================
+    /** Kiểm tra va chạm Ball với danh sách entity (Paddle, Brick…) */
     private CollisionResult checkBallVsEntities(Ball ball, List<Entity> entities) {
         CollisionResult nearest = null;
 
         for (Entity e : entities) {
             if (e == null || e == ball) continue;
 
-            // Broad-phase check (lọc sơ bộ bằng AABB của đường đi của bóng)
+            // Broad-phase check
             if (!broadPhaseCheck(ball, e)) continue;
 
-            // Thuật toán va chạm cụ thể
+            // Narrow-phase check
             CollisionResult result = null;
             if (e instanceof Paddle || e instanceof Brick) {
                 result = CircleVsAABB.intersect(ball, e);
             }
-            // Nếu có thêm loại entity khác thì mở rộng ở đây
 
-            // Chọn collision có t nhỏ nhất (gần nhất)
+            // Chọn va chạm gần nhất
             if (result != null && (nearest == null || result.getTime() < nearest.getTime())) {
                 nearest = result;
             }
@@ -73,47 +104,7 @@ public class CollisionSystem {
         return nearest;
     }
 
-    /**
-     * Xử lý kết quả va chạm
-     * Trả về true nếu đã xử lý va chạm (ball thay đổi trạng thái)
-     */
-    public boolean resolveCollision(Ball ball, CollisionResult result) {
-        if (CircleVsAABB.handleBallInsideEntity(ball, paddle) || result == null || ball == null || !result.isValid()) return false;
-
-        Vector2D prev = ball.getPreviousPosition();
-        Vector2D curr = ball.getPosition();
-        Vector2D travel = curr.subtracted(prev);
-
-        // Di chuyển bóng đến gần điểm va chạm (interpolate giữa prev->curr theo t)
-        float t = result.getTime() - 0.01f;
-        t = Math.max(0f, Math.min(1f, t));
-        Vector2D newCenter = prev.added(travel.multiplied(t));
-        ball.setPosition(newCenter);
-
-        // Đẩy bóng ra khỏi mặt va chạm 1 epsilon nhỏ để tránh dính
-        Vector2D pushOut = result.getNormal().normalized().multiplied(Constants.COLLISION_EPSILON);
-        ball.setPosition(ball.getPosition().added(pushOut));
-
-        // Cập nhật vận tốc bóng sau khi phản xạ
-        ball.setVelocity(result.getReflectedVelocity());
-
-        // Tùy loại entity mà xử lý thêm
-        Entity hit = result.getEntity();
-        if (hit instanceof Brick) {
-            ((Brick) hit).hit();
-        } else if (hit instanceof Paddle) {
-            CircleVsAABB.handleBallInsideEntity(ball, hit);
-            // Nếu muốn hiệu ứng theo vị trí chạm (ví dụ điều chỉnh góc),
-            // bạn có thể thêm logic ở đây (dựa trên result.getHitPoint() hoặc vị trí tương đối trên paddle).
-        }
-
-        return true;
-    }
-
-    /**
-     * Broad-phase check bằng AABB bao phủ đường đi của ball (swept AABB).
-     * Sửa lỗi so với phiên bản cũ: tính đúng min/max của đoạn prev->curr cùng kích thước bóng.
-     */
+    /** Broad-phase check bằng AABB bao phủ đường đi của ball (swept AABB) */
     private boolean broadPhaseCheck(Ball ball, Entity entity) {
         Vector2D prev = ball.getPreviousPosition();
         Vector2D curr = ball.getPosition();
@@ -126,13 +117,11 @@ public class CollisionSystem {
         float ballMaxX = Math.max(prev.x + w, curr.x + w);
         float ballMaxY = Math.max(prev.y + h, curr.y + h);
 
-        // AABB entity
         float entityMinX = entity.getPosition().x;
         float entityMinY = entity.getPosition().y;
         float entityMaxX = entityMinX + entity.getWidth();
         float entityMaxY = entityMinY + entity.getHeight();
 
-        // Kiểm tra overlap AABB (nếu không overlap thì chắc chắn không va chạm trong frame)
         return (ballMinX <= entityMaxX && ballMaxX >= entityMinX &&
                 ballMinY <= entityMaxY && ballMaxY >= entityMinY);
     }
