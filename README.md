@@ -37,13 +37,14 @@ BallWarrior/
  │   │    ├── CollisionSystem.java  # Xử lý va chạm (ball - paddle - brick)
  │   │    ├── ScoreSystem.java      # Quản lý điểm số, mạng
  │   │    └── PowerUpSystem.java    # Quản lý item rơi ra, hiệu ứng power-up
- │   │
+ │   │ 
  │   ├── game/collision/                  # Module va chạm (tách riêng, dễ mở rộng)
  │   │   ├── CollisionSystem.java         # Điều phối va chạm (tìm nearest collision)
- │   │   ├── CollisionResult.java         # Data class: entity, hitPoint, t
- │   │   ├── CircleVsAABB.java            # Ball (circle) vs Paddle/Brick (AABB)
- │   │   └── CircleVsCircle.java          # Ball vs Ball / Ball vs PowerUp (nếu cần)
- │   │
+ │   │   ├── CollisionResult.java         # Data class: lưu thông tin va chạm (entity, hitPoint, t)
+ │   │   ├── CollisionUtils.java          # Các hàm tiện ích hỗ trợ va chạm (isBetween, getLineIntersection, circleLineIntersection…)
+ │   │   ├── CircleVsAABB.java            # Kiểm tra và tính toán va chạm giữa Ball (circle) và Paddle/Brick (AABB)
+ │   │   └── CircleVsCircle.java          # Kiểm tra và xử lý va chạm giữa Ball với Ball / Ball với PowerUp (nếu cần)
+
  │   ├── entity/                    # Các đối tượng trong game
  │   │    ├── Entity.java           # Lớp cha (position, velocity, draw, update)
  │   │    ├── Ball.java             # Quả bóng (di chuyển, nảy, va chạm)

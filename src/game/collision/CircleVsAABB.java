@@ -36,14 +36,14 @@ public class CircleVsAABB {
         CollisionResult bestResult = null;
 
         for (int edgeIndex = 0; edgeIndex < expandedEdges.length; edgeIndex++) {
-            Vector2D intersection = MathUtils.getLineIntersection(
+            Vector2D intersection = CollisionUtils.getLineIntersection(
                     startCenter, endCenter,
                     expandedEdges[edgeIndex][0], expandedEdges[edgeIndex][1]
             );
 
             if (intersection != null) {
-                if (isBetween(originalEdges[edgeIndex][0].x, originalEdges[edgeIndex][1].x, intersection.x) ||
-                        isBetween(originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y, intersection.y)) {
+                if (CollisionUtils.isBetween(originalEdges[edgeIndex][0].x, originalEdges[edgeIndex][1].x, intersection.x) ||
+                        CollisionUtils.isBetween(originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y, intersection.y)) {
 
                     Vector2D offset = intersection.subtracted(startCenter);
                     float time = offset.length() / movement.length();
@@ -75,7 +75,7 @@ public class CircleVsAABB {
         Vector2D movement = endCenter.subtracted(startCenter);
 
         for (int i = 0; i < edgePoints.length; i++) {
-            Vector2D[] intersections = MathUtils.circleSegmentIntersection(edgePoints[i], ball.getRadius(), startCenter, endCenter);
+            Vector2D[] intersections = CollisionUtils.circleSegmentIntersection(edgePoints[i], ball.getRadius(), startCenter, endCenter);
 
             for (int j = 0; j < intersections.length; j++) {
                 Vector2D offset = intersections[j].subtracted(startCenter);
@@ -128,11 +128,6 @@ public class CircleVsAABB {
                 {bottomRight, bottomLeft}, // cạnh dưới
                 {bottomLeft, topLeft}      // cạnh trái
         };
-    }
-
-    private static boolean isBetween(float a, float b, float target) {
-        return target >= Math.min(a, b) - Constants.COLLISION_EPSILON &&
-                target <= Math.max(a, b) + Constants.COLLISION_EPSILON;
     }
 
     public static boolean handleBallInsideEntity(Ball ball, Entity entity) {
