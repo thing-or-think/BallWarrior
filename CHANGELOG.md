@@ -131,3 +131,45 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 
 ### Fixed
 - Dọn dẹp code `GameScene`: tránh trùng lặp dữ liệu (score, lives) giữa `GameScene` và `ScoreSystem`.
+
+---
+
+## [0.1.0] - 2025-09-30
+
+### Added
+- `CollisionSystem.java`: lớp điều phối va chạm, tìm nearest collision giữa các entity
+- `CollisionResult.java`: data class lưu thông tin va chạm
+    - `entity`: entity bị va chạm
+    - `hitPoint`: điểm va chạm
+    - `t`: thời gian va chạm trên quãng đường di chuyển
+- `CollisionUtils.java`: các hàm tiện ích hỗ trợ va chạm
+    - `isBetween(float a, float b, float target)`: kiểm tra target có nằm giữa a và b
+    - `getLineIntersection(...)`: tính giao điểm giữa 2 đoạn thẳng
+    - `circleLineIntersection(...)`: tính giao điểm giữa đoạn thẳng và đường tròn
+- `CircleVsAABB.java`: sửa lại va chạm giữa Ball (circle) và Paddle/Brick (AABB)
+    - Cải thiện độ chính xác va chạm liên tục (swept collision)
+    - Xử lý va chạm với cạnh và góc, bao gồm trường hợp bóng kẹt trong AABB
+    - Sửa `intersect(...)` trả về CollisionResult sớm nhất trong frame- `CircleVsCircle.java`: kiểm tra và xử lý va chạm giữa Ball với Ball hoặc Ball với PowerUp nếu cần
+- `Vector2D.java`:
+    - Constructor mới `Vector2D(Vector2D other)` để khởi tạo từ vector khác
+    - Setter mới `set(Vector2D other)` để gán giá trị từ vector khác
+    - Phương thức `isParallel(Vector2D other)` kiểm tra hai vector song song
+    - Phương thức `normalLeft()` và `normalRight()` trả về vector pháp tuyến
+
+### Changed
+- Chia module va chạm sang thư mục `game/collision/` để dễ quản lý và mở rộng
+- `GameScene.java`:
+    - Loại bỏ kiểm tra va chạm thủ công với Ball-Paddle và Ball-Brick
+    - Tích hợp `CollisionSystem` để xử lý va chạm
+    - Đăng ký Paddle và Bricks vào `CollisionSystem`
+    - Gọi `collisionSystem.findNearestCollision(ball)` và `collisionSystem.resolveCollision(...)` trong `update()`
+    - Cập nhật xử lý điểm và mạng thông qua `ScoreSystem` khi va chạm với Brick hoặc khi mất mạng
+- `Vector2D.java`:
+    - Đổi tên phương thức `multiply(float k)` trả về void sang `multiplied(float k)` trả về vector mới
+    - Cải thiện `normalized()` để trả về vector `(0,0)` nếu độ dài vector quá nhỏ
+    - Sắp xếp lại các phương thức theo nhóm: constructor, setter, arithmetic, geometry
+
+### Fixed
+- Cải thiện và sửa lỗi hệ thống va chạm giữa Ball và AABB
+- Đảm bảo các class va chạm hoạt động chính xác, độc lập và dễ mở rộng cho các entity khác
+- Sửa một số vấn đề nhỏ về precision trong các phương thức tính toán vector

@@ -44,7 +44,7 @@ BallWarrior/
  │   │   ├── CollisionUtils.java          # Các hàm tiện ích hỗ trợ va chạm (isBetween, getLineIntersection, circleLineIntersection…)
  │   │   ├── CircleVsAABB.java            # Kiểm tra và tính toán va chạm giữa Ball (circle) và Paddle/Brick (AABB)
  │   │   └── CircleVsCircle.java          # Kiểm tra và xử lý va chạm giữa Ball với Ball / Ball với PowerUp (nếu cần)
-
+ │   │
  │   ├── entity/                    # Các đối tượng trong game
  │   │    ├── Entity.java           # Lớp cha (position, velocity, draw, update)
  │   │    ├── Ball.java             # Quả bóng (di chuyển, nảy, va chạm)
