@@ -31,9 +31,22 @@ jobs:
 
       - name: Send to Discord
         run: |
-          # Escape các dấu quote trong CONTENT thành JSON hợp lệ
-          ESCAPED_CONTENT=$(jq -Rn --arg content "$CONTENT" '{"content": $content}')
-          curl -H "Content-Type: application/json" \
-               -X POST \
-               -d "$ESCAPED_CONTENT" \
-               ${{ secrets.DISCORD_WEBHOOK }}
+          # Lấy nội dung từ biến môi trường
+          CONTENT="${CONTENT}"
+
+          # Hàm chia chuỗi thành các chunk ≤ 2000 ký tự
+          send_chunk() {
+            local text="$1"
+            curl -H "Content-Type: application/json" \
+                 -X POST \
+                 -d "$(jq -Rn --arg content "$text" '{"content": $content}')" \
+                 ${{ secrets.DISCORD_WEBHOOK }}
+          }
+
+          MAX_LENGTH=2000
+          while [ -n "$CONTENT" ]; do
+            CHUNK="${CONTENT:0:$MAX_LENGTH}"
+            send_chunk "$CHUNK"
+            CONTENT="${CONTENT:$MAX_LENGTH}"
+            sleep 1  # Optional: tránh spam quá nhanh
+          done
