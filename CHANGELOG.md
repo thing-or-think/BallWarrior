@@ -137,40 +137,19 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 ## [0.1.0] - 2025-09-30
 
 ### Added
-- `CollisionSystem.java`: lớp điều phối va chạm, tìm nearest collision giữa các entity, xử lý nhiều va chạm trong cùng frame
-- `CollisionResult.java`: data class lưu thông tin va chạm
-    - `entity`: entity bị va chạm
-    - `hitPoint`: điểm va chạm chính xác
-    - `t`: thời gian va chạm trên quãng đường di chuyển
-- `CollisionUtils.java`: các hàm tiện ích hỗ trợ va chạm
-    - `isBetween(float a, float b, float target)`: kiểm tra target có nằm giữa a và b
-    - `getLineIntersection(...)`: tính giao điểm giữa hai đoạn thẳng
-    - `circleLineIntersection(...)`: tính giao điểm giữa đoạn thẳng và đường tròn
-- `CircleVsAABB.java`: xử lý va chạm Ball-Paddle/Brick
-    - Cải thiện độ chính xác va chạm liên tục (swept collision)
-    - Xử lý va chạm với cạnh và góc, kể cả khi bóng kẹt trong AABB
-    - `intersect(...)` trả về CollisionResult sớm nhất trong frame
-- `CircleVsCircle.java`: kiểm tra và xử lý va chạm Ball-Ball hoặc Ball-PowerUp
-- `Vector2D.java`:
-    - Constructor mới `Vector2D(Vector2D other)` để khởi tạo từ vector khác
-    - Setter mới `set(Vector2D other)` gán giá trị từ vector khác
-    - Phương thức `isParallel(Vector2D other)` kiểm tra hai vector song song
-    - Phương thức `normalLeft()` và `normalRight()` trả về vector pháp tuyến tương ứng
+- `CollisionSystem.java`: điều phối va chạm, tìm nearest collision, xử lý nhiều va chạm trong frame
+- `CollisionResult.java`: lưu thông tin va chạm (entity, hitPoint, t)
+- `CollisionUtils.java`: tiện ích va chạm (isBetween, getLineIntersection, circleLineIntersection)
+- `CircleVsAABB.java`: Ball-Paddle/Brick, cải thiện swept collision, xử lý cạnh/góc, intersect(...) trả về CollisionResult sớm nhất
+- `CircleVsCircle.java`: va chạm Ball-Ball hoặc Ball-PowerUp
+- `Vector2D.java`: constructor & setter từ vector khác, isParallel(), normalLeft()/Right()
 
 ### Changed
-- Chia module va chạm sang thư mục `game/collision/` để dễ quản lý, mở rộng và tái sử dụng
-- `GameScene.java`:
-    - Loại bỏ kiểm tra va chạm thủ công với Ball-Paddle và Ball-Brick
-    - Tích hợp `CollisionSystem` để xử lý tất cả va chạm
-    - Đăng ký Paddle và Bricks vào `CollisionSystem`
-    - Gọi `collisionSystem.findNearestCollision(ball)` và `collisionSystem.resolveCollision(...)` trong `update()`
-    - Cập nhật điểm và mạng thông qua `ScoreSystem` khi va chạm với Brick hoặc mất mạng
-- `Vector2D.java`:
-    - Đổi tên `multiply(float k)` trả về void sang `multiplied(float k)` trả về vector mới
-    - Cải thiện `normalized()` để trả về `(0,0)` nếu vector quá nhỏ
-    - Sắp xếp lại các phương thức theo nhóm: constructor, setter, arithmetic, geometry
+- Chia module va chạm sang `game/collision/` để dễ quản lý và mở rộng
+- `GameScene.java`: loại bỏ kiểm tra va chạm thủ công, tích hợp `CollisionSystem`, đăng ký Paddle/Bricks, gọi findNearestCollision & resolveCollision, cập nhật điểm/mạng
+- `Vector2D.java`: đổi multiply → multiplied, cải thiện normalized(), sắp xếp phương thức theo nhóm
 
 ### Fixed
-- Cải thiện và sửa lỗi hệ thống va chạm Ball-AABB, xử lý cạnh và góc
-- Đảm bảo các class va chạm hoạt động chính xác, độc lập, dễ mở rộng cho các entity khác
-- Sửa một số vấn đề nhỏ về precision trong các phương thức tính toán vector
+- Cải thiện và sửa lỗi va chạm Ball-AABB, xử lý cạnh và góc
+- Đảm bảo các class va chạm hoạt động chính xác, độc lập, dễ mở rộng
+- Sửa một số vấn đề precision trong tính toán vector
