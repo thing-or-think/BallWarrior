@@ -45,7 +45,7 @@ public class GameScene {
         bricks = levelManager.load("assets/levels/level1.txt");
 
         // Khởi tạo CollisionSystem và đăng ký entity
-        collisionSystem = new CollisionSystem();
+        collisionSystem = new CollisionSystem(paddle);
         collisionSystem.register(paddle);
         for (Brick brick : bricks) {
             collisionSystem.register(brick);
@@ -74,13 +74,11 @@ public class GameScene {
 
         // Tìm va chạm gần nhất
         CollisionResult result = collisionSystem.findNearestCollision(ball);
-        if (result != null) {
-            if (collisionSystem.resolveCollision(ball, result)) {
-                if (result.getEntity() instanceof Brick brick) {
-                    if (brick.isDestroyed()) {
-                        scoreSystem.addScore(100);
-                        collisionSystem.unregister(brick);
-                    }
+        if (collisionSystem.resolveCollision(ball, result)) {
+            if (result.getEntity() instanceof Brick brick) {
+                if (brick.isDestroyed()) {
+                    scoreSystem.addScore(100);
+                    collisionSystem.unregister(brick);
                 }
             }
         }

@@ -135,28 +135,52 @@ public class CircleVsAABB {
                 target <= Math.max(a, b) + Constants.COLLISION_EPSILON;
     }
 
-    public static void handleBallInsideEntity(Ball ball, Entity entity) {
+    public static boolean handleBallInsideEntity(Ball ball, Entity entity) {
 
         if (!checkCollision(ball, entity)) {
-            return;
+            return false;
         }
 
         Vector2D entityPrev = entity.getPreviousPosition();
         Vector2D entityCurr = entity.getPosition();
 
         if (entityPrev.x < entityCurr.x) {
-            ball.setPosition(entity.getPosition().x + entity.getWidth(), ball.getY());
+            ball.setPosition(entity.getPosition().x + entity.getWidth() + 0.01f, ball.getY());
+            System.out.println(1);
+            return true;
         } else if (entityPrev.x > entityCurr.x) {
-            ball.setPosition(entity.getPosition().x - ball.getWidth(), ball.getY());
+            System.out.println(1);
+            ball.setPosition(entity.getPosition().x - ball.getWidth() - 0.01f, ball.getY());
+            return true;
         }
-
         ball.clampPosition();
+        return false;
     }
 
     public static boolean checkCollision(Entity a, Entity b) {
-        return a.getX() < b.getX() + b.getWidth() + Constants.COLLISION_EPSILON &&
-                a.getX() + a.getWidth() > b.getX() - Constants.COLLISION_EPSILON &&
-                a.getY() < b.getY() + b.getHeight() + Constants.COLLISION_EPSILON &&
-                a.getY() + a.getHeight() > b.getY() - Constants.COLLISION_EPSILON;
+        float axCurr = a.getX();
+        float ayCurr = a.getY();
+        float axPrev = a.getPreviousPosition().x;
+        float ayPrev = a.getPreviousPosition().y;
+        float aw = a.getWidth();
+        float ah = a.getHeight();
+
+        float bx = b.getX();
+        float by = b.getY();
+        float bw = b.getWidth();
+        float bh = b.getHeight();
+
+        boolean collCurr = axCurr < bx + bw + Constants.COLLISION_EPSILON &&
+                axCurr + aw > bx - Constants.COLLISION_EPSILON &&
+                ayCurr < by + bh + Constants.COLLISION_EPSILON &&
+                ayCurr + ah > by - Constants.COLLISION_EPSILON;
+
+        boolean collPrev = axPrev < bx + bw + Constants.COLLISION_EPSILON &&
+                axPrev + aw > bx - Constants.COLLISION_EPSILON &&
+                ayPrev < by + bh + Constants.COLLISION_EPSILON &&
+                ayPrev + ah > by - Constants.COLLISION_EPSILON;
+
+        return collCurr && collPrev;
     }
+
 }

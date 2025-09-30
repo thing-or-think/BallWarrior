@@ -15,10 +15,13 @@ import java.util.List;
  */
 public class CollisionSystem {
 
+    private Paddle paddle;
+
     private final List<Entity> colliders;
 
-    public CollisionSystem() {
+    public CollisionSystem(Paddle paddle) {
         this.colliders = new ArrayList<>();
+        this.paddle = paddle;
     }
 
     // Đăng ký entity có thể va chạm
@@ -75,7 +78,7 @@ public class CollisionSystem {
      * Trả về true nếu đã xử lý va chạm (ball thay đổi trạng thái)
      */
     public boolean resolveCollision(Ball ball, CollisionResult result) {
-        if (result == null || ball == null || !result.isValid()) return false;
+        if (CircleVsAABB.handleBallInsideEntity(ball, paddle) || result == null || ball == null || !result.isValid()) return false;
 
         Vector2D prev = ball.getPreviousPosition();
         Vector2D curr = ball.getPosition();
