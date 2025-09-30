@@ -3,6 +3,7 @@ package game.collision;
 import core.Constants;
 import entity.Ball;
 import entity.Entity;
+import utils.MathUtils;
 import utils.Vector2D;
 
 /**
@@ -18,146 +19,80 @@ import utils.Vector2D;
  */
 public class CircleVsAABB {
 
-    public static CollisionResult intersect(Ball ball, Entity aabb) {
-        Vector2D p0 = ball.getPreviousPosition(); // vị trí tâm bóng trước frame
-        Vector2D p1 = ball.getPosition();         // vị trí tâm bóng hiện tại
-        Vector2D d = p1.subtracted(p0);           // vector dịch chuyển trong frame
-        float r = ball.getRadius();
+    public static CollisionResult intersect(Ball ball, Entity box) {
+        Vector2D startCenter = ball.getPreviousPosition().added(new Vector2D(ball.getRadius(), ball.getRadius())); // tâm bóng ở frame trước
+        Vector2D endCenter = ball.getPosition().added(new Vector2D(ball.getRadius(), ball.getRadius()));           // tâm bóng ở frame hiện tại
+        Vector2D movement = endCenter.subtracted(startCenter);  // vector dịch chuyển trong frame
+        float radius = ball.getRadius();
 
-        // Nếu không di chuyển nhiều — kiểm tra chồng lấn t=0
-        if (d.length() <= Constants.COLLISION_EPSILON) {
-            // Kiểm tra khoảng cách từ tâm tới AABB (nearest point)
-            Vector2D nearest = nearestPointOnAABB(p0, aabb);
-            Vector2D diff = p0.subtracted(nearest);
-            float dist2 = diff.dot(diff);
-            if (dist2 <= r * r + Constants.COLLISION_EPSILON) {
-                Vector2D normal = dist2 > Constants.COLLISION_EPSILON ? diff.normalized() : new Vector2D(0, -1);
-                Vector2D contact = nearest;
-                Vector2D reflected = reflect(ball.getVelocity(), normal);
-                return new CollisionResult(aabb, contact, normal, 0f, reflected);
-            }
-            return null;
-        }
+        // Mở rộng AABB theo bán kính bóng
+        float minX = box.getX() - radius;
+        float minY = box.getY() - radius;
+        float maxX = box.getX() + box.getWidth() + radius;
+        float maxY = box.getY() + box.getHeight() + radius;
 
-        // Mở rộng AABB theo bán kính r
-        float minX = aabb.getX() - r;
-        float minY = aabb.getY() - r;
-        float maxX = aabb.getX() + aabb.getWidth() + r;
-        float maxY = aabb.getY() + aabb.getHeight() + r;
+        Vector2D[][] expandedEdges = getSweptAabbEdges(ball, box);
+        Vector2D[][] originalEdges = getSweptAabbEdges(null, box);
+        CollisionResult bestResult = null;
 
-        float tEntry = 0f;
-        float tExit = 1f;
-        float tEntryX, tExitX, tEntryY, tExitY;
+        for (int edgeIndex = 0; edgeIndex < expandedEdges.length; edgeIndex++) {
+            Vector2D intersection = MathUtils.getLineIntersection(
+                    startCenter, endCenter,
+                    expandedEdges[edgeIndex][0], expandedEdges[edgeIndex][1]
+            );
 
-        // X axis
-        if (Math.abs(d.x) < Constants.COLLISION_EPSILON) {
-            if (p0.x < minX || p0.x > maxX) return checkCorners(ball, p0, d, r, aabb); // không thể đi qua box về trục X
-            tEntryX = Float.NEGATIVE_INFINITY;
-            tExitX = Float.POSITIVE_INFINITY;
-        } else {
-            float invDx = 1f / d.x;
-            float t1 = (minX - p0.x) * invDx;
-            float t2 = (maxX - p0.x) * invDx;
-            tEntryX = Math.min(t1, t2);
-            tExitX = Math.max(t1, t2);
-            tEntry = Math.max(tEntry, tEntryX);
-            tExit = Math.min(tExit, tExitX);
-        }
+            if (intersection != null) {
+                if (isBetween(originalEdges[edgeIndex][0].x, originalEdges[edgeIndex][1].x, intersection.x) ||
+                        isBetween(originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y, intersection.y)) {
 
-        // Y axis
-        if (Math.abs(d.y) < Constants.COLLISION_EPSILON) {
-            if (p0.y < minY || p0.y > maxY) return checkCorners(ball, p0, d, r, aabb);
-            tEntryY = Float.NEGATIVE_INFINITY;
-            tExitY = Float.POSITIVE_INFINITY;
-        } else {
-            float invDy = 1f / d.y;
-            float t1 = (minY - p0.y) * invDy;
-            float t2 = (maxY - p0.y) * invDy;
-            tEntryY = Math.min(t1, t2);
-            tExitY = Math.max(t1, t2);
-            tEntry = Math.max(tEntry, tEntryY);
-            tExit = Math.min(tExit, tExitY);
-        }
+                    Vector2D offset = intersection.subtracted(startCenter);
+                    float time = offset.length() / movement.length();
 
-        // Nếu có khoảng giao
-        if (tEntry <= tExit && tEntry >= 0f - Constants.COLLISION_EPSILON && tEntry <= 1f + Constants.COLLISION_EPSILON) {
-            float tClamped = clamp(tEntry, 0f, 1f);
-            Vector2D collisionCenter = p0.added(d.multiplied(tClamped));
+                    if (bestResult == null || time < bestResult.getTime() - Constants.COLLISION_EPSILON) {
+                        Vector2D hitPoint = new Vector2D(
+                                clamp(intersection.x, originalEdges[edgeIndex][0].x, originalEdges[edgeIndex][1].x),
+                                clamp(intersection.y, originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y)
+                        );
+                        Vector2D normal = originalEdges[edgeIndex][1].subtracted(originalEdges[edgeIndex][0]).normalLeft();
+                        Vector2D reflectedVelocity = reflect(ball.getVelocity(), normal);
 
-            // Xác định pháp tuyến dựa vào trục nào gây entry (so sánh với tEntryX/tEntryY)
-            Vector2D normal;
-            if (tEntryX > tEntryY) {
-                // va chạm trên trục X
-                if (d.x > 0) normal = new Vector2D(-1, 0); else normal = new Vector2D(1, 0);
-            } else if (tEntryY > tEntryX) {
-                if (d.y > 0) normal = new Vector2D(0, -1); else normal = new Vector2D(0, 1);
-            } else {
-                // trường hợp entry cùng lúc — ưu tiên trục có trị tuyệt đối lớn hơn
-                if (Math.abs(d.x) > Math.abs(d.y)) {
-                    if (d.x > 0) normal = new Vector2D(-1, 0); else normal = new Vector2D(1, 0);
+                        bestResult = new CollisionResult(box, hitPoint, normal, time, reflectedVelocity);
+                    }
                 } else {
-                    if (d.y > 0) normal = new Vector2D(0, -1); else normal = new Vector2D(0, 1);
+                    CollisionResult cornerResult = checkCorners(ball, startCenter, endCenter, originalEdges[edgeIndex], box);
+                    if (bestResult == null || cornerResult.getTime() < bestResult.getTime() - Constants.COLLISION_EPSILON) {
+                        bestResult = cornerResult;
+                    }
                 }
             }
-
-            // Tính điểm tiếp xúc trên biên của AABB gốc (không expanded) bằng cách clamp center - normal*r
-            Vector2D contactPoint = collisionCenter.subtracted(normal.multiplied(r));
-
-            Vector2D reflected = reflect(ball.getVelocity(), normal);
-            return new CollisionResult(aabb, contactPoint, normal, tClamped, reflected);
         }
-
-        // Nếu không tìm thấy bằng slab, kiểm tra va chạm với các góc bằng giải phương trình bậc hai
-        return checkCorners(ball, p0, d, r, aabb);
+        return bestResult;
     }
 
     // Kiểm tra va chạm với 4 góc (point vs moving point with radius)
-    private static CollisionResult checkCorners(Ball ball, Vector2D p0, Vector2D d, float r, Entity aabb) {
-        Vector2D[] corners = new Vector2D[] {
-                new Vector2D(aabb.getX(), aabb.getY()),
-                new Vector2D(aabb.getX() + aabb.getWidth(), aabb.getY()),
-                new Vector2D(aabb.getX() + aabb.getWidth(), aabb.getY() + aabb.getHeight()),
-                new Vector2D(aabb.getX(), aabb.getY() + aabb.getHeight())
-        };
+    private static CollisionResult checkCorners(Ball ball, Vector2D startCenter, Vector2D endCenter, Vector2D[] edgePoints, Entity box) {
+        CollisionResult bestResult = null;
+        Vector2D movement = endCenter.subtracted(startCenter);
 
-        float bestT = Float.MAX_VALUE;
-        Vector2D bestContact = null;
-        Vector2D bestNormal = null;
+        for (int i = 0; i < edgePoints.length; i++) {
+            Vector2D[] intersections = MathUtils.circleSegmentIntersection(edgePoints[i], ball.getRadius(), startCenter, endCenter);
 
-        float a = d.dot(d);
-        for (Vector2D corner : corners) {
-            Vector2D m = p0.subtracted(corner);
-            float b = 2f * d.dot(m);
-            float c = m.dot(m) - r * r;
-            float disc = b * b - 4f * a * c;
-            if (disc < 0f) continue;
-            float sqrtD = (float) Math.sqrt(disc);
-            float t1 = (-b - sqrtD) / (2f * a);
-            float t2 = (-b + sqrtD) / (2f * a);
-            float t = Float.MAX_VALUE;
-            if (t1 >= -Constants.COLLISION_EPSILON && t1 <= 1f + Constants.COLLISION_EPSILON) t = t1;
-            else if (t2 >= -Constants.COLLISION_EPSILON && t2 <= 1f + Constants.COLLISION_EPSILON) t = t2;
-            if (t < 0f) continue;
-            if (t <= bestT) {
-                bestT = t;
-                Vector2D collisionCenter = p0.added(d.multiplied(t));
-                Vector2D normal = collisionCenter.subtracted(corner);
-                if (normal.length() > Constants.COLLISION_EPSILON) normal = normal.normalized();
-                else normal = new Vector2D(0, -1);
-                Vector2D contactPoint = corner; // contact on the corner
-                bestContact = contactPoint;
-                bestNormal = normal;
+            for (int j = 0; j < intersections.length; j++) {
+                Vector2D offset = intersections[j].subtracted(startCenter);
+                float time = offset.length() / movement.length();
+
+                if (bestResult == null || time < bestResult.getTime() - Constants.COLLISION_EPSILON) {
+                    Vector2D hitPoint = edgePoints[i];
+                    Vector2D normal = intersections[j].subtracted(hitPoint);
+                    Vector2D reflectedVelocity = reflect(ball.getVelocity(), normal);
+
+                    bestResult = new CollisionResult(box, hitPoint, normal, time, reflectedVelocity);
+                }
             }
         }
-
-        if (bestContact != null) {
-            Vector2D reflected = reflect(ball.getVelocity(), bestNormal);
-            float tClamped = clamp(bestT, 0f, 1f);
-            return new CollisionResult(ball == null ? null : null, bestContact, bestNormal, tClamped, reflected);
-        }
-
-        return null;
+        return bestResult;
     }
+
 
     // Tính điểm gần nhất trên AABB tới một điểm
     private static Vector2D nearestPointOnAABB(Vector2D p, Entity aabb) {
@@ -177,5 +112,51 @@ public class CircleVsAABB {
         Vector2D n = normal.normalized();
         float dp = v.dot(n);
         return v.subtracted(n.multiplied(2f * dp));
+    }
+
+    private static Vector2D[][] getSweptAabbEdges(Ball ball, Entity entity) {
+        float r = (ball == null) ? 0f : ball.getRadius();
+
+        Vector2D topLeft = new Vector2D(entity.getX() - r, entity.getY() - r);
+        Vector2D topRight = new Vector2D(entity.getX() + entity.getWidth() + r, entity.getY() - r);
+        Vector2D bottomLeft = new Vector2D(entity.getX() - r, entity.getY() + entity.getHeight() + r);
+        Vector2D bottomRight = new Vector2D(entity.getX() + entity.getWidth() + r, entity.getY() + entity.getHeight() + r);
+
+        return new Vector2D[][] {
+                {topLeft, topRight},       // cạnh trên
+                {topRight, bottomRight},   // cạnh phải
+                {bottomRight, bottomLeft}, // cạnh dưới
+                {bottomLeft, topLeft}      // cạnh trái
+        };
+    }
+
+    private static boolean isBetween(float a, float b, float target) {
+        return target >= Math.min(a, b) - Constants.COLLISION_EPSILON &&
+                target <= Math.max(a, b) + Constants.COLLISION_EPSILON;
+    }
+
+    public static void handleBallInsideEntity(Ball ball, Entity entity) {
+
+        if (!checkCollision(ball, entity)) {
+            return;
+        }
+
+        Vector2D entityPrev = entity.getPreviousPosition();
+        Vector2D entityCurr = entity.getPosition();
+
+        if (entityPrev.x < entityCurr.x) {
+            ball.setPosition(entity.getPosition().x + entity.getWidth(), ball.getY());
+        } else if (entityPrev.x > entityCurr.x) {
+            ball.setPosition(entity.getPosition().x - ball.getWidth(), ball.getY());
+        }
+
+        ball.clampPosition();
+    }
+
+    public static boolean checkCollision(Entity a, Entity b) {
+        return a.getX() < b.getX() + b.getWidth() + Constants.COLLISION_EPSILON &&
+                a.getX() + a.getWidth() > b.getX() - Constants.COLLISION_EPSILON &&
+                a.getY() < b.getY() + b.getHeight() + Constants.COLLISION_EPSILON &&
+                a.getY() + a.getHeight() > b.getY() - Constants.COLLISION_EPSILON;
     }
 }

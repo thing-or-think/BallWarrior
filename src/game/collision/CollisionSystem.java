@@ -62,10 +62,8 @@ public class CollisionSystem {
             // Nếu có thêm loại entity khác thì mở rộng ở đây
 
             // Chọn collision có t nhỏ nhất (gần nhất)
-            if (result != null) {
-                if (nearest == null || result.getTime() < nearest.getTime()) {
-                    nearest = result;
-                }
+            if (result != null && (nearest == null || result.getTime() < nearest.getTime())) {
+                nearest = result;
             }
         }
 
@@ -77,14 +75,14 @@ public class CollisionSystem {
      * Trả về true nếu đã xử lý va chạm (ball thay đổi trạng thái)
      */
     public boolean resolveCollision(Ball ball, CollisionResult result) {
-        if (result == null || ball == null) return false;
+        if (result == null || ball == null || !result.isValid()) return false;
 
         Vector2D prev = ball.getPreviousPosition();
         Vector2D curr = ball.getPosition();
         Vector2D travel = curr.subtracted(prev);
 
-        // Di chuyển bóng đến điểm va chạm (interpolate giữa prev->curr theo t)
-        float t = result.getTime();
+        // Di chuyển bóng đến gần điểm va chạm (interpolate giữa prev->curr theo t)
+        float t = result.getTime() - 0.01f;
         t = Math.max(0f, Math.min(1f, t));
         Vector2D newCenter = prev.added(travel.multiplied(t));
         ball.setPosition(newCenter);
@@ -101,6 +99,7 @@ public class CollisionSystem {
         if (hit instanceof Brick) {
             ((Brick) hit).hit();
         } else if (hit instanceof Paddle) {
+            CircleVsAABB.handleBallInsideEntity(ball, hit);
             // Nếu muốn hiệu ứng theo vị trí chạm (ví dụ điều chỉnh góc),
             // bạn có thể thêm logic ở đây (dựa trên result.getHitPoint() hoặc vị trí tương đối trên paddle).
         }

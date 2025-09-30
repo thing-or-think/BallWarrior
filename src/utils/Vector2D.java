@@ -24,6 +24,11 @@ public class Vector2D {
         this.y = y;
     }
 
+    public void set(Vector2D other) {
+        this.x = other.x;
+        this.y = other.y;
+    }
+
     // 4. Override / Utility
     @Override
     public String toString() {
@@ -46,7 +51,12 @@ public class Vector2D {
         this.y -= other.y;
     }
 
-    // 6. Operations (return new)
+    public void multiply(float k) {
+        this.x *= k;
+        this.y *= k;
+    }
+
+    // 6. Arithmetic (return new)
     public Vector2D added(Vector2D other) {
         return new Vector2D(this.x + other.x, this.y + other.y);
     }
@@ -55,7 +65,7 @@ public class Vector2D {
         return new Vector2D(this.x - other.x, this.y - other.y);
     }
 
-    public Vector2D multiply(float k) {
+    public Vector2D multiplied(float k) {
         return new Vector2D(this.x * k, this.y * k);
     }
 
@@ -65,7 +75,7 @@ public class Vector2D {
         return new Vector2D(this.x / len, this.y / len);
     }
 
-    // 7. Math functions
+    // 7. Geometry / Math
     public float length() {
         return (float) Math.sqrt(x * x + y * y);
     }
@@ -109,9 +119,6 @@ public class Vector2D {
         return Math.abs(this.cross(other)) < Constants.COLLISION_EPSILON;
     }
 
-    public Vector2D multiplied(float k) {
-        return new Vector2D(this.x * k, this.y * k);
-    }
 
     public Vector2D normalLeft() {
         return new Vector2D(-this.y, this.x);

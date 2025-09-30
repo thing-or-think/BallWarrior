@@ -58,7 +58,7 @@ public class GameScene {
     private void resetBall() {
         ball = new Ball(
                 paddle.getX() + Constants.PADDLE_WIDTH / 2 - Constants.BALL_SIZE / 2,
-                paddle.getY() - Constants.BALL_SIZE
+                paddle.getY() - Constants.BALL_SIZE - 1
         );
     }
 

@@ -1,6 +1,8 @@
 package game.collision;
 
+import core.Constants;
 import entity.Entity;
+import entity.Paddle;
 import utils.Vector2D;
 
 public class CollisionResult {

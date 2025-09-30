@@ -83,4 +83,58 @@ public class MathUtils {
         return H;
     }
 
+    public static Vector2D[] circleLineIntersection(Vector2D C, float r, Vector2D P1, Vector2D P2) {
+        // Vector từ P1 -> P2
+        Vector2D d = P2.subtracted(P1);
+        Vector2D f = P1.subtracted(C);
+
+        float a = d.dot(d);
+        float b = 2 * f.dot(d);
+        float c = f.dot(f) - r * r;
+
+        float discriminant = b * b - 4 * a * c;
+        if (discriminant < 0) {
+            // Không có giao điểm
+            return new Vector2D[0];
+        } else if (Math.abs(discriminant) < 1e-6) {
+            // 1 điểm giao (tiếp xúc)
+            float t = -b / (2 * a);
+            Vector2D P = P1.added(d.multiplied(t));
+            return new Vector2D[]{P};
+        } else {
+            // 2 điểm giao
+            float sqrtD = (float) Math.sqrt(discriminant);
+            float t1 = (-b - sqrtD) / (2 * a);
+            float t2 = (-b + sqrtD) / (2 * a);
+
+            Vector2D P1g = P1.added(d.multiplied(t1));
+            Vector2D P2g = P1.added(d.multiplied(t2));
+
+            return new Vector2D[]{P1g, P2g};
+        }
+    }
+
+    public static Vector2D[] circleSegmentIntersection(Vector2D C, float r, Vector2D P1, Vector2D P2) {
+        Vector2D[] points = circleLineIntersection(C, r, P1, P2); // gọi hàm line vô hạn
+        Vector2D d = P2.subtracted(P1);
+        int count = 0;
+        Vector2D[] result = new Vector2D[2]; // tối đa 2 điểm
+
+        for (Vector2D p : points) {
+            if (p == null) continue;
+            // Tính t của điểm giao: P = P1 + t * d => t = (p - P1) / d
+            float tX = d.x != 0 ? (p.x - P1.x) / d.x : Float.NaN;
+            float tY = d.y != 0 ? (p.y - P1.y) / d.y : Float.NaN;
+
+            float t = Float.isNaN(tX) ? tY : Float.isNaN(tY) ? tX : (tX + tY) * 0.5f;
+
+            if (isBetween(0f, 1f, t)) {
+                result[count++] = p;
+            }
+        }
+
+        if (count == 0) return new Vector2D[0];
+        if (count == 1) return new Vector2D[]{result[0]};
+        return new Vector2D[]{result[0], result[1]};
+    }
 }
