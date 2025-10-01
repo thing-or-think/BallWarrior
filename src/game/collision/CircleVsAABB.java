@@ -22,14 +22,6 @@ public class CircleVsAABB {
     public static CollisionResult intersect(Ball ball, Entity box) {
         Vector2D startCenter = ball.getPreviousPosition().added(new Vector2D(ball.getRadius(), ball.getRadius())); // tâm bóng ở frame trước
         Vector2D endCenter = ball.getPosition().added(new Vector2D(ball.getRadius(), ball.getRadius()));           // tâm bóng ở frame hiện tại
-        Vector2D movement = endCenter.subtracted(startCenter);  // vector dịch chuyển trong frame
-        float radius = ball.getRadius();
-
-        // Mở rộng AABB theo bán kính bóng
-        float minX = box.getX() - radius;
-        float minY = box.getY() - radius;
-        float maxX = box.getX() + box.getWidth() + radius;
-        float maxY = box.getY() + box.getHeight() + radius;
 
         Vector2D[][] expandedEdges = CollisionUtils.getSweptAabbEdges(ball, box);
         Vector2D[][] originalEdges = CollisionUtils.getSweptAabbEdges(null, box);
