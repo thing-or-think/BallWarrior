@@ -46,17 +46,16 @@ public class CircleVsAABB {
                         CollisionUtils.isBetween(originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y, intersection.y)) {
 
                     Vector2D offset = intersection.subtracted(startCenter);
-                    float time = offset.length() / movement.length();
-
-                    if (bestResult == null || time < bestResult.getTime() - Constants.COLLISION_EPSILON) {
-                        Vector2D hitPoint = new Vector2D(
-                                CollisionUtils.clamp(intersection.x, originalEdges[edgeIndex][0].x, originalEdges[edgeIndex][1].x),
-                                CollisionUtils.clamp(intersection.y, originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y)
-                        );
-                        Vector2D normal = originalEdges[edgeIndex][1].subtracted(originalEdges[edgeIndex][0]).normalLeft();
-                        Vector2D reflectedVelocity = CollisionUtils.reflect(ball.getVelocity(), normal);
-
-                        bestResult = new CollisionResult(box, hitPoint, normal, time, reflectedVelocity);
+                    float time = offset.length() / ball.getVelocity().length();
+                    Vector2D hitPoint = new Vector2D(
+                            CollisionUtils.clamp(intersection.x, originalEdges[edgeIndex][0].x, originalEdges[edgeIndex][1].x),
+                            CollisionUtils.clamp(intersection.y, originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y)
+                    );
+                    Vector2D normal = originalEdges[edgeIndex][1].subtracted(originalEdges[edgeIndex][0]).normalRight().normalized();
+                    Vector2D reflectedVelocity = CollisionUtils.reflect(ball.getVelocity(), normal);
+                    CollisionResult edgeResult = new CollisionResult(box, hitPoint, normal, time, reflectedVelocity);
+                    if ((bestResult == null || time < bestResult.getTime() - Constants.COLLISION_EPSILON) && edgeResult.isValid(ball)) {
+                        bestResult = edgeResult;
                     }
                 } else {
                     CollisionResult cornerResult = checkCorners(ball, startCenter, endCenter, originalEdges[edgeIndex], box);
@@ -75,7 +74,7 @@ public class CircleVsAABB {
         Vector2D movement = endCenter.subtracted(startCenter);
 
         for (int i = 0; i < edgePoints.length; i++) {
-            Vector2D[] intersections = CollisionUtils.circleSegmentIntersection(edgePoints[i], ball.getRadius(), startCenter, endCenter);
+            Vector2D[] intersections = CollisionUtils.circleLineIntersection(edgePoints[i], ball.getRadius(), startCenter, endCenter);
 
             for (int j = 0; j < intersections.length; j++) {
                 Vector2D offset = intersections[j].subtracted(startCenter);
@@ -83,9 +82,12 @@ public class CircleVsAABB {
 
                 if (bestResult == null || time < bestResult.getTime() - Constants.COLLISION_EPSILON) {
                     Vector2D hitPoint = edgePoints[i];
-                    Vector2D normal = intersections[j].subtracted(hitPoint);
+                    Vector2D normal = intersections[j].subtracted(hitPoint).normalized();
+                    float angle = intersections[j].subtracted(edgePoints[1 - i]).angle(normal);
+                    if (Math.abs(angle) <= Math.PI / 2 + Constants.COLLISION_EPSILON) {
+                        continue;
+                    }
                     Vector2D reflectedVelocity = CollisionUtils.reflect(ball.getVelocity(), normal);
-
                     bestResult = new CollisionResult(box, hitPoint, normal, time, reflectedVelocity);
                 }
             }
@@ -111,10 +113,8 @@ public class CircleVsAABB {
 
         if (entityPrev.x < entityCurr.x) {
             ball.setPosition(entity.getPosition().x + entity.getWidth() + 0.01f, ball.getY());
-            System.out.println(1);
             return true;
         } else if (entityPrev.x > entityCurr.x) {
-            System.out.println(1);
             ball.setPosition(entity.getPosition().x - ball.getWidth() - 0.01f, ball.getY());
             return true;
         }

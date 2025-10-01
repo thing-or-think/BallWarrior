@@ -173,3 +173,20 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 - Cải thiện và sửa lỗi hệ thống va chạm giữa Ball và AABB
 - Đảm bảo các class va chạm hoạt động chính xác, độc lập và dễ mở rộng cho các entity khác
 - Sửa một số vấn đề nhỏ về precision trong các phương thức tính toán vector
+
+---
+
+## [0.1.1] - 2025-10-01
+
+### Fixed
+- Sửa lỗi precision trong `CollisionUtils.circleLineIntersection(...)` và `circleSegmentIntersection(...)` khi điểm giao nằm gần ranh giới.
+- Thêm `Constants.COLLISION_EPSILON` để xử lý sai số khi so sánh vị trí giao điểm và khoảng cách.
+- Sửa lỗi `CollisionSystem.findNearestCollision(...)` trả về kết quả sai trong trường hợp có nhiều va chạm cùng lúc.
+- Khắc phục trường hợp bóng bị kẹt trong AABB (Paddle/Brick) do tính toán va chạm thiếu kiểm tra hướng.
+- Cải thiện tính ổn định khi tính `t` (thời gian va chạm) trong `CollisionResult`.
+
+### Changed
+- Tối ưu hàm `circleLineIntersection(...)` và `getLineIntersection(...)` để loại bỏ tính toán dư thừa.
+- Chuẩn hóa điều kiện kiểm tra `isBetween(...)` bằng sai số `COLLISION_EPSILON`.
+- Cải thiện log debug khi phát hiện va chạm để dễ theo dõi.
+

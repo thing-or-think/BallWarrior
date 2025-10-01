@@ -47,7 +47,7 @@ public class CollisionSystem {
 
     /** Xử lý kết quả va chạm, trả về true nếu bóng thay đổi trạng thái */
     public boolean resolveCollision(Ball ball, CollisionResult result) {
-        if (CircleVsAABB.handleBallInsideEntity(ball, paddle) || result == null || ball == null || !result.isValid())
+        if (CircleVsAABB.handleBallInsideEntity(ball, paddle) || result == null || ball == null)
             return false;
 
         Vector2D prev = ball.getPreviousPosition();

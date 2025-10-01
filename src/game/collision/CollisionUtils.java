@@ -120,13 +120,18 @@ public class CollisionUtils {
         float c = f.dot(f) - r * r;
 
         float discriminant = b * b - 4 * a * c;
-        if (discriminant < 0) return new Vector2D[0];
 
-        if (Math.abs(discriminant) < 1e-6) {
+        if (discriminant < -Constants.COLLISION_EPSILON) {
+            // Không có nghiệm thực
+            return new Vector2D[0];
+        }
+        if (Math.abs(discriminant) <= Constants.COLLISION_EPSILON) {
+            // Tiếp xúc (1 nghiệm)
             float t = -b / (2 * a);
             return new Vector2D[]{ P1.added(d.multiplied(t)) };
         }
 
+        // Hai nghiệm
         float sqrtD = (float) Math.sqrt(discriminant);
         float t1 = (-b - sqrtD) / (2 * a);
         float t2 = (-b + sqrtD) / (2 * a);
@@ -136,6 +141,7 @@ public class CollisionUtils {
                 P1.added(d.multiplied(t2))
         };
     }
+
 
     protected static Vector2D[] circleSegmentIntersection(Vector2D C, float r, Vector2D P1, Vector2D P2) {
         Vector2D[] points = circleLineIntersection(C, r, P1, P2);
