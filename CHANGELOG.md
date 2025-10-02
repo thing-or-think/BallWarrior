@@ -4,14 +4,14 @@ Tất cả các thay đổi đáng chú ý trong dự án này được ghi lạ
 Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic Versioning.
 
 ---
-
 ## [0.2.0] - 2025-10-02
 
 ### Added
 - `Skins.java`: hệ thống skin cho entity (tên, độ hiếm, giá, màu hoặc ảnh, trạng thái mua)
 - Enum `Rarity`: phân loại độ hiếm skin
 - `ui/Button.java`: class nút bấm cho menu (hover đổi màu, click gọi sự kiện)
-- `ui/MenuScene.java`: màn hình menu chính (background gif + nút PLAY, SHOP, INVENTORY, QUIT)
+- `ui/MenuScene.java`: màn hình **menu chính** (background gif + các nút PLAY, SHOP, INVENTORY, QUIT)
+- Tích hợp **Shop** (chuyển từ menu sang shop scene – giao diện cơ bản, chưa hoàn chỉnh)
 
 ### Changed
 - Thêm `Skins.java` vào thư mục `entity/`
@@ -22,7 +22,7 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 
 ## [Unreleased]
 - `SkinManager` quản lý danh sách skin
-- Giao diện shop cho phép mua/chọn skin
+- Giao diện shop hoàn chỉnh (mua/chọn skin)
 - Lưu tiến trình skin đã mở khóa vào file JSON
 
 ---
