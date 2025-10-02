@@ -16,6 +16,8 @@ public class Brick extends Entity {
     private int scoreValue;
     private Type type;
     private BufferedImage texture;
+    private final int initialHealth;
+
 
     public Brick(float x, float y, int width, int height, Type type) {
         super(x, y, width, height);
@@ -44,6 +46,7 @@ public class Brick extends Entity {
                 this.texture = ResourceLoader.loadImage("images/diamond.png");
                 break;
         }
+        this.initialHealth = this.health;
     }
 
     @Override
@@ -75,5 +78,9 @@ public class Brick extends Entity {
 
     public Type getType() {
         return type;
+    }
+
+    public int getMaxHealth() {
+        return initialHealth;
     }
 }

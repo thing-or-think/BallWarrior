@@ -3,12 +3,14 @@ package game;
 import core.InputHandler;
 import core.Constants;
 import entity.Ball;
+import entity.Brick;
 import entity.Paddle;
 import entity.Shield;
-import entity.Brick;
+import ui.HUD;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 public class PowerUpSystem {
 
@@ -16,14 +18,22 @@ public class PowerUpSystem {
     private Paddle paddle;
     private List<Ball> balls;
     private List<Brick> bricks;
+    private PowerUpEffects powerUpEffects;
+    private HUD hud;
 
-    private Shield shield; // chỉ tạo khi bấm Q
+    // Các biến trạng thái của power-up
+    private boolean fireBallActive = false;
+    private boolean shieldActive = false;
 
-    public PowerUpSystem(InputHandler input, Paddle paddle, List<Ball> balls, List<Brick> bricks) {
+    private Shield shield;
+
+    public PowerUpSystem(InputHandler input, Paddle paddle, List<Ball> balls, List<Brick> bricks, PowerUpEffects powerUpEffects, HUD hud) {
         this.input = input;
         this.paddle = paddle;
         this.balls = balls;
         this.bricks = bricks;
+        this.powerUpEffects = powerUpEffects;
+        this.hud = hud;
     }
 
     public void update(float deltaTime) {
@@ -31,6 +41,7 @@ public class PowerUpSystem {
         if (shield != null) {
             shield.update(deltaTime);
         }
+        handleFireBallCollision();
     }
 
     private void handleInput() {
@@ -75,18 +86,20 @@ public class PowerUpSystem {
     }
 
     private void activateExplosion() {
-        float explosionRadius = 100f; // bán kính vụ nổ
+        float explosionRadius = 100f;
 
         for (Ball b : balls) {
-            float explosionX = b.getX();
-            float explosionY = b.getY();
+            float explosionX = b.getX() + b.getWidth() / 2f;
+            float explosionY = b.getY() + b.getHeight() / 2f;
+
+            powerUpEffects.spawnExplosion(explosionX, explosionY, explosionRadius);
 
             System.out.println("Explosion triggered at ball (" + explosionX + "," + explosionY + ")");
 
             for (Brick brick : bricks) {
                 if (!brick.isDestroyed()) {
-                    float dx = brick.getX() - explosionX;
-                    float dy = brick.getY() - explosionY;
+                    float dx = (brick.getX() + brick.getWidth()/2) - explosionX;
+                    float dy = (brick.getY() + brick.getHeight()/2) - explosionY;
                     float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
                     if (distance <= explosionRadius) {
@@ -105,11 +118,45 @@ public class PowerUpSystem {
         return 1; // xa
     }
 
-    private void activateFireBall() {
-        for (Ball b : balls) {
-            b.setFireBall(true);
+    private void handleFireBallCollision() {
+        Iterator<Brick> brickIterator = bricks.iterator();
+        while (brickIterator.hasNext()) {
+            Brick brick = brickIterator.next();
+
+            if (!brick.isDestroyed()) {
+                for (Ball ball : new ArrayList<>(balls)) {
+                    if (ball.isFireBall()) {
+                        if (CollisionSystem.checkCollision(ball, brick)) {
+                            brick.hit(brick.getMaxHealth());
+                        }
+                    }
+                }
+            }
+
+            if (brick.isDestroyed()) {
+                hud.addScore((int) (brick.getScoreValue() * hud.getCombo()));
+                hud.increaseCombo(0.5f);
+                brickIterator.remove();
+            }
         }
-        System.out.println("Fire Ball activated!");
+    }
+
+    private void activateFireBall() {
+        if (!fireBallActive) {
+            for (Ball b : balls) {
+                b.setFireBall(true);
+            }
+            fireBallActive = true;
+        }
+    }
+
+    public void deactivateFireBall() {
+        if (fireBallActive) {
+            for (Ball b : balls) {
+                b.setFireBall(false);
+            }
+            fireBallActive = false;
+        }
     }
 
     public Shield getShield() {

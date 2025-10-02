@@ -10,6 +10,7 @@ import ui.HUD;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GameScene {
@@ -21,6 +22,7 @@ public class GameScene {
 
     private HUD hud; // quản lý score, combo, lives
     private PowerUpSystem powerUpSystem;
+    private PowerUpEffects powerUpEffects;
 
     public GameScene(InputHandler input) {
         this.input = input;
@@ -67,8 +69,9 @@ public class GameScene {
             }
         }
 
-        // PowerUpSystem
-        powerUpSystem = new PowerUpSystem(input, paddle, balls, bricks);
+        // PowerUpSystem và effects
+        powerUpEffects = new PowerUpEffects();
+        powerUpSystem = new PowerUpSystem(input, paddle, balls, bricks, powerUpEffects, hud);
 
     }
 
@@ -87,6 +90,7 @@ public class GameScene {
 
         // Cập nhật PowerUpSystem
         powerUpSystem.update(deltaTime);
+        powerUpEffects.update(deltaTime);
 
         // Cập nhật tất cả bóng
         for (Ball ball : balls) {
@@ -107,6 +111,10 @@ public class GameScene {
         for (Ball ball : balls) {
             if (CollisionSystem.handleBallCollision(ball, paddle, true)) {
                 hud.resetCombo();
+                //TẮT HIỆU ỨNG KHI VA CHẠM PADDLE
+                if (ball.isFireBall()) {
+                    powerUpSystem.deactivateFireBall();
+                }
             }
             CollisionSystem.handleBallInsideEntity(ball, paddle);
         }
@@ -116,21 +124,33 @@ public class GameScene {
         if (shield != null && shield.isActive()) {
             for (Ball ball : balls) {
                 if (CollisionSystem.handleBallCollision(ball, shield, false)) {
-                    // hiệu ứng nếu muốn
+                    // << TẮT HIỆU ỨNG KHI VA CHẠM SHIELD >>
+                    if (ball.isFireBall()) {
+                        powerUpSystem.deactivateFireBall();
+                    }
                 }
             }
         }
 
         // Va chạm bóng - gạch
-        for (Ball ball : balls) {
-            for (Brick brick : bricks) {
-                if (!brick.isDestroyed() && CollisionSystem.handleBallCollision(ball, brick, false)) {
-                    brick.hit(1);
-                    if (brick.isDestroyed()) {
-                        hud.addScore((int)(brick.getScoreValue() * hud.getCombo()));
-                        hud.increaseCombo(0.5f);
+        Iterator<Brick> brickIterator = bricks.iterator();
+        while (brickIterator.hasNext()) {
+            Brick brick = brickIterator.next();
+            if (!brick.isDestroyed()) {
+                for (Ball ball : new ArrayList<>(balls)) {
+                    // Chỉ xử lý va chạm cho bóng thường
+                    if (!ball.isFireBall()) {
+                        if (CollisionSystem.handleBallCollision(ball, brick, false)) {
+                            brick.hit(1);
+                        }
                     }
                 }
+            }
+
+            if (brick.isDestroyed()) {
+                hud.addScore((int) (brick.getScoreValue() * hud.getCombo()));
+                hud.increaseCombo(0.5f);
+                brickIterator.remove();
             }
         }
 
@@ -139,6 +159,10 @@ public class GameScene {
         for (Ball ball : balls) {
             if (ball.getY() > Constants.HEIGHT) {
                 ballsToRemove.add(ball);
+                //TẮT HIỆU ỨNG KHI BÓNG RƠI
+                if (ball.isFireBall()) {
+                    powerUpSystem.deactivateFireBall();
+                }
             }
         }
         for (Ball ball : ballsToRemove) {
@@ -159,6 +183,7 @@ public class GameScene {
 
         // Vẽ tất cả bóng
         for (Ball ball : balls) {
+            powerUpEffects.drawFireBallEffect(g, ball);
             ball.draw(g);
         }
 
@@ -173,11 +198,9 @@ public class GameScene {
         hud.render(g, Constants.WIDTH, Constants.HEIGHT);
 
         // Vẽ shield
-        Shield shield = powerUpSystem.getShield();
-        if (shield != null && shield.isActive()) {
-            shield.draw(g);
-        }
+        powerUpEffects.drawShield(g, powerUpSystem.getShield());
 
+        powerUpEffects.draw(g);
 
     }
 }
