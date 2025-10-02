@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import core.GameEngine;
 
 public class Main {
@@ -7,14 +8,11 @@ public class Main {
             JFrame frame = new JFrame("BallWarrior");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            GameEngine engine = new GameEngine();
-            frame.add(engine);
-
+            GameEngine engine = new GameEngine(frame);
+            frame.setContentPane(engine.getMenuScene());
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
-
-            engine.start();
         });
     }
 }

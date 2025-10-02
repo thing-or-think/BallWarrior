@@ -4,6 +4,7 @@ import core.Constants;
 import utils.Vector2D;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public abstract class Entity {
     // 1. Fields
@@ -12,6 +13,7 @@ public abstract class Entity {
     protected Vector2D velocity;
     protected int width;
     protected int height;
+    protected BufferedImage img;
 
     // 2. Constructor
     public Entity(float x, float y, int width, int height) {
@@ -71,4 +73,7 @@ public abstract class Entity {
     public Vector2D getVelocity() { return velocity; }
     public Vector2D getPosition() { return new Vector2D(position.x, position.y); }
     public Vector2D getPreviousPosition() { return previousPosition; }
+
+    //6. Setters
+    public void setImg (BufferedImage i) {this.img = i; }
 }
