@@ -1,6 +1,7 @@
 package game.collision;
 
 import core.Constants;
+import entity.Ball;
 import entity.Entity;
 import entity.Paddle;
 import utils.Vector2D;
@@ -63,7 +64,9 @@ public class CollisionResult {
     }
 
     // Kết quả có hợp lệ?
-    public boolean isValid() {
-        return entity != null && normal != null && time >= 0.0f && time <= 1.0f;
+    public boolean isValid(Ball ball) {
+        if (entity == null || normal == null) return false;
+        if (time < 0.0f || time > 1.0f) return false;
+        return ball.getVelocity().dot(normal) < -Constants.COLLISION_EPSILON;
     }
 }

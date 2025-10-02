@@ -22,17 +22,9 @@ public class CircleVsAABB {
     public static CollisionResult intersect(Ball ball, Entity box) {
         Vector2D startCenter = ball.getPreviousPosition().added(new Vector2D(ball.getRadius(), ball.getRadius())); // tâm bóng ở frame trước
         Vector2D endCenter = ball.getPosition().added(new Vector2D(ball.getRadius(), ball.getRadius()));           // tâm bóng ở frame hiện tại
-        Vector2D movement = endCenter.subtracted(startCenter);  // vector dịch chuyển trong frame
-        float radius = ball.getRadius();
 
-        // Mở rộng AABB theo bán kính bóng
-        float minX = box.getX() - radius;
-        float minY = box.getY() - radius;
-        float maxX = box.getX() + box.getWidth() + radius;
-        float maxY = box.getY() + box.getHeight() + radius;
-
-        Vector2D[][] expandedEdges = getSweptAabbEdges(ball, box);
-        Vector2D[][] originalEdges = getSweptAabbEdges(null, box);
+        Vector2D[][] expandedEdges = CollisionUtils.getSweptAabbEdges(ball, box);
+        Vector2D[][] originalEdges = CollisionUtils.getSweptAabbEdges(null, box);
         CollisionResult bestResult = null;
 
         for (int edgeIndex = 0; edgeIndex < expandedEdges.length; edgeIndex++) {
@@ -46,17 +38,16 @@ public class CircleVsAABB {
                         CollisionUtils.isBetween(originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y, intersection.y)) {
 
                     Vector2D offset = intersection.subtracted(startCenter);
-                    float time = offset.length() / movement.length();
-
-                    if (bestResult == null || time < bestResult.getTime() - Constants.COLLISION_EPSILON) {
-                        Vector2D hitPoint = new Vector2D(
-                                clamp(intersection.x, originalEdges[edgeIndex][0].x, originalEdges[edgeIndex][1].x),
-                                clamp(intersection.y, originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y)
-                        );
-                        Vector2D normal = originalEdges[edgeIndex][1].subtracted(originalEdges[edgeIndex][0]).normalLeft();
-                        Vector2D reflectedVelocity = reflect(ball.getVelocity(), normal);
-
-                        bestResult = new CollisionResult(box, hitPoint, normal, time, reflectedVelocity);
+                    float time = offset.length() / ball.getVelocity().length();
+                    Vector2D hitPoint = new Vector2D(
+                            CollisionUtils.clamp(intersection.x, originalEdges[edgeIndex][0].x, originalEdges[edgeIndex][1].x),
+                            CollisionUtils.clamp(intersection.y, originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y)
+                    );
+                    Vector2D normal = originalEdges[edgeIndex][1].subtracted(originalEdges[edgeIndex][0]).normalRight().normalized();
+                    Vector2D reflectedVelocity = CollisionUtils.reflect(ball.getVelocity(), normal);
+                    CollisionResult edgeResult = new CollisionResult(box, hitPoint, normal, time, reflectedVelocity);
+                    if ((bestResult == null || time < bestResult.getTime() - Constants.COLLISION_EPSILON) && edgeResult.isValid(ball)) {
+                        bestResult = edgeResult;
                     }
                 } else {
                     CollisionResult cornerResult = checkCorners(ball, startCenter, endCenter, originalEdges[edgeIndex], box);
@@ -75,7 +66,7 @@ public class CircleVsAABB {
         Vector2D movement = endCenter.subtracted(startCenter);
 
         for (int i = 0; i < edgePoints.length; i++) {
-            Vector2D[] intersections = CollisionUtils.circleSegmentIntersection(edgePoints[i], ball.getRadius(), startCenter, endCenter);
+            Vector2D[] intersections = CollisionUtils.circleLineIntersection(edgePoints[i], ball.getRadius(), startCenter, endCenter);
 
             for (int j = 0; j < intersections.length; j++) {
                 Vector2D offset = intersections[j].subtracted(startCenter);
@@ -83,9 +74,12 @@ public class CircleVsAABB {
 
                 if (bestResult == null || time < bestResult.getTime() - Constants.COLLISION_EPSILON) {
                     Vector2D hitPoint = edgePoints[i];
-                    Vector2D normal = intersections[j].subtracted(hitPoint);
-                    Vector2D reflectedVelocity = reflect(ball.getVelocity(), normal);
-
+                    Vector2D normal = intersections[j].subtracted(hitPoint).normalized();
+                    float angle = intersections[j].subtracted(edgePoints[1 - i]).angle(normal);
+                    if (Math.abs(angle) <= Math.PI / 2 + Constants.COLLISION_EPSILON) {
+                        continue;
+                    }
+                    Vector2D reflectedVelocity = CollisionUtils.reflect(ball.getVelocity(), normal);
                     bestResult = new CollisionResult(box, hitPoint, normal, time, reflectedVelocity);
                 }
             }
@@ -95,44 +89,14 @@ public class CircleVsAABB {
 
 
     // Tính điểm gần nhất trên AABB tới một điểm
-    private static Vector2D nearestPointOnAABB(Vector2D p, Entity aabb) {
-        float nx = clamp(p.x, aabb.getX(), aabb.getX() + aabb.getWidth());
-        float ny = clamp(p.y, aabb.getY(), aabb.getY() + aabb.getHeight());
-        return new Vector2D(nx, ny);
-    }
 
-    private static float clamp(float v, float a, float b) {
-        if (a > b) { float t = a; a = b; b = t; }
-        if (v < a) return a;
-        if (v > b) return b;
-        return v;
-    }
 
-    private static Vector2D reflect(Vector2D v, Vector2D normal) {
-        Vector2D n = normal.normalized();
-        float dp = v.dot(n);
-        return v.subtracted(n.multiplied(2f * dp));
-    }
 
-    private static Vector2D[][] getSweptAabbEdges(Ball ball, Entity entity) {
-        float r = (ball == null) ? 0f : ball.getRadius();
 
-        Vector2D topLeft = new Vector2D(entity.getX() - r, entity.getY() - r);
-        Vector2D topRight = new Vector2D(entity.getX() + entity.getWidth() + r, entity.getY() - r);
-        Vector2D bottomLeft = new Vector2D(entity.getX() - r, entity.getY() + entity.getHeight() + r);
-        Vector2D bottomRight = new Vector2D(entity.getX() + entity.getWidth() + r, entity.getY() + entity.getHeight() + r);
-
-        return new Vector2D[][] {
-                {topLeft, topRight},       // cạnh trên
-                {topRight, bottomRight},   // cạnh phải
-                {bottomRight, bottomLeft}, // cạnh dưới
-                {bottomLeft, topLeft}      // cạnh trái
-        };
-    }
 
     public static boolean handleBallInsideEntity(Ball ball, Entity entity) {
 
-        if (!checkCollision(ball, entity)) {
+        if (!CollisionUtils.checkCollision(ball, entity)) {
             return false;
         }
 
@@ -141,41 +105,13 @@ public class CircleVsAABB {
 
         if (entityPrev.x < entityCurr.x) {
             ball.setPosition(entity.getPosition().x + entity.getWidth() + 0.01f, ball.getY());
-            System.out.println(1);
             return true;
         } else if (entityPrev.x > entityCurr.x) {
-            System.out.println(1);
             ball.setPosition(entity.getPosition().x - ball.getWidth() - 0.01f, ball.getY());
             return true;
         }
         ball.clampPosition();
         return false;
-    }
-
-    public static boolean checkCollision(Entity a, Entity b) {
-        float axCurr = a.getX();
-        float ayCurr = a.getY();
-        float axPrev = a.getPreviousPosition().x;
-        float ayPrev = a.getPreviousPosition().y;
-        float aw = a.getWidth();
-        float ah = a.getHeight();
-
-        float bx = b.getX();
-        float by = b.getY();
-        float bw = b.getWidth();
-        float bh = b.getHeight();
-
-        boolean collCurr = axCurr < bx + bw + Constants.COLLISION_EPSILON &&
-                axCurr + aw > bx - Constants.COLLISION_EPSILON &&
-                ayCurr < by + bh + Constants.COLLISION_EPSILON &&
-                ayCurr + ah > by - Constants.COLLISION_EPSILON;
-
-        boolean collPrev = axPrev < bx + bw + Constants.COLLISION_EPSILON &&
-                axPrev + aw > bx - Constants.COLLISION_EPSILON &&
-                ayPrev < by + bh + Constants.COLLISION_EPSILON &&
-                ayPrev + ah > by - Constants.COLLISION_EPSILON;
-
-        return collCurr && collPrev;
     }
 
 }
