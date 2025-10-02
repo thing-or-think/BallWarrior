@@ -43,15 +43,16 @@ public class GameEngine extends JPanel implements Runnable{
             lastTime = now;
 
             while (delta >= 1) {
-                update();
+                float deltaTime = 1f / FPS; // mỗi tick ~1/60 giây
+                update(deltaTime);
                 repaint();
                 delta--;
             }
         }
     }
 
-    private void update() {
-        gameScene.update();
+    private void update(float deltaTime) {
+        gameScene.update(deltaTime);
     }
 
     @Override

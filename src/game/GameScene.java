@@ -5,6 +5,8 @@ import core.InputHandler;
 import entity.Ball;
 import entity.Brick;
 import entity.Paddle;
+import entity.Shield;
+import ui.HUD;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,13 +15,12 @@ import java.util.List;
 public class GameScene {
 
     private Paddle paddle;
-    private Ball ball;
+    private List<Ball> balls;
     private InputHandler input;
     private List<Brick> bricks;
 
-    private int score;
-    private float combo = 1f;
-    private int lives = 3;
+    private HUD hud; // quản lý score, combo, lives
+    private PowerUpSystem powerUpSystem;
 
     public GameScene(InputHandler input) {
         this.input = input;
@@ -34,7 +35,11 @@ public class GameScene {
                 input
         );
 
+        // HUD (3 mạng)
+        hud = new HUD(3);
+
         // Bóng ngay trên paddle
+        balls = new ArrayList<>();
         resetBall();
 
         // Khởi tạo bricks hình vuông
@@ -46,12 +51,12 @@ public class GameScene {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 Brick.Type type;
-                // Ví dụ: chọn loại theo cột
-                if (col % 4 == 0) type = Brick.Type.BEDROCK;
-                else if (col % 4 == 1) type = Brick.Type.COBBLESTONE;
-                else if (col % 4 == 2) type = Brick.Type.GOLD;
-                else type = Brick.Type.DIAMOND;
-
+                switch (col % 4) {
+                    case 0: type = Brick.Type.BEDROCK; break;
+                    case 1: type = Brick.Type.COBBLESTONE; break;
+                    case 2: type = Brick.Type.GOLD; break;
+                    default: type = Brick.Type.DIAMOND; break;
+                }
                 bricks.add(new Brick(
                         50 + col * (brickSize + 5),
                         50 + row * (brickSize + 5),
@@ -61,73 +66,101 @@ public class GameScene {
                 ));
             }
         }
+
+        // PowerUpSystem
+        powerUpSystem = new PowerUpSystem(input, paddle, balls, bricks);
+
     }
 
     private void resetBall() {
-        if (ball == null) {
-            ball = new Ball(
-                    paddle.getX() + Constants.PADDLE_WIDTH / 2 - Constants.BALL_SIZE / 2,
-                    paddle.getY() - Constants.BALL_SIZE
-            );
-        } else {
-            ball.reset(
-                    paddle.getX() + Constants.PADDLE_WIDTH / 2 - Constants.BALL_SIZE / 2,
-                    paddle.getY() - Constants.BALL_SIZE
-            );
-        }
-
-        combo = 1f; // reset combo khi mất mạng
+        Ball ball = new Ball(
+                paddle.getX() + Constants.PADDLE_WIDTH / 2 - Constants.BALL_SIZE / 2,
+                paddle.getY() - Constants.BALL_SIZE
+        );
+        balls.clear();
+        balls.add(ball);
+        hud.resetCombo();
     }
 
-    public void update() {
+    public void update(float deltaTime) {
         paddle.update();
 
-        // Nếu bóng đang dính paddle → cập nhật theo paddle
-        if (ball.isStuck()) {
-            ball.reset(
-                    paddle.getX() + Constants.PADDLE_WIDTH / 2 - Constants.BALL_SIZE / 2,
-                    paddle.getY() - Constants.BALL_SIZE
-            );
+        // Cập nhật PowerUpSystem
+        powerUpSystem.update(deltaTime);
 
-            // nếu người chơi nhấn Space → thả bóng
-            if (input.isSpacePressed()) {
-                ball.launch();
+        // Cập nhật tất cả bóng
+        for (Ball ball : balls) {
+            if (ball.isStuck()) {
+                ball.reset(
+                        paddle.getX() + Constants.PADDLE_WIDTH / 2 - Constants.BALL_SIZE / 2,
+                        paddle.getY() - Constants.BALL_SIZE
+                );
+                if (input.isSpacePressed()) {
+                    ball.launch();
+                }
+            } else {
+                ball.update();
             }
-        } else {
-            ball.update();
         }
 
-        // Bóng - paddle
-        if (CollisionSystem.handleBallCollision(ball, paddle, true)) {
-            combo = 1f; // reset combo khi bóng chạm paddle
+        // Va chạm bóng - paddle
+        for (Ball ball : balls) {
+            if (CollisionSystem.handleBallCollision(ball, paddle, true)) {
+                hud.resetCombo();
+            }
+            CollisionSystem.handleBallInsideEntity(ball, paddle);
         }
-        CollisionSystem.handleBallInsideEntity(ball, paddle);
 
-        // Bóng - gạch
-        for (int i = 0; i < bricks.size(); i++) {
-            Brick brick = bricks.get(i);
-            if (!brick.isDestroyed()) {
-                if (CollisionSystem.handleBallCollision(ball, brick, false)) {
-                    brick.hit();
+        // Va chạm bóng - shield
+        Shield shield = powerUpSystem.getShield();
+        if (shield != null && shield.isActive()) {
+            for (Ball ball : balls) {
+                if (CollisionSystem.handleBallCollision(ball, shield, false)) {
+                    // hiệu ứng nếu muốn
+                }
+            }
+        }
+
+        // Va chạm bóng - gạch
+        for (Ball ball : balls) {
+            for (Brick brick : bricks) {
+                if (!brick.isDestroyed() && CollisionSystem.handleBallCollision(ball, brick, false)) {
+                    brick.hit(1);
                     if (brick.isDestroyed()) {
-                        score += (int)(brick.getScoreValue() * combo);
-                        combo = Math.min(combo + 0.5f, 3f); // tăng combo nhưng tối đa 3
+                        hud.addScore((int)(brick.getScoreValue() * hud.getCombo()));
+                        hud.increaseCombo(0.5f);
                     }
                 }
             }
         }
 
-        // Nếu bóng rơi xuống dưới màn hình
-        if (ball.getY() > Constants.HEIGHT) {
-            lives--;
+        // Kiểm tra bóng rơi xuống dưới
+        List<Ball> ballsToRemove = new ArrayList<>();
+        for (Ball ball : balls) {
+            if (ball.getY() > Constants.HEIGHT) {
+                ballsToRemove.add(ball);
+            }
+        }
+        for (Ball ball : ballsToRemove) {
+            balls.remove(ball);
+        }
+
+        // Nếu hết bóng → mất mạng và reset
+        if (balls.isEmpty()) {
+            hud.loseLife();
             resetBall();
         }
     }
 
+
     public void render(Graphics g) {
-        // Vẽ paddle + ball
+        // Vẽ paddle
         paddle.draw(g);
-        ball.draw(g);
+
+        // Vẽ tất cả bóng
+        for (Ball ball : balls) {
+            ball.draw(g);
+        }
 
         // Vẽ bricks
         for (Brick brick : bricks) {
@@ -136,10 +169,15 @@ public class GameScene {
             }
         }
 
-        // HUD cơ bản
-        g.setColor(Color.WHITE);
-        g.drawString("Score: " + score, 10, 20);
-        g.drawString("Lives: " + lives, Constants.WIDTH - 80, 20);
-        g.drawString("x" + combo, 10, 40);
+        // Vẽ HUD
+        hud.render(g, Constants.WIDTH, Constants.HEIGHT);
+
+        // Vẽ shield
+        Shield shield = powerUpSystem.getShield();
+        if (shield != null && shield.isActive()) {
+            shield.draw(g);
+        }
+
+
     }
 }

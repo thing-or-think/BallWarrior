@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class Ball extends Entity{
     private boolean stuck = true; // mặc định dính paddle
-
+    private boolean isFireBall = false; //mặc định bóng thường
     public Ball(float x, float y) {
         super(x, y, Constants.BALL_SIZE, Constants.BALL_SIZE);
         this.velocity = new Vector2D(0, 0);
@@ -76,4 +76,17 @@ public class Ball extends Entity{
         this.stuck = true;
     }
 
+    public float getVelocityX() { return velocity.x; }
+    public float getVelocityY() { return velocity.y; }
+    public void setVelocityX(float vx) { velocity.x = vx; }
+    public void setVelocityY(float vy) { velocity.y = vy; }
+
+
+    public boolean isFireBall() {
+        return isFireBall;
+    }
+
+    public void setFireBall(boolean val) {
+        isFireBall = val;
+    }
 }

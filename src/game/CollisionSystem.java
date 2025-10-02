@@ -30,13 +30,11 @@ public class CollisionSystem {
         };
     }
 
-    public static boolean handleBallCollision(Ball ball, Entity entity, boolean isPaddle) {
+    public static boolean handleBallCollision(Ball ball, Entity entity, boolean isPaddleOrShield) {
         Vector2D prev = ball.getPreviousPosition();
         Vector2D curr = ball.getPosition();
 
-        if (prev.equals(curr)) {
-            return false;
-        }
+        if (prev.equals(curr)) return false;
 
         int w = ball.getWidth();
         int h = ball.getHeight();
@@ -44,7 +42,7 @@ public class CollisionSystem {
         // Các cạnh entity
         Vector2D[][] edges = getEdges(entity);
 
-        // Các đoạn đường bóng di chuyển (4 hướng)
+        // Các đoạn đường bóng di chuyển (sweep test 4 cạnh)
         Vector2D[][] ballEdges = {
                 {new Vector2D(prev.x + w / 2.0f, prev.y + h), new Vector2D(curr.x + w / 2.0f, curr.y + h)},   // bottom
                 {new Vector2D(prev.x, prev.y + h / 2.0f), new Vector2D(curr.x, curr.y + h / 2.0f)},           // left
@@ -75,30 +73,51 @@ public class CollisionSystem {
         }
 
         if (nearestIntersection != null) {
+            float epsilon = Constants.COLLISION_EPSILON;
+
             // Chỉnh lại vị trí + velocity dựa vào cạnh trúng
             if (hitEdge == 0) { // top edge
-                ball.setPosition(curr.x, entity.getY() - h);
+                ball.setPosition(curr.x, entity.getY() - h - epsilon);
                 ball.setVelocity(ball.getVelocity().x, -Math.abs(ball.getVelocity().y));
             } else if (hitEdge == 2) { // bottom edge
-                ball.setPosition(curr.x, entity.getY() + entity.getHeight());
+                ball.setPosition(curr.x, entity.getY() + entity.getHeight() + epsilon);
                 ball.setVelocity(ball.getVelocity().x, Math.abs(ball.getVelocity().y));
             } else if (hitEdge == 1) { // right edge
-                ball.setPosition(entity.getX() + entity.getWidth(), curr.y);
+                ball.setPosition(entity.getX() + entity.getWidth() + epsilon, curr.y);
                 ball.setVelocity(Math.abs(ball.getVelocity().x), ball.getVelocity().y);
             } else if (hitEdge == 3) { // left edge
-                ball.setPosition(entity.getX() - w, curr.y);
+                ball.setPosition(entity.getX() - w - epsilon, curr.y);
                 ball.setVelocity(-Math.abs(ball.getVelocity().x), ball.getVelocity().y);
             }
 
-            if (isPaddle) {
-                // logic riêng cho paddle: đổi góc theo vị trí chạm
-                float paddleCenter = entity.getX() + entity.getWidth() / 2.0f;
-                float hitPos = (ball.getX() + w / 2.0f) - paddleCenter;
-                float ratio = hitPos / (entity.getWidth() / 2.0f);
-                float newVelX = ratio * Constants.BALL_SPEED;
-                float newVelY = -Math.abs(ball.getVelocity().y);
-                ball.setVelocity(newVelX, newVelY);
+            if (isPaddleOrShield) {
+                // Nếu là paddle → đổi góc theo vị trí chạm
+                if (entity.getHeight() == Constants.PADDLE_HEIGHT) {
+                    float paddleCenter = entity.getX() + entity.getWidth() / 2.0f;
+                    float hitPos = (ball.getX() + w / 2.0f) - paddleCenter;
+                    float ratio = hitPos / (entity.getWidth() / 2.0f);
+                    float newVelX = ratio * Constants.BALL_SPEED;
+                    float newVelY = -Math.abs(ball.getVelocity().y);
+                    ball.setVelocity(newVelX, newVelY);
+                }
+                // Nếu là shield → chỉ nảy thẳng lên
+                else {
+                    ball.setVelocity(ball.getVelocity().x, -Math.abs(ball.getVelocity().y));
+                }
             }
+
+            // Đảm bảo velocity không quá nhỏ → tránh bị "dính"
+            float vx = ball.getVelocity().x;
+            float vy = ball.getVelocity().y;
+
+            if (Math.abs(vx) < 0.5f) {
+                vx = (vx == 0 ? 0.5f : Math.signum(vx) * 0.5f);
+            }
+            if (Math.abs(vy) < 0.5f) {
+                vy = (vy == 0 ? 0.5f : Math.signum(vy) * 0.5f);
+            }
+
+            ball.setVelocity(vx, vy);
 
             return true;
         }
@@ -107,7 +126,6 @@ public class CollisionSystem {
 
 
     public static void handleBallInsideEntity(Ball ball, Entity entity) {
-
         if (!checkCollision(ball, entity)) {
             return;
         }
@@ -123,5 +141,4 @@ public class CollisionSystem {
 
         ball.clampPosition();
     }
-
 }

@@ -58,8 +58,11 @@ public class Brick extends Entity {
         }
     }
 
-    public void hit() {
-        health--;
+    // hit có damage (skill bom, fireball, v.v.)
+    public void hit(int damage) {
+        if (type != Type.BEDROCK) { // Bedrock không thể phá
+            health -= damage;
+        }
     }
 
     public boolean isDestroyed() {

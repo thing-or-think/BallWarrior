@@ -5,7 +5,7 @@ import core.ResourceLoader;
 public class Main {
     public static void main(String[] args) {
          //🔊 phát nhạc nền
-        ResourceLoader.playBackgroundMusic("sounds/bossbattle.wav");
+        //ResourceLoader.playBackgroundMusic("sounds/bossbattle.wav");
 
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("BallWarrior");
