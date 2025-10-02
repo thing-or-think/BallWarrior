@@ -13,15 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Extract last changelog section
+      - name: Extract latest changelog section (top one)
         id: changelog
         run: |
           CONTENT=$(awk '
-            /^## / { pos=NR }        # nhớ lại dòng ## cuối cùng
-            { lines[NR]=$0 }         # lưu toàn bộ dòng
-            END {
-              for (i=pos; i<=NR; i++) print lines[i]
+            BEGIN { capture=0 }
+            /^## / {
+              if (capture) exit       # nếu đã capture xong thì thoát
+              capture=1               # bắt đầu capture từ version đầu tiên
             }
+            capture { print }
           ' CHANGELOG.md)
 
           # Ghi multiline vào biến môi trường
@@ -31,10 +32,8 @@ jobs:
 
       - name: Send to Discord
         run: |
-          # Lấy nội dung từ biến môi trường
           CONTENT="${CONTENT}"
 
-          # Hàm chia chuỗi thành các chunk ≤ 2000 ký tự
           send_chunk() {
             local text="$1"
             curl -H "Content-Type: application/json" \
@@ -48,5 +47,5 @@ jobs:
             CHUNK="${CONTENT:0:$MAX_LENGTH}"
             send_chunk "$CHUNK"
             CONTENT="${CONTENT:$MAX_LENGTH}"
-            sleep 1  # Optional: tránh spam quá nhanh
+            sleep 1
           done
