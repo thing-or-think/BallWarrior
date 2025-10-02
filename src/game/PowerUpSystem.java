@@ -7,6 +7,7 @@ import entity.Brick;
 import entity.Paddle;
 import entity.Shield;
 import ui.HUD;
+import utils.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,11 +77,39 @@ public class PowerUpSystem {
 
     private void activateMultiBall() {
         List<Ball> newBalls = new ArrayList<>();
-        for (Ball b : balls) {
-            Ball copy = new Ball(b.getX(), b.getY());
-            copy.setVelocity(b.getVelocity().x, b.getVelocity().y);
-            newBalls.add(copy);
+        float angle90Deg = (float) Math.toRadians(90);
+
+        for (Ball b : new ArrayList<>(balls)) {
+            Vector2D originalVelocity = b.getVelocity();
+
+            // Bỏ qua nếu bóng đang dính hoặc tốc độ quá chậm
+            if (b.isStuck() || originalVelocity.length() < 1.0f) {
+                continue;
+            }
+
+            // Tạo một bản sao của vector vận tốc gốc để không làm thay đổi nó
+            Vector2D newVelocity1 = new Vector2D(originalVelocity.x, originalVelocity.y);
+            Vector2D newVelocity2 = new Vector2D(originalVelocity.x, originalVelocity.y);
+
+            // Bóng mới thứ nhất: Xoay vector vận tốc sang trái
+            newVelocity1.rotate(-angle90Deg);
+
+            Ball newBall1 = new Ball(b.getX(), b.getY());
+            newBall1.setVelocity(newVelocity1.x, newVelocity1.y);
+            newBall1.setStuck(false);
+            newBalls.add(newBall1);
+
+            // Bóng mới thứ hai: Xoay vector vận tốc sang phải
+            newVelocity2.rotate(angle90Deg);
+
+            Ball newBall2 = new Ball(b.getX(), b.getY());
+            newBall2.setVelocity(newVelocity2.x, newVelocity2.y);
+            newBall2.setStuck(false);
+            newBalls.add(newBall2);
+
+            balls.remove(b);
         }
+
         balls.addAll(newBalls);
         System.out.println("Multi Ball activated! Total balls: " + balls.size());
     }

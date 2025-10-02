@@ -89,4 +89,8 @@ public class Ball extends Entity{
     public void setFireBall(boolean val) {
         isFireBall = val;
     }
+
+    public void setStuck(boolean stuck) {
+        this.stuck = stuck;
+    }
 }

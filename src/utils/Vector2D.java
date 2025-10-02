@@ -88,11 +88,6 @@ public class Vector2D {
         return new Vector2D(this.x * k, this.y * k);
     }
 
-    public Vector2D normalized() {
-        float len = (float) Math.sqrt(this.x * this.x + this.y * this.y);
-        if (len == 0) return new Vector2D(0, 0);
-        return new Vector2D(this.x / len, this.y / len);
-    }
 
     public float distancePointToLine(Vector2D point, Vector2D lineStart, Vector2D lineEnd) {
         Vector2D AB = lineEnd.subtracted(lineStart);
@@ -104,5 +99,22 @@ public class Vector2D {
         }
 
         return Math.abs(AB.cross(AP)) / abLength;
+    }
+    //CHUYỂN THÀNH VECTOR ĐƠN VỊ
+    public void normalize() {
+        float len = this.length();
+        if (len != 0) {
+            this.x /= len;
+            this.y /= len;
+        }
+    }
+
+    //PHƯƠNG THỨC MỚI: XOAY VECTOR
+    public void rotate(float angle) {
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
+        float oldX = this.x;
+        this.x = oldX * cos - this.y * sin;
+        this.y = oldX * sin + this.y * cos;
     }
 }
