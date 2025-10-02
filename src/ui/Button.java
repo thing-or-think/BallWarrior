@@ -1,4 +1,6 @@
-package core;
+package ui;
+
+import utils.Constants;
 
 import java.awt.*;
 

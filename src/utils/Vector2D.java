@@ -1,7 +1,5 @@
 package utils;
 
-import core.Constants;
-
 public class Vector2D {
     // 1. Fields
     public float x;

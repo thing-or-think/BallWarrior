@@ -26,7 +26,9 @@ BallWarrior/
 │   ├── Main.java                  # Điểm khởi chạy game (tạo JFrame, gắn GameEngine)
 │   │
 │   ├── core/                      # Lõi engine (tách biệt logic Arkanoid)
-│   │   ├── GameEngine.java        # Vòng lặp game (update, render, FPS)
+│   │   ├── GameEngine.java        # Khởi tạo game, gắn JFrame, chạy GameLoop
+│   │   ├── GameLoop.java          # Xử lý vòng lặp update + render
+│   │   ├── SceneManager.java      # Quản lý chuyển đổi scene (Menu, Game, Pause…)
 │   │   ├── InputHandler.java      # Quản lý phím bấm, lưu trạng thái key
 │   │   ├── ResourceLoader.java    # Load ảnh, âm thanh, font từ thư mục assets
 │   │   └── SoundManager.java      # Quản lý âm thanh (phát nhạc, hiệu ứng sfx)
@@ -50,11 +52,14 @@ BallWarrior/
 │   │   ├── Ball.java              # Quả bóng (di chuyển, nảy, va chạm)
 │   │   ├── Paddle.java            # Thanh trượt điều khiển bằng phím
 │   │   ├── Brick.java             # Gạch (có màu, độ bền, phá hủy)
+│   │   ├── Skins.java             # Định nghĩa skin (tên, độ hiếm, giá, màu/ảnh)
 │   │   └── PowerUp.java           # Item tăng sức mạnh (rơi ra từ Brick)
 │   │
 │   ├── ui/                        # Giao diện / scene phụ
+│   │   ├── Button.java            # [UI] Class Button, quản lý nút (Menu, Pause…)
 │   │   ├── MenuScene.java         # Menu chính (Play, Exit…)
 │   │   ├── HUD.java               # Heads-up display (điểm, mạng còn lại)
+│   │   ├── ShopScene.java         # Màn hình shop (mua/chọn skin)
 │   │   ├── PauseScene.java        # Màn hình tạm dừng game
 │   │   └── GameOverScene.java     # Màn hình kết thúc (thua / thắng)
 │   │

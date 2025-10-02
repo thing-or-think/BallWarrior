@@ -1,6 +1,5 @@
 package entity;
 
-import core.Constants;
 import core.ResourceLoader;
 
 import java.awt.Color;

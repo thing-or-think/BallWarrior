@@ -1,6 +1,6 @@
 package game;
 
-import core.Constants;
+import utils.Constants;
 import core.InputHandler;
 import entity.Ball;
 import entity.Brick;

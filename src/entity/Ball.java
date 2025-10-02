@@ -1,6 +1,6 @@
 package entity;
 
-import core.Constants;
+import utils.Constants;
 import core.ResourceLoader;
 import utils.Vector2D;
 

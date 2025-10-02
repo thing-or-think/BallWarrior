@@ -1,12 +1,10 @@
 package ui;
 
-import core.Button;
-import core.Constants;
+import utils.Constants;
 import core.InputHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 

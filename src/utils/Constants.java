@@ -1,4 +1,4 @@
-package core;
+package utils;
 
 public class Constants {
     public static final int WIDTH = 800;
