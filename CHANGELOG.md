@@ -5,6 +5,28 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 
 ---
 
+## [0.2.0] - 2025-10-02
+
+### Added
+- `Skins.java`: hệ thống skin cho entity (tên, độ hiếm, giá, màu hoặc ảnh, trạng thái mua)
+- Enum `Rarity`: phân loại độ hiếm skin
+- `ui/Button.java`: class nút bấm cho menu (hover đổi màu, click gọi sự kiện)
+- `ui/MenuScene.java`: màn hình menu chính (background gif + nút PLAY, SHOP, INVENTORY, QUIT)
+
+### Changed
+- Thêm `Skins.java` vào thư mục `entity/`
+- Thêm `Button.java` và `MenuScene.java` vào thư mục `ui/`
+
+### Fixed
+- Không có
+
+## [Unreleased]
+- `SkinManager` quản lý danh sách skin
+- Giao diện shop cho phép mua/chọn skin
+- Lưu tiến trình skin đã mở khóa vào file JSON
+
+---
+
 ## [0.1.1] - 2025-10-01
 
 ### Fixed
@@ -60,13 +82,6 @@ Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic
 - Cải thiện và sửa lỗi hệ thống va chạm giữa Ball và AABB
 - Đảm bảo các class va chạm hoạt động chính xác, độc lập và dễ mở rộng cho các entity khác
 - Sửa một số vấn đề nhỏ về precision trong các phương thức tính toán vector
-
----
-
-## [Unreleased]
-- Thay đổi đang phát triển (chưa release)
-- Có thể bao gồm: sửa lỗi nhỏ, thêm power-up mới, tối ưu hiệu năng
-- By: thing-or-think, Lee-Hank
 
 ---
 

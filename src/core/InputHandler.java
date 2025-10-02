@@ -1,8 +1,12 @@
 package core;
 
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
-public class InputHandler extends KeyAdapter implements MouseMotionListener, MouseListener {
+public class InputHandler extends KeyAdapter {
 
     private boolean leftPressed = false;
     private boolean rightPressed = false;
@@ -10,8 +14,8 @@ public class InputHandler extends KeyAdapter implements MouseMotionListener, Mou
     private int mouseX = 0;
     private int mouseY = 0;
     private boolean mousePressed = false;
-
-    // ===== KEY =====
+    private boolean mouseClickedOnce = false;
+    private int scrollAmount = 0;
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -43,48 +47,60 @@ public class InputHandler extends KeyAdapter implements MouseMotionListener, Mou
         return rightPressed;
     }
 
-    // ===== MOUSE =====
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        mouseX = e.getX();
-        mouseY = e.getY();
+    public MouseAdapter createMouseAdapter() {
+        return new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mousePressed = true;
+                mouseClickedOnce = true;  // đánh dấu 1 lần click
+                mouseX = e.getX();
+                mouseY = e.getY();
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                mouseClickedOnce = true; // chỉ đánh dấu khi thả
+                mousePressed = false;
+                mouseX = e.getX();
+                mouseY = e.getY();
+            }
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                mouseX = e.getX();
+                mouseY = e.getY();
+            }
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                mouseX = e.getX();
+                mouseY = e.getY();
+            }
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                scrollAmount += e.getWheelRotation();
+            }
+        };
+    }
+    public int consumeScroll() {
+        int temp = scrollAmount;
+        scrollAmount = 0;
+        return temp;
     }
 
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        mouseX = e.getX();
-        mouseY = e.getY();
-    }
+    public boolean isMousePressed() { return mousePressed; }
+    public int getMouseX() { return mouseX; }
+    public int getMouseY() { return mouseY; }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        mousePressed = true;
-    }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
+    public void resetMouse() {
         mousePressed = false;
+        mouseClickedOnce = false;
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) { }
-
-    @Override
-    public void mouseEntered(MouseEvent e) { }
-
-    @Override
-    public void mouseExited(MouseEvent e) { }
-
-    // ===== GETTERS =====
-    public int getMouseX() {
-        return mouseX;
+    public boolean consumeClick() {
+        if (mouseClickedOnce) {
+            mouseClickedOnce = false;
+            return true;
+        }
+        return false;
     }
 
-    public int getMouseY() {
-        return mouseY;
-    }
-
-    public boolean isMousePressed() {
-        return mousePressed;
-    }
 }

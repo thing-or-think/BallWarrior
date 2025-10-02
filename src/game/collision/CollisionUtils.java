@@ -1,6 +1,6 @@
 package game.collision;
 
-import core.Constants;
+import utils.Constants;
 import entity.Ball;
 import entity.Entity;
 import utils.Vector2D;

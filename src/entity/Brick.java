@@ -1,5 +1,7 @@
 package entity;
 
+import core.ResourceLoader;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import utils.Vector2D;
@@ -14,6 +16,7 @@ public class Brick extends Entity {
         this.health = health;
         this.color = color;
         this.velocity = new Vector2D(0, 0); // gạch đứng yên
+        this.img = ResourceLoader.loadImg("BallWarrior-master/assets/images/red.png");
     }
 
     @Override
@@ -23,9 +26,12 @@ public class Brick extends Entity {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(color);
-        g.fillRect((int) position.x, (int) position.y, width, height);
-
+        if (img!=null) {
+            g.drawImage(img,(int)position.x,(int)position.y,width,height,null);
+        }else {
+            g.setColor(color);
+            g.fillRect((int) position.x, (int) position.y, width, height);
+        }
         // Vẽ viền
         g.setColor(Color.BLACK);
         g.drawRect((int) position.x, (int) position.y, width, height);

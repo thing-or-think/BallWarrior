@@ -1,7 +1,7 @@
 package ui;
 
 import game.ScoreSystem;
-import core.Constants;
+import utils.Constants;
 
 import java.awt.*;
 

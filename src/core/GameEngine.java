@@ -1,68 +1,61 @@
 package core;
 
 import game.GameScene;
+import ui.MenuScene;
+import ui.ShopScene;
+import utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GameEngine extends JPanel implements Runnable{
-    private Thread gameThread;
-    private boolean running = false;
+public class GameEngine {
+    private final JFrame frame;
+    private final InputHandler input;
+    private final SceneManager sceneManager;
+    private final GameLoop gameLoop;
 
-    private InputHandler input;
-    private GameScene gameScene;
+    public GameEngine(JFrame frame) {
+        this.frame = frame;
+        this.input = new InputHandler();
 
-    public GameEngine() {
-        setPreferredSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
-        setFocusable(true);
-        requestFocus();
+        // Khởi tạo scene manager
+        this.sceneManager = new SceneManager(frame, input);
 
-        input = new InputHandler();
-        addKeyListener(input);
-        addMouseMotionListener(input);
-        addMouseListener(input);
+        // Khởi tạo game scene
+        GameScene gameScene = new GameScene(input);
+        sceneManager.setGameScene(gameScene);
 
-        gameScene = new GameScene(input);
+        // Khởi tạo menu scene
+        MenuScene menuScene = new MenuScene(
+                input,
+                this::startGame,
+                this::openShop,
+                () -> System.out.println("Inventory!"),
+                () -> System.exit(0)
+        );
+        menuScene.setPreferredSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
+        sceneManager.setMenuScene(menuScene);
+
+        // Khởi tạo game loop
+        this.gameLoop = new GameLoop(gameScene, sceneManager);
     }
 
-    public void start() {
-        if (running) return;
-        running = true;
-        gameThread = new Thread(this);
-        gameThread.start();
+    /** Bắt đầu game */
+    private void startGame() {
+        input.resetMouse();
+        sceneManager.showGameScene();
+        gameLoop.start();
     }
 
-    @Override
-    public void run() {
-        final int FPS = 60;
-        final double TIME_PER_TICK = 1e9 / FPS;
-        long lastTime = System.nanoTime();
-        double delta = 0;
-
-        while (running) {
-            long now = System.nanoTime();
-            delta += (now - lastTime) / TIME_PER_TICK;
-            lastTime = now;
-
-            while (delta >= 1) {
-                update();
-                repaint();
-                delta--;
-            }
-        }
+    /** Mở shop */
+    private void openShop() {
+        input.resetMouse();
+        ShopScene shopScene = new ShopScene(input, sceneManager::showMenuScene);
+        sceneManager.showShopScene(shopScene);
     }
 
-    private void update() {
-        gameScene.update();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getWidth(), getHeight());
-
-        gameScene.render(g);
+    /** Cho Main gọi để mở menu lần đầu */
+    public JPanel getMenuScene() {
+        return sceneManager.getMenuScene();
     }
 }
