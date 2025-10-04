@@ -69,7 +69,7 @@ public class CollisionSystem {
         // Xử lý hiệu ứng tùy loại entity
         Entity hit = result.getEntity();
         if (hit instanceof Brick) {
-            ((Brick) hit).hit();
+            ((Brick) hit).hit(1);
         } else if (hit instanceof Paddle) {
             CircleVsAABB.handleBallInsideEntity(ball, hit);
             // Có thể thêm logic điều chỉnh góc theo vị trí chạm
@@ -91,7 +91,7 @@ public class CollisionSystem {
 
             // Narrow-phase check
             CollisionResult result = null;
-            if (e instanceof Paddle || e instanceof Brick) {
+            if (e instanceof Paddle || e instanceof Brick || e instanceof Shield) {
                 result = CircleVsAABB.intersect(ball, e);
             }
 

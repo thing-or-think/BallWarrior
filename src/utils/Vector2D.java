@@ -125,4 +125,13 @@ public class Vector2D {
     public Vector2D normalRight() {
         return new Vector2D(this.y, -this.x);
     }
+
+    //xoay vector
+    public void rotate(float angle) {
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
+        float oldX = this.x;
+        this.x = oldX * cos - this.y * sin;
+        this.y = oldX * sin + this.y * cos;
+    }
 }

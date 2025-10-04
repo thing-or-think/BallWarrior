@@ -38,7 +38,9 @@ public class GameLoop implements Runnable {
             lastTime = now;
 
             while (delta >= 1) {
-                gameScene.update();
+                // Calculate deltaTime in seconds before passing it
+                float deltaTime = (float) (delta * TIME_PER_TICK / 1e9);
+                gameScene.update(deltaTime);
                 sceneManager.repaintGame();
                 delta--;
             }
