@@ -3,6 +3,7 @@ package core;
 import game.GameScene;
 import ui.MenuScene;
 import ui.ShopScene;
+import ui.GameOverScene;
 import utils.Constants;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ public class SceneManager {
     private GameScene gameScene;
     private MenuScene menuScene;
     private JPanel gamePanel;
+    private GameOverScene gameOverScene;
 
     public SceneManager(JFrame frame, InputHandler input) {
         this.frame = frame;
@@ -42,6 +44,10 @@ public class SceneManager {
         this.menuScene = menuScene;
     }
 
+    public void setGameOverScene(GameOverScene gameOverScene) {
+        this.gameOverScene = gameOverScene;
+    }
+
     public MenuScene getMenuScene() {
         return menuScene;
     }
@@ -52,6 +58,7 @@ public class SceneManager {
         frame.repaint();
     }
 
+
     public void showGameScene() {
         frame.setContentPane(gamePanel);
         frame.revalidate();
@@ -61,6 +68,11 @@ public class SceneManager {
 
     public void showShopScene(ShopScene shopScene) {
         frame.setContentPane(shopScene);
+        frame.revalidate();
+        frame.repaint();
+    }
+    public void showGameOverScene() {
+        frame.setContentPane(gameOverScene);
         frame.revalidate();
         frame.repaint();
     }

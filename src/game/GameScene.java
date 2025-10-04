@@ -21,8 +21,10 @@ public class GameScene {
     private ScoreSystem scoreSystem;
     private LevelManager levelManager;
     private CollisionSystem collisionSystem;
+    private Runnable onGameOverCallback;
 
-    public GameScene(InputHandler input) {
+    public GameScene(InputHandler input, Runnable onGameOverCallback) { // Cập nhật constructor
+        this.onGameOverCallback = onGameOverCallback;
         init(input);
     }
 
@@ -87,6 +89,11 @@ public class GameScene {
         if (ball.getY() > Constants.HEIGHT) {
             scoreSystem.loseLife();
             resetBall();
+            if (scoreSystem.isGameOver()) {
+                if (onGameOverCallback != null) {
+                    onGameOverCallback.run(); // Gọi callback khi game over
+                }
+            }
         }
     }
 
