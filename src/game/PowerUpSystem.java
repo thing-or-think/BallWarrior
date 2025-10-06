@@ -155,29 +155,6 @@ public class PowerUpSystem {
         return 1; // xa
     }
 
-//    private void handleFireBallCollision() {
-//        Iterator<Brick> brickIterator = bricks.iterator();
-//        while (brickIterator.hasNext()) {
-//            Brick brick = brickIterator.next();
-//
-//            if (!brick.isDestroyed()) {
-//                for (Ball ball : new ArrayList<>(balls)) {
-//                    if (ball.isFireBall()) {
-//                        if (CollisionSystem.checkCollision(ball, brick)) {
-//                            brick.hit(brick.getMaxHealth());
-//                        }
-//                    }
-//                }
-//            }
-//
-//            if (brick.isDestroyed()) {
-//                score.addScore((int) (brick.getScoreValue()));
-//                score.increaseCombo(0.5f);
-//                brickIterator.remove();
-//            }
-//        }
-//    }
-
     private void activateFireBall() {
         if (!fireBallActive) {
             for (Ball b : balls) {

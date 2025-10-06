@@ -6,6 +6,7 @@ import entity.Ball;
 import entity.Brick;
 import entity.Paddle;
 import entity.Shield;
+import entity.Entity;
 import ui.HUD;
 import game.collision.CollisionSystem;
 import game.collision.CollisionResult;
@@ -102,7 +103,7 @@ public class GameScene {
         powerUpEffects.update(deltaTime);
 
         // Xử lý va chạm đặc biệt của FireBall trước va chạm thông thường
-        handleFireBallCollision();
+       // handleFireBallCollision();
 
         Iterator<Ball> ballIterator = balls.iterator();
         while (ballIterator.hasNext()) {
@@ -127,24 +128,29 @@ public class GameScene {
             // Xử lý va chạm bóng với paddle. Tắt FireBall nếu có va chạm.
             handlePaddleCollision(ball);
 
-            // Tìm và xử lý va chạm gần nhất (thông thường)
+            // Tìm và xử lý va chạm gần nhất(thông thường)
             CollisionResult result = collisionSystem.findNearestCollision(ball);
-            if (collisionSystem.resolveCollision(ball, result)) {
-                if (result.getEntity() instanceof Brick brick) {
-                    if (brick.isDestroyed()) {
-                        scoreSystem.addScore(brick.getScoreValue());
-                        scoreSystem.increaseCombo(0.5f);
-                        collisionSystem.unregister(brick);
+            if (result != null) {
+                // Đây là điểm mấu chốt: Cấu trúc if-else if phải độc lập.
+                Entity entity = result.getEntity();
+
+                if (entity instanceof Brick brick) {
+                    if (collisionSystem.resolveCollision(ball, result)) {
+                        if (brick.isDestroyed()) {
+                            scoreSystem.addScore(brick.getScoreValue());
+                            scoreSystem.increaseCombo(0.5f);
+                            collisionSystem.unregister(brick);
+                        }
                     }
-                    else if (result.getEntity() instanceof Shield) {
-                        // TẮT hiệu ứng FireBall và RESET combo khi bóng chạm shield
+                } else if (entity instanceof Shield) {
+                    if (collisionSystem.resolveCollision(ball, result)) {
                         if (ball.isFireBall()) {
                             powerUpSystem.deactivateFireBall();
                         }
                         scoreSystem.resetCombo();
                     }
-                    else if (result.getEntity() instanceof Paddle) {
-                        // THÊM: TẮT hiệu ứng FireBall và RESET combo khi bóng chạm paddle
+                } else if (entity instanceof Paddle) {
+                    if (collisionSystem.resolveCollision(ball, result)) {
                         if (ball.isFireBall()) {
                             powerUpSystem.deactivateFireBall();
                         }
@@ -179,25 +185,25 @@ public class GameScene {
      * Xử lý va chạm của FireBall với các viên gạch.
      * Logic này được tách riêng biệt.
      */
-    private void handleFireBallCollision() {
-        Iterator<Brick> brickIterator = bricks.iterator();
-        while (brickIterator.hasNext()) {
-            Brick brick = brickIterator.next();
-
-            if (!brick.isDestroyed()) {
-                for (Ball ball : balls) {
-                    if (ball.isFireBall() && CircleVsAABB.intersect(ball, brick) != null) {
-                        brick.hit(brick.getMaxHealth()); // Phá hủy gạch
-                        scoreSystem.addScore(brick.getScoreValue());
-                        scoreSystem.increaseCombo(0.5f);
-                        brickIterator.remove(); // Xóa gạch an toàn
-                        collisionSystem.unregister(brick);
-                        break;
-                    }
-                }
-            }
-        }
-    }
+//    private void handleFireBallCollision() {
+//        Iterator<Brick> brickIterator = bricks.iterator();
+//        while (brickIterator.hasNext()) {
+//            Brick brick = brickIterator.next();
+//
+//            if (!brick.isDestroyed()) {
+//                for (Ball ball : balls) {
+//                    if (ball.isFireBall() && CircleVsAABB.intersect(ball, brick) != null) {
+//                        brick.hit(brick.getMaxHealth()); // Phá hủy gạch
+//                        scoreSystem.addScore(brick.getScoreValue());
+//                        scoreSystem.increaseCombo(0.5f);
+//                        brickIterator.remove(); // Xóa gạch an toàn
+//                        collisionSystem.unregister(brick);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Vẽ toàn bộ scene:
