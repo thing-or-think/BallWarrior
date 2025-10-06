@@ -1,24 +1,34 @@
-package ui;
+package ui.scene;
 
-import utils.Constants;
 import core.InputHandler;
+import ui.base.Button;
+import ui.base.Scene;
+import ui.button.TextButton;
+import utils.Constants;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShopScene extends JPanel {
+public class ShopScene extends Scene {
     private final List<Button> buttons = new ArrayList<>();
-    private final InputHandler input;
     private final Runnable onBack;
-
     private boolean mouseHandled = false;
 
+    // ==== CONSTRUCTOR ========================================================
+
     public ShopScene(InputHandler input, Runnable onBack) {
-        this.input = input;
+        super("ShopScene", input);
         this.onBack = onBack;
 
+        initUI();
+
+    }
+
+    // ==== IMPLEMENT ABSTRACT METHODS =========================================
+
+    @Override
+    protected void initUI() {
         setBackground(Color.DARK_GRAY);
 
         Font font = new Font("Serif", Font.PLAIN, 28);
@@ -30,32 +40,30 @@ public class ShopScene extends JPanel {
         int spacing = 50;
 
         for (int i = 0; i < items.length; i++) {
-            buttons.add(new Button(items[i], Constants.WIDTH / 2, startY + i * spacing, fm));
+            buttons.add(new TextButton(items[i], Constants.WIDTH / 2, startY + i * spacing, fm));
         }
-        // Nút back
-        buttons.add(new Button("BACK", Constants.WIDTH / 2, startY + items.length * spacing + 50, fm));
 
-        addMouseListener(input.createMouseAdapter());
-        addMouseMotionListener(input.createMouseAdapter());
-
-        new javax.swing.Timer(16, e -> repaint()).start();
+        // Nút BACK
+        buttons.add(new TextButton("BACK", Constants.WIDTH / 2, startY + items.length * spacing + 50, fm));
     }
 
-    private void update() {
+    @Override
+    protected void update() {
         int mx = input.getMouseX();
         int my = input.getMouseY();
 
         for (Button button : buttons) {
-            button.hovered = button.contains(mx, my);
+            button.setHovered(button.contains(mx, my));
 
-            if (button.hovered && input.isMousePressed() && !mouseHandled) {
+            if (button.isHovered() && input.isMousePressed() && !mouseHandled) {
                 mouseHandled = true;
-                System.out.println("Clicked " + button.text);
-                if (button.text.equals("BACK")) {
+                System.out.println("Clicked: " + button.getText());
+
+                if (button.getText().equals("BACK")) {
                     input.resetMouse();
                     onBack.run();
                 } else {
-                    System.out.println("Mua: " + button.text);
+                    System.out.println("Mua: " + button.getText());
                 }
             }
         }
@@ -66,15 +74,10 @@ public class ShopScene extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
+    protected void render(Graphics2D g2) {
         g2.setFont(new Font("Serif", Font.PLAIN, 28));
         g2.setColor(Color.WHITE);
-
         g2.drawString("SHOP", Constants.WIDTH / 2 - 40, 150);
-
-        update();
 
         for (Button button : buttons) {
             button.draw(g2);

@@ -3,44 +3,58 @@ package core;
 import game.GameScene;
 
 public class GameLoop implements Runnable {
+
     private final GameScene gameScene;
-    private final SceneManager sceneManager;
-
     private Thread loopThread;
-    private boolean running = false;
+    private volatile boolean running = false;
+    private final int TARGET_FPS = 60;
 
-    public GameLoop(GameScene gameScene, SceneManager sceneManager) {
+    public GameLoop(GameScene gameScene) {
         this.gameScene = gameScene;
-        this.sceneManager = sceneManager;
     }
 
     public void start() {
         if (running) return;
         running = true;
-        loopThread = new Thread(this);
+        loopThread = new Thread(this, "GameLoop");
         loopThread.start();
     }
 
     public void stop() {
         running = false;
+        try {
+            if (loopThread != null) loopThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void run() {
-        final int FPS = 60;
-        final double TIME_PER_TICK = 1e9 / FPS;
+        final double frameTime = 1_000_000_000.0 / TARGET_FPS;
         long lastTime = System.nanoTime();
         double delta = 0;
 
         while (running) {
             long now = System.nanoTime();
-            delta += (now - lastTime) / TIME_PER_TICK;
+            delta += (now - lastTime) / frameTime;
             lastTime = now;
 
             while (delta >= 1) {
                 gameScene.update();
-                sceneManager.repaintGame();
                 delta--;
+            }
+
+            // Gọi repaint từ EDT
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                java.awt.Component c = gameScene.getClass().getEnclosingClass() != null
+                        ? null : null; // không cần, render đã qua GamePanel
+            });
+
+            try {
+                Thread.sleep(1000 / TARGET_FPS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         }
     }

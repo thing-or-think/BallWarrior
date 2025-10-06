@@ -4,6 +4,30 @@ Tất cả các thay đổi đáng chú ý trong dự án này được ghi lạ
 Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic Versioning.
 
 ---
+
+## [0.3.0] - 2025-10-06
+
+### Added
+- Thêm thư mục `ui/base/` chứa lớp trừu tượng:
+    - `Button.java`: lớp cơ sở cho các loại nút UI.
+    - `Scene.java`: lớp cơ sở cho các màn hình (menu, shop...).
+- Thêm thư mục `ui/button/` với các lớp kế thừa:
+    - `TextButton.java`: nút căn giữa (menu chính).
+- Thêm thư mục `ui/scene/` chứa các màn hình giao diện:
+    - `MenuScene.java`, `ShopScene.java`, `PauseScene.java`, `GameOverScene.java`.
+
+### Changed
+- Tái cấu trúc toàn bộ thư mục `ui/` theo hướng đối tượng, tách riêng phần `Button` và `Scene`.
+- `Button` cũ được chia thành nhiều class con, sử dụng kế thừa và đa hình thay cho `if-else`.
+- Cải thiện khả năng mở rộng UI (dễ thêm nút hoặc scene mới mà không sửa code cũ).
+
+### Fixed
+- Sửa lỗi căn giữa text khi hover ở menu.
+- Sửa lỗi vùng click sai lệch ở nút chữ nhật trong shop.
+
+## [Unreleased]
+
+---
 ## [0.2.0] - 2025-10-02
 
 ### Added

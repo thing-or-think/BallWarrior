@@ -55,13 +55,24 @@ BallWarrior/
 │   │   ├── Skins.java             # Định nghĩa skin (tên, độ hiếm, giá, màu/ảnh)
 │   │   └── PowerUp.java           # Item tăng sức mạnh (rơi ra từ Brick)
 │   │
-│   ├── ui/                        # Giao diện / scene phụ
-│   │   ├── Button.java            # [UI] Class Button, quản lý nút (Menu, Pause…)
-│   │   ├── MenuScene.java         # Menu chính (Play, Exit…)
-│   │   ├── HUD.java               # Heads-up display (điểm, mạng còn lại)
-│   │   ├── ShopScene.java         # Màn hình shop (mua/chọn skin)
-│   │   ├── PauseScene.java        # Màn hình tạm dừng game
-│   │   └── GameOverScene.java     # Màn hình kết thúc (thua / thắng)
+│   ├── ui/                            # Toàn bộ giao diện người dùng
+│   │   ├── base/                      # Các lớp cơ sở / trừu tượng
+│   │   │   ├── Scene.java             # Lớp cha cho mọi màn hình (Menu, Shop…)
+│   │   │   └── Button.java            # Lớp cha trừu tượng cho các loại nút
+│   │   │
+│   │   ├── button/                    # Các loại nút kế thừa Button
+│   │   │   ├── TextButton.java        # Nút văn bản căn giữa (menu chính)
+│   │   │   ├── MenuButton.java        # Nút căn giữa (menu chính)
+│   │   │   ├── RectButton.java        # Nút chữ nhật (shop, pause…)
+│   │   │   └── IconButton.java        # (tuỳ chọn) nút có biểu tượng hoặc ảnh
+│   │   │
+│   │   ├── scene/                     # Các màn hình giao diện riêng biệt
+│   │   │   ├── MenuScene.java         # Menu chính (Play, Exit…)
+│   │   │   ├── ShopScene.java         # Màn hình shop (mua/chọn skin)
+│   │   │   ├── PauseScene.java        # Màn hình tạm dừng game
+│   │   │   └── GameOverScene.java     # Màn hình kết thúc (thắng / thua)
+│   │   │
+│   │   └── HUD.java                   # Heads-up display trong gameplay (điểm, mạng…)
 │   │
 │   └── utils/                     # Tiện ích chung
 │       ├── MathUtils.java         # Hàm toán học 2D, giao điểm đoạn thẳng…
