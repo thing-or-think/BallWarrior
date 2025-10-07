@@ -1,42 +1,73 @@
 package core;
 
-import ui.base.Scene;
+import game.GameScene;
+import ui.MenuScene;
+import ui.ShopScene;
+import utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * SceneManager quản lý việc chuyển đổi giữa các Scene giao diện.
- */
-public class SceneManager extends JPanel {
+public class SceneManager {
+    private final JFrame frame;
+    private final InputHandler input;
 
-    private Scene currentScene;
+    private GameScene gameScene;
+    private MenuScene menuScene;
+    private JPanel gamePanel;
 
-    public SceneManager(Scene initialScene) {
-        setLayout(new BorderLayout());
-        if (initialScene != null) {
-            setScene(initialScene);
-        }
+    public SceneManager(JFrame frame, InputHandler input) {
+        this.frame = frame;
+        this.input = input;
     }
 
-    /** Chuyển sang Scene mới */
-    public void setScene(Scene newScene) {
-        if (newScene == null) {
-            System.err.println("[SceneManager] ⚠️ newScene == null");
-            return;
-        }
+    public void setGameScene(GameScene gameScene) {
+        this.gameScene = gameScene;
 
-        SwingUtilities.invokeLater(() -> {
-            removeAll();
-            currentScene = newScene;
-            add(currentScene, BorderLayout.CENTER);
-            revalidate();
-            repaint();
-            currentScene.requestFocusInWindow();
-        });
+        this.gamePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.PINK);
+                g.fillRect(0, 0, getWidth(), getHeight());
+                gameScene.render(g);
+            }
+        };
+        gamePanel.setPreferredSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
+        gamePanel.setFocusable(true);
+        gamePanel.addKeyListener(input);
     }
 
-    public Scene getCurrentScene() {
-        return currentScene;
+    public void setMenuScene(MenuScene menuScene) {
+        this.menuScene = menuScene;
+    }
+
+    public MenuScene getMenuScene() {
+        return menuScene;
+    }
+
+    public void showMenuScene() {
+        frame.setContentPane(menuScene);
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    public void showGameScene() {
+        frame.setContentPane(gamePanel);
+        frame.revalidate();
+        frame.repaint();
+        gamePanel.requestFocusInWindow();
+    }
+
+    public void showShopScene(ShopScene shopScene) {
+        frame.setContentPane(shopScene);
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    public void repaintGame() {
+        if (gamePanel != null) {
+            gamePanel.repaint();
+        }
     }
 }

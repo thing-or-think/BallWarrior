@@ -15,8 +15,6 @@ public class ShopScene extends Scene {
     private final Runnable onBack;
     private boolean mouseHandled = false;
 
-    // ==== CONSTRUCTOR ========================================================
-
     public ShopScene(InputHandler input, Runnable onBack) {
         super("ShopScene", input);
         this.onBack = onBack;
@@ -24,8 +22,6 @@ public class ShopScene extends Scene {
         initUI();
 
     }
-
-    // ==== IMPLEMENT ABSTRACT METHODS =========================================
 
     @Override
     protected void initUI() {

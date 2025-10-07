@@ -35,13 +35,11 @@ public class MenuScene extends JPanel {
         startRepaintTimer();
     }
 
-    /** Khởi tạo UI cơ bản */
     private void initUI() {
         setBackground(Color.BLACK);
         this.backgroundGif = new ImageIcon("BallWarrior-master/assets/images/background2.gif");
     }
 
-    /** Tạo các button */
     private void initButtons() {
         Font font = new Font("Serif", Font.PLAIN, 32);
         FontMetrics fm = getFontMetrics(font);
@@ -55,18 +53,15 @@ public class MenuScene extends JPanel {
         }
     }
 
-    /** Gắn mouse input */
     private void initMouse() {
         addMouseListener(input.createMouseAdapter());
         addMouseMotionListener(input.createMouseAdapter());
     }
 
-    /** Khởi động timer repaint */
     private void startRepaintTimer() {
         new javax.swing.Timer(16, e -> repaint()).start();
     }
 
-    /** Cập nhật trạng thái menu */
     private void update() {
         int mx = input.getMouseX();
         int my = input.getMouseY();
@@ -79,7 +74,6 @@ public class MenuScene extends JPanel {
         }
     }
 
-    /** Xử lý sự kiện click button */
     private void handleButtonClick(String text) {
         System.out.println("Clicked " + text);
         switch (text) {
@@ -100,14 +94,12 @@ public class MenuScene extends JPanel {
         }
     }
 
-    /** Vẽ background */
     private void drawBackground(Graphics2D g2) {
         if (backgroundGif != null) {
             g2.drawImage(backgroundGif.getImage(), 0, 0, Constants.WIDTH, Constants.HEIGHT, this);
         }
     }
 
-    /** Vẽ button */
     private void drawButtons(Graphics2D g2) {
         for (Button button : buttons) {
             button.draw(g2);

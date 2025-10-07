@@ -13,8 +13,6 @@ public abstract class Scene extends JPanel {
     protected final String name;
     private Timer repaintTimer;
 
-    // ==== CONSTRUCTOR ========================================================
-
     public Scene(String name, InputHandler input) {
         this.name = name;
         this.input = input;
@@ -22,12 +20,8 @@ public abstract class Scene extends JPanel {
         setDoubleBuffered(true);
         setFocusable(true);
         setBackground(Color.BLACK);
-
         initInput();
-        startRepaintLoop();
     }
-
-    // ==== ABSTRACT METHODS ===================================================
 
     protected abstract void initUI();
 
@@ -35,7 +29,6 @@ public abstract class Scene extends JPanel {
 
     protected abstract void render(Graphics2D g2);
 
-    // ==== COMMON METHODS =====================================================
 
     protected void initInput() {
         addMouseListener(input.createMouseAdapter());
@@ -61,7 +54,6 @@ public abstract class Scene extends JPanel {
         }
     }
 
-    // ==== PAINT =============================================================
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -73,8 +65,6 @@ public abstract class Scene extends JPanel {
         drawBackground(g2);  // Vẽ nền
         render(g2);          // Vẽ nội dung cụ thể của scene con
     }
-
-    // ==== UTIL ===============================================================
 
     public String getName() {
         return name;
