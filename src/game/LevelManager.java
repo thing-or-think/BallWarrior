@@ -1,62 +1,34 @@
 package game;
 
-import entity.Brick;
+import com.google.gson.Gson;
 
-import java.awt.*;
-import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.IOException;
 
 /**
- * LevelManager chịu trách nhiệm đọc file level (dạng text)
- * và sinh ra danh sách các viên gạch (Brick) để đưa vào game.
+ * LevelManager
+ * -------------------------------------------------------------------
+ * Quản lý việc load 1 level từ file JSON.
+ * (Phiên bản đơn giản)
+ * -------------------------------------------------------------------
  */
 public class LevelManager {
-
-    private static final Logger LOGGER = Logger.getLogger(LevelManager.class.getName());
-
-    private int brickWidth = 60;
-    private int brickHeight = 20;
-    private int startX = 50;
-    private int startY = 50;
-    private int gap = 5;
+    private LevelData currentLevel;
+    private final Gson gson = new Gson();
 
     /**
-     * Đọc file level và tạo danh sách gạch.
-     * - Mỗi dòng trong file đại diện cho một hàng gạch.
-     * - Ký tự '1' => có gạch, ký tự khác => bỏ trống.
-     *
-     * @param path đường dẫn tới file level
-     * @return danh sách các viên gạch (Brick)
+     * Load 1 level từ file JSON.
      */
-    public List<Brick> load(String path) {
-        List<Brick> bricks = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String line;
-            int row = 0;
-
-            while ((line = br.readLine()) != null) {
-                for (int col = 0; col < line.length(); col++) {
-                    char c = line.charAt(col);
-
-                    if (c == '1') {
-                        int x = startX + col * (brickWidth + gap);
-                        int y = startY + row * (brickHeight + gap);
-                        Color color = (row % 2 == 0) ? Color.RED : Color.ORANGE;
-                        bricks.add(new Brick(x, y, brickWidth, brickHeight, 1, color));
-                    }
-                }
-                row++;
-            }
-
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Failed to load level file: " + path, e);
+    public void load(String filePath) {
+        try (FileReader reader = new FileReader(filePath)) {
+            currentLevel = gson.fromJson(reader, LevelData.class);
+            System.out.println("✅ Đã load level: " + currentLevel.name);
+        } catch (IOException e) {
+            System.err.println("❌ Lỗi đọc file: " + e.getMessage());
         }
+    }
 
-        return bricks;
+    public LevelData getCurrentLevel() {
+        return currentLevel;
     }
 }

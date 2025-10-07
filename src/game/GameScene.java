@@ -46,7 +46,11 @@ public class GameScene extends Scene {
 
         scoreSystem = new ScoreSystem();
         levelManager = new LevelManager();
-        bricks = levelManager.load("assets/levels/level1.txt");
+        levelManager.load("assets/levels/level1.json");
+        LevelData level = levelManager.getCurrentLevel();
+
+        buildBricks(level);
+
 
         collisionSystem = new CollisionSystem(paddle);
         collisionSystem.register(paddle);
@@ -125,5 +129,22 @@ public class GameScene extends Scene {
 
     public boolean isGameOver() {
         return scoreSystem.isGameOver();
+    }
+
+    private void buildBricks(LevelData level) {
+        bricks = new java.util.ArrayList<>();
+
+        int brickWidth = Constants.WIDTH / level.cols;
+        int brickHeight = 25; // hoặc Constants.BRICK_HEIGHT nếu có
+
+        for (int r = 0; r < level.rows; r++) {
+            for (int c = 0; c < level.cols; c++) {
+                if (level.brickMap[r][c] == 1) {
+                    int x = c * brickWidth;
+                    int y = 100 + r * brickHeight; // cách mép trên 100px
+                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 1, Color.RED));
+                }
+            }
+        }
     }
 }

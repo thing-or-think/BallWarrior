@@ -34,8 +34,8 @@ BallWarrior/
 │   │
 │   ├── game/                      # Logic gameplay Arkanoid
 │   │   ├── GameScene.java         # Cảnh chơi chính (ball, paddle, brick…)
-│   │   ├── LevelManager.java          # Quản lý dữ liệu level (load/save, parse JSON/TXT)
-│   │   ├── LevelData.java             # Cấu trúc dữ liệu chuẩn cho 1 màn chơi (brick map, skin…)
+│   │   ├── LevelManager.java      # Quản lý dữ liệu level (load/save, parse JSON/TXT)
+│   │   ├── LevelData.java         # Cấu trúc dữ liệu chuẩn cho 1 màn chơi (brick map, skin…)
 │   │   ├── ScoreSystem.java       # Quản lý điểm số, mạng
 │   │   └── PowerUpSystem.java     # Quản lý item rơi ra, hiệu ứng power-up
 │   │
