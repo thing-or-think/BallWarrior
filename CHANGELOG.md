@@ -7,6 +7,11 @@ Tất cả thay đổi đáng chú ý của dự án này sẽ được ghi lạ
 ## [0.3.0] - 2025-10-07
 
 ### Added
+- Thêm hệ thống quản lý màn chơi:
+    - `LevelData.java`: chứa thông tin cấu hình cơ bản cho từng level (tên, số hàng/cột, bản đồ gạch...).
+    - `LevelManager.java`: quản lý việc **load/save** dữ liệu level, hỗ trợ đọc file JSON.
+- Tích hợp thư viện **GSON** để parse dữ liệu level từ JSON (định dạng dễ mở rộng và chỉnh sửa).
+- Thêm ví dụ file `levels/level1.json` mô tả bản đồ gạch mẫu cho game Arkanoid.
 - Thêm thư mục `ui/base/` chứa các lớp trừu tượng dùng chung:
     - `Scene.java`: lớp cơ sở trừu tượng cho mọi màn hình (menu, shop, pause, game over...).
     - `Button.java`: lớp cơ sở trừu tượng cho các loại nút giao diện.
@@ -28,6 +33,10 @@ Tất cả thay đổi đáng chú ý của dự án này sẽ được ghi lạ
 - `Scene` nay là lớp trừu tượng, cung cấp cơ chế chung cho vẽ nền, xử lý input và vòng lặp `repaint`.
 - Cập nhật `SceneManager` để quản lý `PauseScene` và chuyển đổi qua lại giữa các scene (`GameScene`, `MenuScene`, `ShopScene`...).
 - `GameScene` được điều chỉnh để có thể **tạm dừng game** bằng phím `ESC`.
+- `GameScene` nay sử dụng `LevelManager` để khởi tạo danh sách `Brick` theo dữ liệu JSON.
+- Cấu trúc thư mục `game/` được tổ chức lại:
+    - Tách riêng lớp dữ liệu (`LevelData`) và lớp điều khiển (`LevelManager`).
+    - Dễ mở rộng cho nhiều màn chơi khác nhau (Level 1, Level 2...).
 
 ### Fixed
 - Sửa lỗi **căn giữa text** khi hover ở menu.
