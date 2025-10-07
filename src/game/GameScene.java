@@ -23,27 +23,23 @@ public class GameScene extends Scene {
     private LevelManager levelManager;
     private CollisionSystem collisionSystem;
 
-    // ==== CONSTRUCTOR ========================================================
+    private boolean paused = false;  // <— Thêm biến tạm dừng
+
     public GameScene(InputHandler input) {
         super("Game", input);
         initUI();
     }
 
-    // ==== ABSTRACT IMPLEMENTATIONS ==========================================
-
     @Override
     protected void initUI() {
-        // Paddle ở giữa đáy màn
         paddle = new Paddle(
                 Constants.WIDTH / 2 - Constants.PADDLE_WIDTH / 2,
                 Constants.HEIGHT - Constants.PADDLE_HEIGHT - 30,
                 input
         );
 
-        // Đặt bóng ở trên paddle
         resetBall();
 
-        // Hệ thống điểm, level, collision
         scoreSystem = new ScoreSystem();
         levelManager = new LevelManager();
         bricks = levelManager.load("assets/levels/level1.txt");
@@ -58,10 +54,18 @@ public class GameScene extends Scene {
 
     @Override
     protected void update() {
+
+        // Nhấn ESC để bật/tắt pause
+        if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_ESCAPE)) {
+            paused = !paused;
+        }
+
+        // Nếu đang tạm dừng, bỏ qua cập nhật game
+        if (paused) return;
+
         paddle.update();
         ball.update();
 
-        // Va chạm bóng
         CollisionResult result = collisionSystem.findNearestCollision(ball);
         if (collisionSystem.resolveCollision(ball, result)) {
             if (result.getEntity() instanceof Brick brick) {
@@ -72,34 +76,41 @@ public class GameScene extends Scene {
             }
         }
 
-        // Mất mạng nếu bóng rơi khỏi màn
         if (ball.getY() > Constants.HEIGHT) {
             scoreSystem.loseLife();
             resetBall();
         }
+
     }
 
     @Override
     protected void render(Graphics2D g2) {
-        // Vẽ nền
         drawBackground(g2);
 
-        // Paddle & Ball
         paddle.draw(g2);
         ball.draw(g2);
 
-        // Bricks
         for (Brick brick : bricks) {
             if (!brick.isDestroyed()) {
                 brick.draw(g2);
             }
         }
 
-        // HUD
         HUD.render(g2, scoreSystem);
-    }
 
-    // ==== PRIVATE HELPERS ====================================================
+        // Nếu đang pause — hiển thị overlay mờ
+        if (paused) {
+            g2.setColor(new Color(0, 0, 0, 150)); // lớp phủ mờ
+            g2.fillRect(0, 0, Constants.WIDTH, Constants.HEIGHT);
+
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Arial", Font.BOLD, 40));
+            String text = "PAUSED";
+            int textWidth = g2.getFontMetrics().stringWidth(text);
+            g2.drawString(text, (Constants.WIDTH - textWidth) / 2, Constants.HEIGHT / 2);
+        }
+
+    }
 
     private void resetBall() {
         ball = new Ball(

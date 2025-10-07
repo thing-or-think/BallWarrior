@@ -30,7 +30,6 @@ public class ShopScene extends Scene {
         Font font = new Font("Serif", Font.PLAIN, 28);
         FontMetrics fm = getFontMetrics(font);
 
-        // Danh sách vật phẩm demo
         String[] items = {"Speed +5", "Bigger Paddle", "Extra Life"};
         int startY = 200;
         int spacing = 50;
@@ -39,7 +38,6 @@ public class ShopScene extends Scene {
             buttons.add(new TextButton(items[i], Constants.WIDTH / 2, startY + i * spacing, fm));
         }
 
-        // Nút BACK
         buttons.add(new TextButton("BACK", Constants.WIDTH / 2, startY + items.length * spacing + 50, fm));
     }
 

@@ -20,13 +20,6 @@ public class GameEngine {
 
     }
 
-    /** Bắt đầu game */
-    private void startGame() {
-        input.resetMouse();
-    }
-
-
-    /** Cho Main gọi để mở menu lần đầu */
     public JPanel getScene() {
         return sceneManager.getCurrentScene();
     }

@@ -38,12 +38,19 @@ public abstract class Scene extends JPanel {
     }
 
     public void startRepaintLoop() {
-        repaintTimer = new Timer(16, e -> repaint());
+        if (repaintTimer != null) repaintTimer.stop();
+
+        repaintTimer = new Timer(1000 / 60, e -> {
+            update();
+            repaint();
+            input.update();
+        });
         repaintTimer.start();
+
         setFocusable(true);
         requestFocusInWindow();
-
     }
+
 
     public void stopRepaintLoop() {
         if (repaintTimer != null) repaintTimer.stop();
@@ -65,9 +72,8 @@ public abstract class Scene extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        update();            // Cập nhật logic
-        drawBackground(g2);  // Vẽ nền
-        render(g2);          // Vẽ nội dung cụ thể của scene con
+        drawBackground(g2);
+        render(g2);
     }
 
     public String getName() {

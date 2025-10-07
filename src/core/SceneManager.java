@@ -22,7 +22,6 @@ public class SceneManager {
         this.frame = frame;
         this.input = input;
 
-        // 1️⃣ Tạo tạm các scene chưa cần callback
         gameScene = new GameScene(input);
         shopScene = new ShopScene(input, null); // tạm null
         menuScene = new MenuScene(
@@ -33,7 +32,6 @@ public class SceneManager {
                 () -> System.exit(0)
         );
 
-        // 2️⃣ Bổ sung callback menu cho shop sau khi menu đã có
         shopScene.setOnBack(() -> setScene(menuScene));
 
         // 3️⃣ Bắt đầu từ menu

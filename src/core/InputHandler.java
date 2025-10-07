@@ -17,9 +17,13 @@ public class InputHandler extends KeyAdapter {
     private boolean mouseClickedOnce = false;
     private int scrollAmount = 0;
 
+    private final boolean[] keys = new boolean[256];
+    private final boolean[] prevKeys = new boolean[256];
+
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+        if (key >= 0 && key < keys.length) keys[key] = true;
 
         if (key == KeyEvent.VK_LEFT) {
             leftPressed = true;
@@ -31,12 +35,25 @@ public class InputHandler extends KeyAdapter {
     @Override
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
+        if (key >= 0 && key < keys.length) keys[key] = false;
 
         if (key == KeyEvent.VK_LEFT) {
             leftPressed = false;
         } else if (key == KeyEvent.VK_RIGHT) {
             rightPressed = false;
         }
+    }
+
+    public boolean isKeyDown(int keyCode) {
+        return keyCode >= 0 && keyCode < keys.length && keys[keyCode];
+    }
+
+    public boolean isKeyJustPressed(int keyCode) {
+        return keyCode >= 0 && keyCode < keys.length && keys[keyCode] && !prevKeys[keyCode];
+    }
+
+    public boolean isKeyJustReleased(int keyCode) {
+        return keyCode >= 0 && keyCode < keys.length && !keys[keyCode] && prevKeys[keyCode];
     }
 
     public boolean isLeftPressed() {
@@ -79,6 +96,11 @@ public class InputHandler extends KeyAdapter {
             }
         };
     }
+
+    public void update() {
+        System.arraycopy(keys, 0, prevKeys, 0, keys.length);
+    }
+
     public int consumeScroll() {
         int temp = scrollAmount;
         scrollAmount = 0;
