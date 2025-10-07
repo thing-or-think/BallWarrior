@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ShopScene extends Scene {
     private final List<Button> buttons = new ArrayList<>();
-    private final Runnable onBack;
+    private Runnable onBack;
     private boolean mouseHandled = false;
 
     public ShopScene(InputHandler input, Runnable onBack) {
@@ -78,5 +78,9 @@ public class ShopScene extends Scene {
         for (Button button : buttons) {
             button.draw(g2);
         }
+    }
+
+    public void setOnBack(Runnable onBack) {
+        this.onBack = onBack;
     }
 }

@@ -20,6 +20,7 @@ public abstract class Scene extends JPanel {
         setDoubleBuffered(true);
         setFocusable(true);
         setBackground(Color.BLACK);
+
         initInput();
     }
 
@@ -39,6 +40,9 @@ public abstract class Scene extends JPanel {
     public void startRepaintLoop() {
         repaintTimer = new Timer(16, e -> repaint());
         repaintTimer.start();
+        setFocusable(true);
+        requestFocusInWindow();
+
     }
 
     public void stopRepaintLoop() {

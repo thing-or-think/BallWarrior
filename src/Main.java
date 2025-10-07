@@ -9,7 +9,7 @@ public class Main {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             GameEngine engine = new GameEngine(frame);
-            frame.setContentPane(engine.getMenuScene());
+            frame.setContentPane(engine.getScene());
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);

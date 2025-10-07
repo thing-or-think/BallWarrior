@@ -1,32 +1,38 @@
 # Changelog
-
-Tất cả các thay đổi đáng chú ý trong dự án này được ghi lại ở đây.  
-Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic Versioning.
+Tất cả thay đổi đáng chú ý của dự án này sẽ được ghi lại trong tệp này.  
+Định dạng dựa theo [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
 ## [0.3.0] - 2025-10-06
 
 ### Added
-- Thêm thư mục `ui/base/` chứa lớp trừu tượng:
-    - `Button.java`: lớp cơ sở cho các loại nút UI.
-    - `Scene.java`: lớp cơ sở cho các màn hình (menu, shop...).
-- Thêm thư mục `ui/button/` với các lớp kế thừa:
-    - `TextButton.java`: nút căn giữa (menu chính).
-- Thêm thư mục `ui/scene/` chứa các màn hình giao diện:
-    - `MenuScene.java`, `ShopScene.java`, `PauseScene.java`, `GameOverScene.java`.
+- Thêm thư mục `ui/base/` chứa các lớp trừu tượng dùng chung:
+    - `Scene.java`: lớp cơ sở trừu tượng cho mọi màn hình (menu, shop, pause, game over...).
+    - `Button.java`: lớp cơ sở trừu tượng cho các loại nút giao diện.
+- Thêm thư mục `ui/button/` chứa các lớp nút kế thừa:
+    - `TextButton.java`: nút hiển thị chữ, tự căn giữa, dùng cho menu chính.
+- Thêm thư mục `ui/scene/` chứa các màn hình cụ thể kế thừa `Scene`:
+    - `MenuScene.java`: màn hình menu chính (Play, Exit...).
+    - `ShopScene.java`: màn hình cửa hàng (mua/chọn skin).
+    - `PauseScene.java`: màn hình tạm dừng game.
+    - `GameOverScene.java`: màn hình kết thúc game (thắng/thua).
 
 ### Changed
-- Tái cấu trúc toàn bộ thư mục `ui/` theo hướng đối tượng, tách riêng phần `Button` và `Scene`.
-- `Button` cũ được chia thành nhiều class con, sử dụng kế thừa và đa hình thay cho `if-else`.
-- Cải thiện khả năng mở rộng UI (dễ thêm nút hoặc scene mới mà không sửa code cũ).
+- Tái cấu trúc toàn bộ thư mục `ui/` theo hướng đối tượng:
+    - Phân tách riêng phần `Button` và `Scene` để tăng tính mô-đun.
+    - `Button` cũ được chia thành nhiều lớp con kế thừa, thay thế các nhánh `if-else` bằng đa hình.
+- `Scene` nay là lớp trừu tượng, cung cấp cơ chế chung cho vẽ nền, xử lý input và vòng lặp `repaint`.
+- Cải thiện khả năng mở rộng UI — dễ dàng thêm scene hoặc button mới mà không cần chỉnh sửa code hiện có.
 
 ### Fixed
 - Sửa lỗi căn giữa text khi hover ở menu.
-- Sửa lỗi vùng click sai lệch ở nút chữ nhật trong shop.
+- Sửa lỗi sai vùng click trong các nút hình chữ nhật ở màn hình shop.
+
+---
 
 ## [Unreleased]
-
+- Đang phát triển: thêm `SettingsScene` và `AnimatedButton` để hỗ trợ hiệu ứng động trong UI.
 ---
 ## [0.2.0] - 2025-10-02
 

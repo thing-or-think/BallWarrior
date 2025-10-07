@@ -54,7 +54,6 @@ public class MenuScene extends Scene {
     protected void update() {
         int mx = input.getMouseX();
         int my = input.getMouseY();
-
         for (Button button : buttons) {
             button.setHovered(button.contains(mx, my));
             if (button.isHovered() && input.consumeClick()) {

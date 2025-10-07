@@ -27,7 +27,6 @@ BallWarrior/
 │   │
 │   ├── core/                      # Lõi engine (tách biệt logic Arkanoid)
 │   │   ├── GameEngine.java        # Khởi tạo game, gắn JFrame, chạy GameLoop
-│   │   ├── GameLoop.java          # Xử lý vòng lặp update + render
 │   │   ├── SceneManager.java      # Quản lý chuyển đổi scene (Menu, Game, Pause…)
 │   │   ├── InputHandler.java      # Quản lý phím bấm, lưu trạng thái key
 │   │   ├── ResourceLoader.java    # Load ảnh, âm thanh, font từ thư mục assets
