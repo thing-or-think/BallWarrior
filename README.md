@@ -34,7 +34,8 @@ BallWarrior/
 │   │
 │   ├── game/                      # Logic gameplay Arkanoid
 │   │   ├── GameScene.java         # Cảnh chơi chính (ball, paddle, brick…)
-│   │   ├── LevelManager.java      # Load level từ file (JSON/TXT)
+│   │   ├── LevelManager.java          # Quản lý dữ liệu level (load/save, parse JSON/TXT)
+│   │   ├── LevelData.java             # Cấu trúc dữ liệu chuẩn cho 1 màn chơi (brick map, skin…)
 │   │   ├── ScoreSystem.java       # Quản lý điểm số, mạng
 │   │   └── PowerUpSystem.java     # Quản lý item rơi ra, hiệu ứng power-up
 │   │
@@ -68,7 +69,12 @@ BallWarrior/
 │   │   │   ├── MenuScene.java         # Menu chính (Play, Exit…)
 │   │   │   ├── ShopScene.java         # Màn hình shop (mua/chọn skin)
 │   │   │   ├── PauseScene.java        # Màn hình tạm dừng game
-│   │   │   └── GameOverScene.java     # Màn hình kết thúc (thắng / thua)
+│   │   │   ├── GameOverScene.java     # Màn hình kết thúc (thắng / thua)
+│   │   │   ├── LevelSelectScene.java  # Màn chọn màn chơi (hiển thị preview, metadata)
+│   │   │   └── LevelEditorScene.java  # Màn tạo/sửa level (UI kéo thả, save/load)
+│   │   │
+│   │   ├── panel/                     # Các panel phụ trong UI
+│   │   │   └── LevelPreviewPanel.java # Vẽ preview của 1 màn chơi (dùng lại ở nhiều nơi)
 │   │   │
 │   │   └── HUD.java                   # Heads-up display trong gameplay (điểm, mạng…)
 │   │
@@ -86,10 +92,12 @@ BallWarrior/
 │   │   ├── bounce.wav
 │   │   ├── break.wav
 │   │   └── powerup.wav
-│   └── levels/                    # Map / màn chơi
-│       ├── level1.txt
-│       ├── level2.txt
-│       └── level3.txt
+│   └── levels/                        # Map / màn chơi
+│       ├── level1.json
+│       ├── level2.json
+│       └── custom/                    # Các màn do người chơi tạo
+│           ├── myLevel1.json
+│           └── testArena.json
 │
 ├── CHANGELOG.md
 └── README.md                      # Tài liệu mô tả project
