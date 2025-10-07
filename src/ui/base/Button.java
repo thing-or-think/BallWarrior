@@ -8,6 +8,7 @@ public abstract class Button {
     protected Rectangle bound;
     protected boolean hovered;
     protected Font baseFont;
+    protected Runnable activity;
 
     public Button(String text, int x, int y, FontMetrics fm) {
         this.text = text;
@@ -39,6 +40,10 @@ public abstract class Button {
 
     public boolean isHovered() {
         return hovered;
+    }
+
+    public void setActivity(Runnable activity) {
+        this.activity = activity;
     }
 
     public String getText() {

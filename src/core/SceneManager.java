@@ -3,6 +3,7 @@ package core;
 import ui.base.Scene;
 import game.GameScene;
 import ui.scene.MenuScene;
+import ui.scene.PauseScene;
 import ui.scene.ShopScene;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ public class SceneManager {
     private final GameScene gameScene;
     private final MenuScene menuScene;
     private final ShopScene shopScene;
+    private final PauseScene pauseScene;
 
     private Scene currentScene;
 
@@ -22,15 +24,17 @@ public class SceneManager {
         this.frame = frame;
         this.input = input;
 
-        gameScene = new GameScene(input);
+        gameScene = new GameScene(input, this);
         shopScene = new ShopScene(input, null); // tạm null
         menuScene = new MenuScene(
                 input,
-                () -> setScene(gameScene),
-                () -> setScene(shopScene),
+                this::goToGame,
+                this::goToShop,
                 () -> System.out.println("Inventory!"),
                 () -> System.exit(0)
         );
+
+        pauseScene = new PauseScene(input, this, gameScene);
 
         shopScene.setOnBack(() -> setScene(menuScene));
 
@@ -66,4 +70,6 @@ public class SceneManager {
     public void goToShop() {
         setScene(shopScene);
     }
+
+    public void goToPause() { setScene(pauseScene); }
 }

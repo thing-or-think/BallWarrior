@@ -4,7 +4,7 @@ Tất cả thay đổi đáng chú ý của dự án này sẽ được ghi lạ
 
 ---
 
-## [0.3.0] - 2025-10-06
+## [0.3.0] - 2025-10-07
 
 ### Added
 - Thêm thư mục `ui/base/` chứa các lớp trừu tượng dùng chung:
@@ -15,23 +15,29 @@ Tất cả thay đổi đáng chú ý của dự án này sẽ được ghi lạ
 - Thêm thư mục `ui/scene/` chứa các màn hình cụ thể kế thừa `Scene`:
     - `MenuScene.java`: màn hình menu chính (Play, Exit...).
     - `ShopScene.java`: màn hình cửa hàng (mua/chọn skin).
-    - `PauseScene.java`: màn hình tạm dừng game.
+    - `PauseScene.java`: màn hình tạm dừng game, có các nút:
+        - `Resume`: quay lại trò chơi.
+        - `Menu`: trở về màn hình chính.
     - `GameOverScene.java`: màn hình kết thúc game (thắng/thua).
+- Thêm hiệu ứng **highlight** cho nút đang được chọn trong `PauseScene`.
 
 ### Changed
 - Tái cấu trúc toàn bộ thư mục `ui/` theo hướng đối tượng:
     - Phân tách riêng phần `Button` và `Scene` để tăng tính mô-đun.
     - `Button` cũ được chia thành nhiều lớp con kế thừa, thay thế các nhánh `if-else` bằng đa hình.
 - `Scene` nay là lớp trừu tượng, cung cấp cơ chế chung cho vẽ nền, xử lý input và vòng lặp `repaint`.
-- Cải thiện khả năng mở rộng UI — dễ dàng thêm scene hoặc button mới mà không cần chỉnh sửa code hiện có.
+- Cập nhật `SceneManager` để quản lý `PauseScene` và chuyển đổi qua lại giữa các scene (`GameScene`, `MenuScene`, `ShopScene`...).
+- `GameScene` được điều chỉnh để có thể **tạm dừng game** bằng phím `ESC`.
 
 ### Fixed
-- Sửa lỗi căn giữa text khi hover ở menu.
-- Sửa lỗi sai vùng click trong các nút hình chữ nhật ở màn hình shop.
-
+- Sửa lỗi **căn giữa text** khi hover ở menu.
+- Sửa lỗi **sai vùng click** trong các nút hình chữ nhật ở màn hình shop.
+- Sửa lỗi **vòng lặp repaint** không dừng khi chuyển từ `GameScene` sang `PauseScene`.
+- Sửa lỗi **giữ phím ESC** khiến game chuyển scene nhiều lần liên tiếp.
 ---
 
 ## [Unreleased]
+- Hỗ trợ phím **mũi tên** để di chuyển và **Enter** để chọn.
 - Đang phát triển: thêm `SettingsScene` và `AnimatedButton` để hỗ trợ hiệu ứng động trong UI.
 ---
 ## [0.2.0] - 2025-10-02

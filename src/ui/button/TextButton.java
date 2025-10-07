@@ -11,6 +11,11 @@ public class TextButton extends Button {
         super(text, x, y, fm);
     }
 
+    public TextButton(String text, int x, int y, FontMetrics fm, Runnable activity) {
+        super(text, x, y, fm);
+        setActivity(activity);
+    }
+
     @Override
     public void draw(Graphics2D g) {
         g.setFont(baseFont);
@@ -40,5 +45,6 @@ public class TextButton extends Button {
     @Override
     public void onClick() {
         System.out.println("Button clicked: " + text);
+        activity.run();
     }
 }

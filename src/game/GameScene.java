@@ -1,6 +1,7 @@
 package game;
 
 import core.InputHandler;
+import core.SceneManager;
 import entity.Ball;
 import entity.Brick;
 import entity.Paddle;
@@ -23,10 +24,13 @@ public class GameScene extends Scene {
     private LevelManager levelManager;
     private CollisionSystem collisionSystem;
 
+    private SceneManager sceneManager;
+
     private boolean paused = false;  // <— Thêm biến tạm dừng
 
-    public GameScene(InputHandler input) {
+    public GameScene(InputHandler input, SceneManager sceneManager) {
         super("Game", input);
+        this.sceneManager = sceneManager;
         initUI();
     }
 
@@ -57,7 +61,7 @@ public class GameScene extends Scene {
 
         // Nhấn ESC để bật/tắt pause
         if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_ESCAPE)) {
-            paused = !paused;
+            sceneManager.goToPause();
         }
 
         // Nếu đang tạm dừng, bỏ qua cập nhật game
