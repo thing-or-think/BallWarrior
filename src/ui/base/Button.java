@@ -9,8 +9,6 @@ public abstract class Button {
     protected boolean hovered;
     protected Font baseFont;
 
-    // ==== CONSTRUCTOR ========================================================
-
     public Button(String text, int x, int y, FontMetrics fm) {
         this.text = text;
 
@@ -23,19 +21,9 @@ public abstract class Button {
         this.baseFont = new Font("Serif", Font.PLAIN, 32);
     }
 
-    // ==== ABSTRACT METHODS ====================================================
-
-    /**
-     * Vẽ nút — mỗi loại nút có thể custom hiệu ứng riêng.
-     */
     public abstract void draw(Graphics2D g);
 
-    /**
-     * Xử lý khi người chơi click vào nút.
-     */
     public abstract void onClick();
-
-    // ==== COMMON METHODS ======================================================
 
     public boolean contains(int mx, int my) {
         return bound.contains(mx, my);

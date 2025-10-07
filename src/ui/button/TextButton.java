@@ -39,7 +39,6 @@ public class TextButton extends Button {
 
     @Override
     public void onClick() {
-        // Hành động khi nút được bấm (sẽ được override ở lớp khác nếu cần)
         System.out.println("Button clicked: " + text);
     }
 }
