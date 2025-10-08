@@ -2,7 +2,7 @@ package ui.scene;
 
 import ui.base.Button;
 import ui.base.Scene;
-import ui.button.TextButton;
+import ui.button.MenuButton;
 import utils.Constants;
 import core.InputHandler;
 
@@ -46,7 +46,7 @@ public class MenuScene extends Scene {
         int spacing = 50;
 
         for (int i = 0; i < texts.length; i++) {
-            buttons.add(new TextButton(texts[i], Constants.WIDTH / 2, startY + i * spacing, fm));
+            buttons.add(new MenuButton(texts[i], Constants.WIDTH / 2, startY + i * spacing, fm));
         }
     }
 

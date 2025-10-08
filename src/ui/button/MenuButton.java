@@ -5,13 +5,13 @@ import ui.base.Button;
 
 import java.awt.*;
 
-public class TextButton extends Button {
+public class MenuButton extends Button {
 
-    public TextButton(String text, int x, int y, FontMetrics fm) {
+    public MenuButton(String text, int x, int y, FontMetrics fm) {
         super(text, x, y, fm);
     }
 
-    public TextButton(String text, int x, int y, FontMetrics fm, Runnable activity) {
+    public MenuButton(String text, int x, int y, FontMetrics fm, Runnable activity) {
         super(text, x, y, fm);
         setActivity(activity);
     }
@@ -45,6 +45,8 @@ public class TextButton extends Button {
     @Override
     public void onClick() {
         System.out.println("Button clicked: " + text);
-        activity.run();
+        if (activity != null) {
+            activity.run();
+        }
     }
 }

@@ -26,8 +26,6 @@ public class GameScene extends Scene {
 
     private SceneManager sceneManager;
 
-    private boolean paused = false;  // <— Thêm biến tạm dừng
-
     public GameScene(InputHandler input, SceneManager sceneManager) {
         super("Game", input);
         this.sceneManager = sceneManager;
@@ -51,7 +49,6 @@ public class GameScene extends Scene {
 
         buildBricks(level);
 
-
         collisionSystem = new CollisionSystem(paddle);
         collisionSystem.register(paddle);
         for (Brick brick : bricks) {
@@ -67,9 +64,6 @@ public class GameScene extends Scene {
         if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_ESCAPE)) {
             sceneManager.goToPause();
         }
-
-        // Nếu đang tạm dừng, bỏ qua cập nhật game
-        if (paused) return;
 
         paddle.update();
         ball.update();
@@ -105,18 +99,6 @@ public class GameScene extends Scene {
         }
 
         HUD.render(g2, scoreSystem);
-
-        // Nếu đang pause — hiển thị overlay mờ
-        if (paused) {
-            g2.setColor(new Color(0, 0, 0, 150)); // lớp phủ mờ
-            g2.fillRect(0, 0, Constants.WIDTH, Constants.HEIGHT);
-
-            g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Arial", Font.BOLD, 40));
-            String text = "PAUSED";
-            int textWidth = g2.getFontMetrics().stringWidth(text);
-            g2.drawString(text, (Constants.WIDTH - textWidth) / 2, Constants.HEIGHT / 2);
-        }
 
     }
 

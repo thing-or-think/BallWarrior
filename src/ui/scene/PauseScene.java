@@ -4,7 +4,7 @@ import core.InputHandler;
 import core.SceneManager;
 import ui.base.Button;
 import ui.base.Scene;
-import ui.button.TextButton;
+import ui.button.MenuButton;
 import utils.Constants;
 
 import java.awt.*;
@@ -36,7 +36,7 @@ public class PauseScene extends Scene {
         FontMetrics fm = getFontMetrics(font);
 
         // ====== Nút Resume ======
-        buttons.add(new TextButton(
+        buttons.add(new MenuButton(
                 "Resume",
                 Constants.WIDTH / 2,
                 startY,
@@ -45,7 +45,7 @@ public class PauseScene extends Scene {
         ));
 
         // ====== Nút Menu ======
-        buttons.add(new TextButton(
+        buttons.add(new MenuButton(
                 "Menu",
                 Constants.WIDTH / 2,
                 startY + gap,
@@ -54,7 +54,7 @@ public class PauseScene extends Scene {
         ));
 
         // ====== Nút Setting ======
-        buttons.add(new TextButton(
+        buttons.add(new MenuButton(
                 "Setting",
                 Constants.WIDTH / 2,
                 startY + 2 * gap,

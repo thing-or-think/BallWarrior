@@ -3,7 +3,7 @@ package ui.scene;
 import core.InputHandler;
 import ui.base.Button;
 import ui.base.Scene;
-import ui.button.TextButton;
+import ui.button.MenuButton;
 import utils.Constants;
 
 import java.awt.*;
@@ -35,10 +35,10 @@ public class ShopScene extends Scene {
         int spacing = 50;
 
         for (int i = 0; i < items.length; i++) {
-            buttons.add(new TextButton(items[i], Constants.WIDTH / 2, startY + i * spacing, fm));
+            buttons.add(new MenuButton(items[i], Constants.WIDTH / 2, startY + i * spacing, fm));
         }
 
-        buttons.add(new TextButton("BACK", Constants.WIDTH / 2, startY + items.length * spacing + 50, fm));
+        buttons.add(new MenuButton("BACK", Constants.WIDTH / 2, startY + items.length * spacing + 50, fm));
     }
 
     @Override

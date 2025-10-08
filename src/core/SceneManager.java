@@ -2,6 +2,7 @@ package core;
 
 import ui.base.Scene;
 import game.GameScene;
+import ui.scene.LevelSelectScene;
 import ui.scene.MenuScene;
 import ui.scene.PauseScene;
 import ui.scene.ShopScene;
@@ -17,6 +18,7 @@ public class SceneManager {
     private final MenuScene menuScene;
     private final ShopScene shopScene;
     private final PauseScene pauseScene;
+    private final LevelSelectScene levelSelectScene;
 
     private Scene currentScene;
 
@@ -28,13 +30,13 @@ public class SceneManager {
         shopScene = new ShopScene(input, null); // tạm null
         menuScene = new MenuScene(
                 input,
-                this::goToGame,
+                this::goToLevelSelect,
                 this::goToShop,
                 () -> System.out.println("Inventory!"),
                 () -> System.exit(0)
         );
-
         pauseScene = new PauseScene(input, this, gameScene);
+        levelSelectScene = new LevelSelectScene(input, this);
 
         shopScene.setOnBack(() -> setScene(menuScene));
 
@@ -72,4 +74,6 @@ public class SceneManager {
     }
 
     public void goToPause() { setScene(pauseScene); }
+
+    public void goToLevelSelect() { setScene(levelSelectScene); }
 }
