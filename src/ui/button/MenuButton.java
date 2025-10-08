@@ -7,23 +7,27 @@ import java.awt.*;
 
 public class MenuButton extends Button {
 
+    private static final Color DEFAULT_COLOR = Color.WHITE;
+    private static final Color HOVER_COLOR = Color.YELLOW;
+
     public MenuButton(String text, int x, int y, FontMetrics fm) {
-        super(text, x, y, fm);
+        super(text, x, y, fm, new Font("Serif", Font.PLAIN, 32));
+        bound = new Rectangle(x - width / 2, y - height / 2, width, height);
     }
 
     public MenuButton(String text, int x, int y, FontMetrics fm, Runnable activity) {
-        super(text, x, y, fm);
+        this(text, x, y, fm);
         setActivity(activity);
     }
 
     @Override
     public void draw(Graphics2D g) {
-        g.setFont(baseFont);
+        g.setFont(font);
 
         if (hovered) {
-            Font hoverFont = baseFont.deriveFont(Font.PLAIN, 40f);
+            Font hoverFont = font.deriveFont(Font.PLAIN, 40f);
             g.setFont(hoverFont);
-            g.setColor(Color.YELLOW);
+            g.setColor(HOVER_COLOR);
             String decoratedText = "> " + text + " <";
 
             int textWidth = g.getFontMetrics().stringWidth(decoratedText);
@@ -32,7 +36,7 @@ public class MenuButton extends Button {
 
             g.drawString(decoratedText, drawX, drawY);
         } else {
-            g.setColor(Color.WHITE);
+            g.setColor(DEFAULT_COLOR);
 
             int textWidth = g.getFontMetrics().stringWidth(text);
             int drawX = (Constants.WIDTH - textWidth) / 2;

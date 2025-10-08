@@ -2,8 +2,12 @@ package ui.scene;
 
 import core.InputHandler;
 import core.SceneManager;
+import ui.base.Button;
 import ui.base.Scene;
-import ui.button.LevelButton;
+import ui.button.LeftArrowButton;
+import ui.button.PlayButton;
+import ui.button.RightArrowButton;
+import ui.element.Label;
 import utils.Constants;
 
 import java.awt.*;
@@ -14,67 +18,49 @@ import java.util.List;
 public class LevelSelectScene extends Scene {
 
     private final SceneManager sceneManager;
-    private final List<LevelButton> levelButtons = new ArrayList<>();
-    private int selectedIndex = 0;
-    private Font titleFont;
+    private final List<Button> buttons = new ArrayList<>();
+    private Label titleLabel;
+
 
     public LevelSelectScene(InputHandler input, SceneManager sceneManager) {
         super("LevelSelectScene", input);
         this.sceneManager = sceneManager;
+
         initUI();
     }
 
     @Override
     protected void initUI() {
-        titleFont = new Font("Arial", Font.BOLD, 48);
-        FontMetrics fm = getFontMetrics(new Font("Serif", Font.PLAIN, 32));
+        Font font = new Font("Arial", Font.BOLD, 48);
+        FontMetrics fm = new Canvas().getFontMetrics(font);
+        int textWidth = fm.stringWidth("SELECT LEVEL");
 
-        // Tạo các nút màn chơi
-        levelButtons.add(new LevelButton("Level 1", "Dễ", null, Constants.WIDTH / 2, 200, fm));
-        levelButtons.add(new LevelButton("Level 2", "Trung bình", null, Constants.WIDTH / 2, 320, fm));
-        levelButtons.add(new LevelButton("Level 3", "Khó", null, Constants.WIDTH / 2, 440, fm));
-        levelButtons.add(new LevelButton("Level 4", "Siêu khó", null, Constants.WIDTH / 2, 560, fm));
+        int centerX = (Constants.WIDTH - textWidth) / 2;
+        titleLabel = new Label("SELECT LEVEL", centerX, 40, font, Color.WHITE);
 
-        // Gán hành động khi chọn
-        for (LevelButton btn : levelButtons) {
-            btn.setActivity(() -> {
-                System.out.println("Chọn: " + btn.getText());
-                sceneManager.goToGame();
-            });
-        }
+        buttons.add(new LeftArrowButton(40, 300, 40, 40));
+        buttons.add(new RightArrowButton(720, 300, 40, 40));
+        buttons.add(new PlayButton("Play", 340, 480, 120, 40, new Font("Serif", Font.PLAIN, 32), () -> sceneManager.goToGame()));
     }
 
     @Override
     protected void update() {
-        // Di chuyển bằng phím
-        if (input.isKeyJustPressed(KeyEvent.VK_UP)) {
-            selectedIndex = (selectedIndex - 1 + levelButtons.size()) % levelButtons.size();
-        }
-        if (input.isKeyJustPressed(KeyEvent.VK_DOWN)) {
-            selectedIndex = (selectedIndex + 1) % levelButtons.size();
-        }
-        if (input.isKeyJustPressed(KeyEvent.VK_ENTER)) {
-            levelButtons.get(selectedIndex).onClick();
-        }
-
-        // Cập nhật trạng thái hover
-        for (int i = 0; i < levelButtons.size(); i++) {
-            levelButtons.get(i).setHovered(i == selectedIndex);
+        int mx = input.getMouseX();
+        int my = input.getMouseY();
+        for (Button button : buttons) {
+            button.setHovered(button.contains(mx, my));
+            if (button.isHovered() && input.consumeClick()) {
+                button.onClick();
+            }
         }
     }
 
     @Override
     protected void render(Graphics2D g) {
-        g.setColor(Color.WHITE);
-        g.setFont(titleFont);
-        g.drawString("CHỌN MÀN CHƠI", 250, 80);
+        titleLabel.draw(g);
 
-        for (LevelButton b : levelButtons) {
-            b.draw(g);
+        for (Button button : buttons) {
+            button.draw(g);
         }
-
-        g.setColor(Color.GRAY);
-        g.setFont(new Font("Arial", Font.PLAIN, 20));
-        g.drawString("↑/↓ để chọn, ENTER để bắt đầu", 250, Constants.HEIGHT - 60);
     }
 }

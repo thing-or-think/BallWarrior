@@ -57,7 +57,11 @@ BallWarrior/
 │   ├── ui/                            # Toàn bộ giao diện người dùng
 │   │   ├── base/                      # Các lớp cơ sở / trừu tượng
 │   │   │   ├── Scene.java             # Lớp cha cho mọi màn hình (Menu, Shop…)
+│   │   │   ├── TextElement.java       # Lớp cha trừu tượng cho mọi phần tử có text
 │   │   │   └── Button.java            # Lớp cha trừu tượng cho các loại nút
+│   │   │
+│   │   ├── element/                   # Các phần tử giao diện cơ bản kế thừa TextElement
+│   │   │   └── Label.java             # Hiển thị văn bản tĩnh (không tương tác)
 │   │   │
 │   │   ├── button/                    # Các loại nút kế thừa Button
 │   │   │   ├── TextButton.java        # Nút văn bản căn giữa (menu chính)

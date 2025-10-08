@@ -1,6 +1,7 @@
 package ui;
 
 import game.ScoreSystem;
+import ui.element.Label;
 import utils.Constants;
 
 import java.awt.*;
@@ -8,20 +9,21 @@ import java.awt.*;
 public class HUD {
 
     private static final Font FONT = new Font("Arial", Font.BOLD, 16);
+    private final Label scoreLabel;
+    private final Label livesLabel;
 
-    /**
-     * Vẽ HUD hiển thị thông tin người chơi:
-     * - Điểm (Score) bên trái
-     * - Mạng (Lives) bên phải
-     */
-    public static void render(Graphics g, ScoreSystem scoreSystem) {
-        g.setColor(Color.WHITE);
-        g.setFont(FONT);
+    public HUD() {
+        scoreLabel = new Label("Score: 0", 20, 30, FONT, Color.WHITE);
+        livesLabel = new Label("Lives: 0", Constants.WIDTH - 80, 30, FONT, Color.WHITE);
+    }
 
-        g.drawString("Score: " + scoreSystem.getScore(), 20, 30);
+    public void render(Graphics2D g, ScoreSystem scoreSystem) {
+        // Cập nhật text mỗi frame
+        scoreLabel.setText("Score: " + scoreSystem.getScore());
+        livesLabel.setText("Lives: " + scoreSystem.getLives());
 
-        String livesText = "Lives: " + scoreSystem.getLives();
-        int textWidth = g.getFontMetrics().stringWidth(livesText);
-        g.drawString(livesText, Constants.WIDTH - textWidth - 20, 30);
+        // Vẽ nhãn
+        scoreLabel.draw(g);
+        livesLabel.draw(g);
     }
 }

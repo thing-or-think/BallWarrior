@@ -2,36 +2,47 @@ package ui.base;
 
 import java.awt.*;
 
-public abstract class Button {
+public abstract class Button extends TextElement {
 
-    protected String text;
-    protected Rectangle bound;
-    protected boolean hovered;
-    protected Font baseFont;
-    protected Runnable activity;
+    protected int x, y;                // Góc trên-trái của nút
+    protected int width, height;       // Kích thước nút
+    protected Rectangle bound;         // Vùng va chạm / click
+    protected boolean hovered;         // Trạng thái hover
+    protected Runnable activity;       // Hành động khi click
 
-    public Button(String text, int x, int y, FontMetrics fm) {
-        this.text = text;
+    // Constructor 1: tự đo kích thước theo text
+    public Button(String text, int x, int y, FontMetrics fm, Font font) {
+        super(text, x, y, font);
 
-        int width = fm.stringWidth(text);
-        int height = fm.getAscent();
-        int Rx = x - width / 2;  // x là tâm giữa nút
-        int Ry = y;
+        this.x = x;
+        this.y = y;
+        this.width = fm.stringWidth(text);
+        this.height = fm.getAscent();
 
-        this.bound = new Rectangle(Rx, Ry - height, width, height);
-        this.baseFont = new Font("Serif", Font.PLAIN, 32);
+        this.bound = new Rectangle(x, y, width, height);
     }
 
+    // Constructor 2: dùng kích thước cố định
+    public Button(String text, int x, int y, int width, int height, Font font) {
+        super(text, x, y, font);
+
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+
+        this.bound = new Rectangle(x, y, width, height);
+    }
+
+    /** Vẽ nút — mỗi subclass (PlayButton, LeftArrowButton, ...) sẽ override */
     public abstract void draw(Graphics2D g);
 
+    /** Gọi khi click — subclass có thể override hoặc dùng setActivity() */
     public abstract void onClick();
 
+    /** Kiểm tra chuột có nằm trong nút không */
     public boolean contains(int mx, int my) {
         return bound.contains(mx, my);
-    }
-
-    public int getY() {
-        return bound.y;
     }
 
     public void setHovered(boolean hovered) {
@@ -46,7 +57,20 @@ public abstract class Button {
         this.activity = activity;
     }
 
-    public String getText() {
-        return text;
+    public void performAction() {
+        if (activity != null) activity.run();
+    }
+
+    /** Getter tiện dụng nếu cần */
+    public Rectangle getBounds() {
+        return bound;
+    }
+
+    public int getCenterX() {
+        return x + width / 2;
+    }
+
+    public int getCenterY() {
+        return y + height / 2;
     }
 }

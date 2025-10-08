@@ -23,6 +23,7 @@ public class GameScene extends Scene {
     private ScoreSystem scoreSystem;
     private LevelManager levelManager;
     private CollisionSystem collisionSystem;
+    private HUD hud;
 
     private SceneManager sceneManager;
 
@@ -54,6 +55,8 @@ public class GameScene extends Scene {
         for (Brick brick : bricks) {
             collisionSystem.register(brick);
         }
+
+        hud = new HUD();
 
     }
 
@@ -98,7 +101,7 @@ public class GameScene extends Scene {
             }
         }
 
-        HUD.render(g2, scoreSystem);
+        hud.render(g2, scoreSystem);
 
     }
 
