@@ -1,0 +1,51 @@
+name: Notify Changelog
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Extract latest changelog section (top one)
+        id: changelog
+        run: |
+          CONTENT=$(awk '
+            BEGIN { capture=0 }
+            /^## / {
+              if (capture) exit       # nếu đã capture xong thì thoát
+              capture=1               # bắt đầu capture từ version đầu tiên
+            }
+            capture { print }
+          ' CHANGELOG.md)
+
+          # Ghi multiline vào biến môi trường
+          echo "CONTENT<<EOF" >> $GITHUB_ENV
+          echo "$CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Send to Discord
+        run: |
+          CONTENT="${CONTENT}"
+
+          send_chunk() {
+            local text="$1"
+            curl -H "Content-Type: application/json" \
+                 -X POST \
+                 -d "$(jq -Rn --arg content "$text" '{"content": $content}')" \
+                 ${{ secrets.DISCORD_WEBHOOK }}
+          }
+
+          MAX_LENGTH=2000
+          while [ -n "$CONTENT" ]; do
+            CHUNK="${CONTENT:0:$MAX_LENGTH}"
+            send_chunk "$CHUNK"
+            CONTENT="${CONTENT:$MAX_LENGTH}"
+            sleep 1
+          done

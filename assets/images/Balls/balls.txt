@@ -1,0 +1,16 @@
+#4000
+# id, name, hasImg, rarity, price, isBought, colorOrPath
+1, Basic Red, false, COMMON, 0, true, RED
+2, Basic Blue, false, COMMON, 0, true, BLUE
+3, Basic Cyan, false, COMMON, 100, false, CYAN
+4, Basic Yellow, false, COMMON, 100, false, YELLOW
+5, Basic Orange, false, RARE, 100, false, ORANGE
+6, Basic Black, false, RARE, 100, false, BLACK
+7, Basic Magenta, false, RARE, 500, true, MAGENTA
+8, Basic Pink, false, RARE, 500, true, PINK
+9, Fire Orb, true, EPIC, 1000, false, assets/images/Balls/ball.png
+10,  Watermelon,  true,  LEGENDARY,  1000, true,  assets/images/Balls/watermelon.png
+11,  Beach Ball,  true,  LEGENDARY,  5000, true,  assets/images/Balls/ballBeach.png
+12,  Pokeball,  true,  LEGENDARY,  5000, true,  assets/images/Balls/pokeball.png
+13,  UET Ball,  true,  LEGENDARY,  5000, true,  assets/images/Balls/UET.png
+
