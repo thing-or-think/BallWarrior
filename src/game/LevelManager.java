@@ -22,9 +22,9 @@ public class LevelManager {
     public void load(String filePath) {
         try (FileReader reader = new FileReader(filePath)) {
             currentLevel = gson.fromJson(reader, LevelData.class);
-            System.out.println("✅ Đã load level: " + currentLevel.name);
+            System.out.println("Đã load level: " + currentLevel.name);
         } catch (IOException e) {
-            System.err.println("❌ Lỗi đọc file: " + e.getMessage());
+            System.err.println("Lỗi đọc file: " + e.getMessage());
         }
     }
 

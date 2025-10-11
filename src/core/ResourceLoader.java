@@ -11,7 +11,7 @@ public class ResourceLoader {
         try {
             img = ImageIO.read(new File(path));
         } catch (IOException e) {
-            System.out.println("Không tìm thấy ảnh, thì phải..PHẢI CHỊU.");
+//            System.out.println("Không tìm thấy ảnh, thì phải..PHẢI CHỊU.");
             img = null;
         }
         return img;

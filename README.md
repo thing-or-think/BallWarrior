@@ -33,6 +33,18 @@ BallWarrior/
 │   │   └── SoundManager.java      # Quản lý âm thanh (phát nhạc, hiệu ứng sfx)
 │   │
 │   ├── game/                      # Logic gameplay Arkanoid
+│   │   ├── replay/                # Hệ thống ghi và phát lại gameplay (replay system)
+│   │   │   ├── ReplayRecorder.java   # Ghi lại hành động người chơi (input, frame state)
+│   │   │   ├── ReplayData.java       # Cấu trúc dữ liệu lưu trữ thông tin replay (frame list, seed…)
+│   │   │   └── ReplayPlayer.java     # Phát lại replay theo dữ liệu đã ghi
+│   │   │
+│   │   ├── collision/                 # Module va chạm (tách riêng, dễ mở rộng)
+│   │   │   ├── CollisionSystem.java   # Điều phối va chạm (tìm nearest collision)
+│   │   │   ├── CollisionResult.java   # Data class (entity, hitPoint…)
+│   │   │   ├── CollisionUtils.java    # Hàm tiện ích (isBetween, getLineIntersection, circleLineIntersection…)
+│   │   │   ├── CircleVsAABB.java      # Ball vs Paddle/Brick (AABB)
+│   │   │   └── CircleVsCircle.java    # Ball vs Ball / PowerUp (nếu cần)
+│   │   │
 │   │   ├── GameScene.java         # Cảnh chơi chính (ball, paddle, brick…)
 │   │   ├── LevelManager.java      # Quản lý dữ liệu level (load/save, parse JSON/TXT)
 │   │   ├── LevelData.java         # Cấu trúc dữ liệu chuẩn cho 1 màn chơi (brick map, skin…)
@@ -40,7 +52,6 @@ BallWarrior/
 │   │   └── PowerUpSystem.java     # Quản lý item rơi ra, hiệu ứng power-up
 │   │
 │   ├── game/collision/            # Module va chạm (tách riêng, dễ mở rộng)
-│   │   ├── CollisionSystem.java   # Điều phối va chạm (tìm nearest collision)
 │   │   ├── CollisionResult.java   # Data class (entity, hitPoint…)
 │   │   ├── CollisionUtils.java    # Hàm tiện ích (isBetween, getLineIntersection, circleLineIntersection…)
 │   │   ├── CircleVsAABB.java      # Ball vs Paddle/Brick (AABB)
@@ -64,10 +75,12 @@ BallWarrior/
 │   │   │   └── Label.java             # Hiển thị văn bản tĩnh (không tương tác)
 │   │   │
 │   │   ├── button/                    # Các loại nút kế thừa Button
-│   │   │   ├── TextButton.java        # Nút văn bản căn giữa (menu chính)
-│   │   │   ├── MenuButton.java        # Nút căn giữa (menu chính)
-│   │   │   ├── RectButton.java        # Nút chữ nhật (shop, pause…)
-│   │   │   └── IconButton.java        # (tuỳ chọn) nút có biểu tượng hoặc ảnh
+│   │   │   ├── MenuButton.java         # Nút văn bản trung tâm, dùng trong menu chính
+│   │   │   ├── LeftArrowButton.java    # Nút mũi tên trái (chuyển trang, chọn level, tùy chỉnh…)
+│   │   │   ├── RightArrowButton.java   # Nút mũi tên phải (chuyển trang, chọn level, tùy chỉnh…)
+│   │   │   ├── PlayButton.java         # Nút bắt đầu chơi (biểu tượng “Play”, dùng ở selectLevel)
+│   │   │   ├── RectButton.java         # Nút hình chữ nhật tiêu chuẩn (shop, pause menu, confirm…)
+│   │   │   └── IconButton.java         # Nút có biểu tượng hoặc hình ảnh (âm thanh, cài đặt, thoát…)
 │   │   │
 │   │   ├── scene/                     # Các màn hình giao diện riêng biệt
 │   │   │   ├── MenuScene.java         # Menu chính (Play, Exit…)
