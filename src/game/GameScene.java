@@ -10,7 +10,6 @@ import entity.Entity;
 import ui.HUD;
 import game.collision.CollisionSystem;
 import game.collision.CollisionResult;
-import game.collision.CircleVsAABB;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -65,7 +64,7 @@ public class GameScene {
         collisionSystem = new CollisionSystem(paddle);
         powerUpSystem = new PowerUpSystem(input, paddle, balls, bricks, powerUpEffects, scoreSystem, collisionSystem);
 
-        hud = new HUD();
+        hud = new HUD(scoreSystem);
 
         // Đăng ký entity có thể va chạm
         collisionSystem.register(paddle);
@@ -230,7 +229,7 @@ public class GameScene {
         // Vẽ các hiệu ứng khác
         powerUpEffects.draw(g);
 
-        hud.render(g, scoreSystem);
+        hud.render((Graphics2D) g);
     }
 
     private void handleWallCollision(Ball ball) {
