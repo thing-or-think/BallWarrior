@@ -34,7 +34,6 @@ public class SkillManager {
                         Paddle paddle,
                         List<Ball> balls,
                         List<Brick> bricks,
-                        PowerUpEffects powerUpEffects,
                         ScoreSystem score,
                         CollisionSystem collisionSystem,
                         SkillEffectManager skillEffectManager) {

@@ -33,6 +33,7 @@ public class ShieldSkill extends ActiveSkill {
         shield = new Shield(x, y, (int) shieldWidth, (int) shieldHeight, duration);
         shield.activate();
         collisionSystem.register(shield);
+        skillEffectManager.setShield(shield);
 
         System.out.println("Shield activated!");
     }

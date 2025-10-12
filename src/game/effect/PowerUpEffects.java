@@ -35,9 +35,4 @@ public class PowerUpEffects {
         }
     }
 
-    public void drawShield(Graphics2D g, Shield shield) {
-        if (shield != null && shield.isActive()) {
-            shield.draw(g);
-        }
-    }
 }

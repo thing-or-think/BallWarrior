@@ -28,6 +28,10 @@ public class SkillEffectManager {
         }
     }
 
+    public void setShield(Shield shield) {
+        this.shield = shield;
+    }
+
     public void draw(Graphics2D g) {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for (ExplosionEffect e : explosions) {

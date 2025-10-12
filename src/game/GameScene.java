@@ -1,6 +1,5 @@
 package game;
 
-import game.effect.PowerUpEffects;
 import game.effect.SkillEffectManager;
 import game.skill.SkillManager;
 import utils.Constants;
@@ -31,7 +30,6 @@ public class GameScene {
     private LevelManager levelManager;
     private CollisionSystem collisionSystem;
     private SkillManager skillManager;
-    private PowerUpEffects powerUpEffects;
     private SkillEffectManager skillEffectManager;
 
     public GameScene(InputHandler input) {
@@ -39,13 +37,6 @@ public class GameScene {
         init();
     }
 
-    /**
-     * Khởi tạo màn chơi:
-     * - Paddle ở giữa đáy
-     * - Bóng trên paddle
-     * - Reset điểm/mạng
-     * - Load bricks từ file level
-     */
     private void init() {
         paddle = new Paddle(
                 Constants.WIDTH / 2 - Constants.PADDLE_WIDTH / 2,
@@ -61,13 +52,10 @@ public class GameScene {
         levelManager = new LevelManager();
         bricks = levelManager.load("assets/levels/level1.txt");
 
-        // Khởi tạo các hệ thống mới và HUD
-        powerUpEffects = new PowerUpEffects();
 
-        // Truyền CollisionSystem vào PowerUpSystem để nó có thể đăng ký Shield
         collisionSystem = new CollisionSystem(paddle);
         skillEffectManager = new SkillEffectManager();
-        skillManager = new SkillManager(input, paddle, balls, bricks, powerUpEffects, scoreSystem, collisionSystem, skillEffectManager);
+        skillManager = new SkillManager(input, paddle, balls, bricks, scoreSystem, collisionSystem, skillEffectManager);
 
         hud = new HUD(scoreSystem);
 
@@ -79,26 +67,7 @@ public class GameScene {
         resetBall();
     }
 
-    /**
-     * Đặt bóng trở lại trên paddle (dùng khi mất mạng).
-     */
-    private void resetBall() {
-        Ball ball = new Ball(
-                paddle.getX() + Constants.PADDLE_WIDTH / 2 - Constants.BALL_SIZE / 2,
-                paddle.getY() - Constants.BALL_SIZE - 1
-        );
-        balls.clear();
-        balls.add(ball);
-        scoreSystem.resetCombo();
-        skillManager.deactivateFireBall();
-    }
 
-    /**
-     * Cập nhật logic game mỗi frame:
-     * - Paddle, Ball
-     * - Va chạm ball với colliders
-     * - Mất mạng khi bóng rơi xuống đáy
-     */
     public void update(float deltaTime) {
         paddle.update();
 
@@ -125,11 +94,7 @@ public class GameScene {
                 ball.update();
             }
 
-            // Xử lý va chạm bóng với tường
-            handleWallCollision(ball);
 
-            // Xử lý va chạm bóng với paddle. Tắt FireBall nếu có va chạm.
-            handlePaddleCollision(ball);
 
             // Tìm và xử lý va chạm gần nhất(thông thường)
             CollisionResult result = collisionSystem.findNearestCollision(ball);
@@ -186,45 +151,10 @@ public class GameScene {
         skillEffectManager.update(deltaTime);
     }
 
-    /**
-     * Xử lý va chạm của FireBall với các viên gạch.
-     * Logic này được tách riêng biệt.
-     */
-//    private void handleFireBallCollision() {
-//        Iterator<Brick> brickIterator = bricks.iterator();
-//        while (brickIterator.hasNext()) {
-//            Brick brick = brickIterator.next();
-//
-//            if (!brick.isDestroyed()) {
-//                for (Ball ball : balls) {
-//                    if (ball.isFireBall() && CircleVsAABB.intersect(ball, brick) != null) {
-//                        brick.hit(brick.getMaxHealth()); // Phá hủy gạch
-//                        scoreSystem.addScore(brick.getScoreValue());
-//                        scoreSystem.increaseCombo(0.5f);
-//                        brickIterator.remove(); // Xóa gạch an toàn
-//                        collisionSystem.unregister(brick);
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-    /**
-     * Vẽ toàn bộ scene:
-     * - Paddle, Ball, Bricks
-     * - HUD (score + lives + combo)
-     */
     public void render(Graphics2D g) {
         paddle.draw(g);
 
         skillEffectManager.draw((Graphics2D) g);
-
-        // Vẽ tất cả bóng
-        for (Ball ball : balls) {
-            powerUpEffects.drawFireBallEffect(g, ball);
-            ball.draw(g);
-        }
 
         for (Brick brick : bricks) {
             if (!brick.isDestroyed()) {
@@ -232,26 +162,22 @@ public class GameScene {
             }
         }
 
-        // Vẽ shield
-        powerUpEffects.drawShield(g, skillManager.getShield());
+        for (Ball ball : balls) {
+            ball.draw(g);
+        }
 
         hud.render((Graphics2D) g);
     }
 
-    private void handleWallCollision(Ball ball) {
-        // Cần thêm logic xử lý va chạm với tường tại đây.
-        // Ví dụ: ball.checkWallCollision();
+    private void resetBall() {
+        Ball ball = new Ball(
+                paddle.getX() + Constants.PADDLE_WIDTH / 2 - Constants.BALL_SIZE / 2,
+                paddle.getY() - Constants.BALL_SIZE - 1
+        );
+        balls.clear();
+        balls.add(ball);
+        scoreSystem.resetCombo();
+        skillManager.deactivateFireBall();
     }
 
-    private void handlePaddleCollision(Ball ball) {
-        // Cần thêm logic xử lý va chạm với paddle tại đây.
-        // Ví dụ: ball.checkPaddleCollision(paddle);
-    }
-
-    /**
-     * Kiểm tra game over (hết mạng).
-     */
-    public boolean isGameOver() {
-        return scoreSystem.isGameOver();
-    }
 }
