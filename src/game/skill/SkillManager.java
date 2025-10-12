@@ -13,6 +13,7 @@ import game.skill.active.MultiBallSkill;
 import game.skill.active.ShieldSkill;
 import game.collision.CollisionSystem;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class SkillManager {
@@ -60,23 +61,23 @@ public class SkillManager {
 
     private void handleInput() {
         // Q - Shield
-        if (input.isQPressed()) {
+        if (input.isKeyJustPressed(KeyEvent.VK_Q)) {
             shieldSkill.activate();
             shield = shieldSkill.getShield();
         }
 
         // W - Multi Ball
-        if (input.isWPressed()) {
+        if (input.isKeyJustPressed(KeyEvent.VK_W)) {
             multiBallSkill.activate();
         }
 
         // E - Explosion
-        if (input.isEPressed()) {
+        if (input.isKeyJustPressed(KeyEvent.VK_E)) {
             explosionSkill.activate();
         }
 
         // R - Fire Ball
-        if (input.isRPressed()) {
+        if (input.isKeyJustPressed(KeyEvent.VK_R)) {
             activateFireBall();
         }
     }

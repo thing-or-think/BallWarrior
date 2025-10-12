@@ -18,6 +18,7 @@ import ui.base.Scene;
 import utils.Constants;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +28,6 @@ public class GameScene extends Scene {
     private Paddle paddle;
     private List<Ball> balls;
     private List<Brick> bricks;
-    private InputHandler input;
     private HUD hud;
 
     private ScoreSystem scoreSystem;
@@ -74,7 +74,7 @@ public class GameScene extends Scene {
         }
         resetBall();
 
-        hud = new HUD();
+        hud = new HUD(scoreSystem);
 
     }
 
@@ -88,24 +88,80 @@ public class GameScene extends Scene {
 
         skillManager.update(deltaTime);
         paddle.update();
-        ball.update();
 
-        // Tìm va chạm gần nhất
-        CollisionResult result = collisionSystem.findNearestCollision(ball);
-        if (collisionSystem.resolveCollision(ball, result)) {
-            if (result.getEntity() instanceof Brick brick) {
-                if (brick.isDestroyed()) {
-                    scoreSystem.addScore(100);
-                    collisionSystem.unregister(brick);
+        Iterator<Ball> ballIterator = balls.iterator();
+
+        while (ballIterator.hasNext()) {
+            Ball ball = ballIterator.next();
+
+            // Cập nhật vị trí bóng
+            if (ball.isStuck()) {
+                ball.reset(
+                        paddle.getX() + Constants.PADDLE_WIDTH / 2 - Constants.BALL_SIZE / 2,
+                        paddle.getY() - Constants.BALL_SIZE
+                );
+                if (input.isKeyJustPressed(KeyEvent.VK_SPACE)) {
+                    ball.launch();
+                }
+            } else {
+                ball.update();
+            }
+
+
+
+            // Tìm và xử lý va chạm gần nhất(thông thường)
+            CollisionResult result = collisionSystem.findNearestCollision(ball);
+            if (result != null) {
+                // Đây là điểm mấu chốt: Cấu trúc if-else if phải độc lập.
+                Entity entity = result.getEntity();
+
+                if (entity instanceof Brick brick) {
+                    if (collisionSystem.resolveCollision(ball, result)) {
+                        if (brick.isDestroyed()) {
+                            scoreSystem.addScore(brick.getScoreValue());
+                            scoreSystem.increaseCombo(0.5f);
+                            collisionSystem.unregister(brick);
+                        }
+                    }
+                } else if (entity instanceof Shield) {
+                    if (collisionSystem.resolveCollision(ball, result)) {
+                        if (ball.isFireBall()) {
+                            skillManager.deactivateFireBall();
+                        }
+                        scoreSystem.resetCombo();
+                    }
+                } else if (entity instanceof Paddle) {
+                    if (collisionSystem.resolveCollision(ball, result)) {
+                        if (ball.isFireBall()) {
+                            skillManager.deactivateFireBall();
+                        }
+                        scoreSystem.resetCombo();
+                    }
                 }
             }
         }
 
-        // Mất mạng nếu bóng rơi khỏi màn
-        if (ball.getY() > Constants.HEIGHT) {
+        // Xóa gạch đã bị phá hủy
+        bricks.removeIf(Brick::isDestroyed);
+
+        // Xóa các quả bóng rơi khỏi màn hình
+        balls.removeIf(ball -> {
+            if (ball.getY() > Constants.HEIGHT) {
+                if (ball.isFireBall()) {
+                    skillManager.deactivateFireBall();
+                }
+                return true;
+            }
+            return false;
+        });
+
+        // Nếu hết bóng → mất mạng và reset
+        if (balls.isEmpty()) {
             scoreSystem.loseLife();
             resetBall();
         }
+
+        skillEffectManager.update(deltaTime);
     }
 
     @Override
@@ -113,7 +169,7 @@ public class GameScene extends Scene {
         drawBackground(g2);
 
         paddle.draw(g2);
-        skillEffectManager.draw((Graphics2D) g);
+        skillEffectManager.draw(g2);
 
 
         for (Brick brick : bricks) {
@@ -126,7 +182,7 @@ public class GameScene extends Scene {
             ball.draw(g2);
         }
 
-        HUD.render(g2, scoreSystem);
+        hud.render(g2);
     }
 
     private void resetBall() {
