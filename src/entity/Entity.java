@@ -67,13 +67,22 @@ public abstract class Entity {
 
     // 5. Getters
     public float getX() { return position.x; }
+
     public float getY() { return position.y; }
+
     public int getWidth() { return width; }
+
     public int getHeight() { return height; }
+
     public Vector2D getVelocity() { return velocity; }
+
     public Vector2D getPosition() { return new Vector2D(position.x, position.y); }
+
     public Vector2D getPreviousPosition() { return previousPosition; }
 
+    public Vector2D getCenter() {
+        return new Vector2D(position.x + width / 2f, position.y + height / 2f);
+    }
     //6. Setters
     public void setImg (BufferedImage i) {this.img = i; }
 }

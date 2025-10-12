@@ -5,6 +5,9 @@ import entity.Ball;
 import entity.Brick;
 import entity.Paddle;
 import entity.Shield;
+import game.effect.SkillEffectManager;
+import game.skill.active.ExplosionSkill;
+import game.skill.active.MultiBallSkill;
 import utils.Vector2D;
 import utils.Constants;
 import game.collision.CollisionSystem;
@@ -22,6 +25,8 @@ public class PowerUpSystem {
     private PowerUpEffects powerUpEffects;
     private ScoreSystem score;
     private CollisionSystem collisionSystem;
+    private MultiBallSkill multiBallSkill;
+    private ExplosionSkill explosionSkill;
 
     // Các biến trạng thái của power-up
     private boolean fireBallActive = false;
@@ -29,7 +34,14 @@ public class PowerUpSystem {
 
     private Shield shield;
 
-    public PowerUpSystem(InputHandler input, Paddle paddle, List<Ball> balls, List<Brick> bricks, PowerUpEffects powerUpEffects, ScoreSystem score, CollisionSystem collisionSystem) {
+    public PowerUpSystem(InputHandler input,
+                         Paddle paddle,
+                         List<Ball> balls,
+                         List<Brick> bricks,
+                         PowerUpEffects powerUpEffects,
+                         ScoreSystem score,
+                         CollisionSystem collisionSystem,
+                         SkillEffectManager skillEffectManager) {
         this.input = input;
         this.paddle = paddle;
         this.balls = balls;
@@ -37,6 +49,8 @@ public class PowerUpSystem {
         this.powerUpEffects = powerUpEffects;
         this.score = score;
         this.collisionSystem = collisionSystem;
+        this.multiBallSkill = new MultiBallSkill(balls);
+        this.explosionSkill = new ExplosionSkill(balls, bricks, skillEffectManager);
     }
 
     public void update(float deltaTime) {
@@ -69,57 +83,18 @@ public class PowerUpSystem {
 
         // W - Multi Ball
         if (input.isWPressed()) {
-            activateMultiBall();
+            multiBallSkill.activate();
         }
 
         // E - Explosion
         if (input.isEPressed()) {
-            activateExplosion();
+            explosionSkill.activate();
         }
 
         // R - Fire Ball
         if (input.isRPressed()) {
             activateFireBall();
         }
-    }
-
-    private void activateMultiBall() {
-        List<Ball> newBalls = new ArrayList<>();
-        float angle90Deg = (float) Math.toRadians(90);
-
-        for (Ball b : new ArrayList<>(balls)) {
-            Vector2D originalVelocity = b.getVelocity();
-
-            // Bỏ qua nếu bóng đang dính hoặc tốc độ quá chậm
-            if (b.isStuck() || originalVelocity.length() < 1.0f) {
-                continue;
-            }
-
-            // Tạo một bản sao của vector vận tốc gốc để không làm thay đổi nó
-            Vector2D newVelocity1 = new Vector2D(originalVelocity.x, originalVelocity.y);
-            Vector2D newVelocity2 = new Vector2D(originalVelocity.x, originalVelocity.y);
-
-            // Bóng mới thứ nhất: Xoay vector vận tốc sang trái
-            newVelocity1.rotate(-angle90Deg);
-
-            Ball newBall1 = new Ball(b.getX(), b.getY());
-            newBall1.setVelocity(newVelocity1.x, newVelocity1.y);
-            newBall1.setStuck(false);
-            newBalls.add(newBall1);
-
-            // Bóng mới thứ hai: Xoay vector vận tốc sang phải
-            newVelocity2.rotate(angle90Deg);
-
-            Ball newBall2 = new Ball(b.getX(), b.getY());
-            newBall2.setVelocity(newVelocity2.x, newVelocity2.y);
-            newBall2.setStuck(false);
-            newBalls.add(newBall2);
-
-            balls.remove(b);
-        }
-
-        balls.addAll(newBalls);
-        System.out.println("Multi Ball activated! Total balls: " + balls.size());
     }
 
     private void activateExplosion() {

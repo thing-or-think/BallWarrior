@@ -13,7 +13,7 @@ public class Ball extends Entity{
 
     public Ball(float x, float y) {
         super(x, y, Constants.BALL_SIZE, Constants.BALL_SIZE);
-        this.velocity = new Vector2D(0, 0);
+        this.velocity = new Vector2D(1, -1).normalized().multiplied(Constants.BALL_SPEED);
         this.previousPosition = new Vector2D(x, y);
         this.radius = Constants.BALL_SIZE / 2;
         this.img = ResourceLoader.loadImg("BallWarrior-master/assets/images/ball.png");

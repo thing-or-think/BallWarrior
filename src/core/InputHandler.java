@@ -21,9 +21,15 @@ public class InputHandler implements KeyListener {
     private boolean eConsumed = false;
     private boolean rConsumed = false;
 
-    private int mouseX, mouseY;
-    private boolean mousePressed;
-    private boolean mouseClicked;
+    private int mouseX = 0;
+    private int mouseY = 0;
+
+    private boolean mousePressed = false;
+    private boolean mouseClickedOnce = false;
+    private int scrollAmount = 0;
+
+    private final boolean[] keys = new boolean[256];
+    private final boolean[] prevKeys = new boolean[256];
 
     private MouseAdapter mouseAdapter;
 
@@ -43,7 +49,7 @@ public class InputHandler implements KeyListener {
             @Override
             public void mouseReleased(MouseEvent e) {
                 mousePressed = false;
-                mouseClicked = true;
+                mouseClickedOnce = true;
             }
         };
     }
@@ -65,8 +71,8 @@ public class InputHandler implements KeyListener {
     }
 
     public boolean consumeClick() {
-        if (mouseClicked) {
-            mouseClicked = false;
+        if (mouseClickedOnce) {
+            mouseClickedOnce = false;
             return true;
         }
         return false;
@@ -74,7 +80,7 @@ public class InputHandler implements KeyListener {
 
     public void resetMouse() {
         mousePressed = false;
-        mouseClicked = false;
+        mouseClickedOnce = false;
     }
 
     @Override
@@ -83,29 +89,34 @@ public class InputHandler implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        if (keyCode == KeyEvent.VK_LEFT) {
+        int key = e.getKeyCode();
+
+        if (key >= 0 && key < keys.length) {
+            keys[key] = true;
+        }
+
+        if (key == KeyEvent.VK_LEFT) {
             leftPressed = true;
-        } else if (keyCode == KeyEvent.VK_RIGHT) {
+        } else if (key == KeyEvent.VK_RIGHT) {
             rightPressed = true;
-        } else if (keyCode == KeyEvent.VK_SPACE) {
+        } else if (key == KeyEvent.VK_SPACE) {
             spacePressed = true;
-        } else if (keyCode == KeyEvent.VK_Q) {
+        } else if (key == KeyEvent.VK_Q) {
             if (!qConsumed) {
                 qPressed = true;
                 qConsumed = true;
             }
-        } else if (keyCode == KeyEvent.VK_W) {
+        } else if (key == KeyEvent.VK_W) {
             if (!wConsumed) {
                 wPressed = true;
                 wConsumed = true;
             }
-        } else if (keyCode == KeyEvent.VK_E) {
+        } else if (key == KeyEvent.VK_E) {
             if (!eConsumed) {
                 ePressed = true;
                 eConsumed = true;
             }
-        } else if (keyCode == KeyEvent.VK_R) {
+        } else if (key == KeyEvent.VK_R) {
             if (!rConsumed) {
                 rPressed = true;
                 rConsumed = true;
@@ -115,23 +126,25 @@ public class InputHandler implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        if (keyCode == KeyEvent.VK_LEFT) {
+        int key = e.getKeyCode();
+        if (key >= 0 && key < keys.length) keys[key] = false;
+
+        if (key == KeyEvent.VK_LEFT) {
             leftPressed = false;
-        } else if (keyCode == KeyEvent.VK_RIGHT) {
+        } else if (key == KeyEvent.VK_RIGHT) {
             rightPressed = false;
-        } else if (keyCode == KeyEvent.VK_SPACE) {
+        } else if (key == KeyEvent.VK_SPACE) {
             spacePressed = false;
-        } else if (keyCode == KeyEvent.VK_Q) {
+        } else if (key == KeyEvent.VK_Q) {
             qPressed = false;
             qConsumed = false;
-        } else if (keyCode == KeyEvent.VK_W) {
+        } else if (key == KeyEvent.VK_W) {
             wPressed = false;
             wConsumed = false;
-        } else if (keyCode == KeyEvent.VK_E) {
+        } else if (key == KeyEvent.VK_E) {
             ePressed = false;
             eConsumed = false;
-        } else if (keyCode == KeyEvent.VK_R) {
+        } else if (key == KeyEvent.VK_R) {
             rPressed = false;
             rConsumed = false;
         }
@@ -179,5 +192,9 @@ public class InputHandler implements KeyListener {
             return true;
         }
         return false;
+    }
+
+    public void update() {
+        System.arraycopy(keys, 0, prevKeys, 0, keys.length);
     }
 }

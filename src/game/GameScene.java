@@ -1,5 +1,6 @@
 package game;
 
+import game.effect.SkillEffectManager;
 import utils.Constants;
 import core.InputHandler;
 import entity.Ball;
@@ -29,6 +30,7 @@ public class GameScene {
     private CollisionSystem collisionSystem;
     private PowerUpSystem powerUpSystem;
     private PowerUpEffects powerUpEffects;
+    private SkillEffectManager skillEffectManager;
 
     public GameScene(InputHandler input) {
         this.input = input;
@@ -62,7 +64,8 @@ public class GameScene {
 
         // Truyền CollisionSystem vào PowerUpSystem để nó có thể đăng ký Shield
         collisionSystem = new CollisionSystem(paddle);
-        powerUpSystem = new PowerUpSystem(input, paddle, balls, bricks, powerUpEffects, scoreSystem, collisionSystem);
+        skillEffectManager = new SkillEffectManager();
+        powerUpSystem = new PowerUpSystem(input, paddle, balls, bricks, powerUpEffects, scoreSystem, collisionSystem, skillEffectManager);
 
         hud = new HUD(scoreSystem);
 
@@ -178,6 +181,8 @@ public class GameScene {
             scoreSystem.loseLife();
             resetBall();
         }
+
+        skillEffectManager.update(deltaTime);
     }
 
     /**
@@ -211,6 +216,8 @@ public class GameScene {
      */
     public void render(Graphics g) {
         paddle.draw(g);
+
+        skillEffectManager.draw((Graphics2D) g);
 
         // Vẽ tất cả bóng
         for (Ball ball : balls) {
