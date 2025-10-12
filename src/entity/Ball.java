@@ -49,7 +49,7 @@ public class Ball extends Entity{
 
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics2D g) {
         if (img != null) {
             g.drawImage(img,(int)position.x,(int)position.y,Constants.BALL_SIZE,Constants.BALL_SIZE,null);
         }else {
@@ -101,12 +101,6 @@ public class Ball extends Entity{
     public void setStuck(boolean stuck) {
         this.stuck = stuck;
     }
-
-    public float getVelocityX() { return velocity.x; }
-    public float getVelocityY() { return velocity.y; }
-    public void setVelocityX(float vx) { velocity.x = vx; }
-    public void setVelocityY(float vy) { velocity.y = vy; }
-
 
     public int getRadius() { return radius; }
 }

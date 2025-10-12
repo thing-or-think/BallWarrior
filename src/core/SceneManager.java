@@ -28,9 +28,11 @@ public class SceneManager {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.setColor(Color.PINK);
-                g.fillRect(0, 0, getWidth(), getHeight());
-                gameScene.render(g);
+                Graphics2D g2d = (Graphics2D) g; // Ép kiểu sang Graphics2D
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(Color.PINK);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                gameScene.render(g2d); // Giả sử GameScene.render nhận Graphics2D
             }
         };
         gamePanel.setPreferredSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));

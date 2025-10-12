@@ -55,7 +55,7 @@ BallWarrior/
 │   │   │   │   ├── LaserPowerUpSkill.java
 │   │   │   │   └── ExtraLifeSkill.java
 │   │   │   │
-│   │   │   └── skillmanager.java       # Quản lý tất cả skill trong game
+│   │   │   └── SkillManager.java       # Quản lý tất cả skill trong game
 │   │   │
 │   │   ├── effect/         
 │   │   │   ├── SkillEffect.java          # abstract class SkillEffect

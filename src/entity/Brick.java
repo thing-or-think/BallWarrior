@@ -2,8 +2,8 @@ package entity;
 
 import core.ResourceLoader;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
+
 import utils.Vector2D;
 
 public class Brick extends Entity {
@@ -27,7 +27,7 @@ public class Brick extends Entity {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics2D g) {
         if (img!=null) {
             g.drawImage(img,(int)position.x,(int)position.y,width,height,null);
         }else {

@@ -1,6 +1,8 @@
 package game;
 
+import game.effect.PowerUpEffects;
 import game.effect.SkillEffectManager;
+import game.skill.SkillManager;
 import utils.Constants;
 import core.InputHandler;
 import entity.Ball;
@@ -28,7 +30,7 @@ public class GameScene {
     private ScoreSystem scoreSystem;
     private LevelManager levelManager;
     private CollisionSystem collisionSystem;
-    private PowerUpSystem powerUpSystem;
+    private SkillManager skillManager;
     private PowerUpEffects powerUpEffects;
     private SkillEffectManager skillEffectManager;
 
@@ -65,7 +67,7 @@ public class GameScene {
         // Truyền CollisionSystem vào PowerUpSystem để nó có thể đăng ký Shield
         collisionSystem = new CollisionSystem(paddle);
         skillEffectManager = new SkillEffectManager();
-        powerUpSystem = new PowerUpSystem(input, paddle, balls, bricks, powerUpEffects, scoreSystem, collisionSystem, skillEffectManager);
+        skillManager = new SkillManager(input, paddle, balls, bricks, powerUpEffects, scoreSystem, collisionSystem, skillEffectManager);
 
         hud = new HUD(scoreSystem);
 
@@ -88,7 +90,7 @@ public class GameScene {
         balls.clear();
         balls.add(ball);
         scoreSystem.resetCombo();
-        powerUpSystem.deactivateFireBall();
+        skillManager.deactivateFireBall();
     }
 
     /**
@@ -101,7 +103,7 @@ public class GameScene {
         paddle.update();
 
         // Cập nhật PowerUpSystem
-        powerUpSystem.update(deltaTime);
+        skillManager.update(deltaTime);
 
         // Xử lý va chạm đặc biệt của FireBall trước va chạm thông thường
        // handleFireBallCollision();
@@ -146,14 +148,14 @@ public class GameScene {
                 } else if (entity instanceof Shield) {
                     if (collisionSystem.resolveCollision(ball, result)) {
                         if (ball.isFireBall()) {
-                            powerUpSystem.deactivateFireBall();
+                            skillManager.deactivateFireBall();
                         }
                         scoreSystem.resetCombo();
                     }
                 } else if (entity instanceof Paddle) {
                     if (collisionSystem.resolveCollision(ball, result)) {
                         if (ball.isFireBall()) {
-                            powerUpSystem.deactivateFireBall();
+                            skillManager.deactivateFireBall();
                         }
                         scoreSystem.resetCombo();
                     }
@@ -168,7 +170,7 @@ public class GameScene {
         balls.removeIf(ball -> {
             if (ball.getY() > Constants.HEIGHT) {
                 if (ball.isFireBall()) {
-                    powerUpSystem.deactivateFireBall();
+                    skillManager.deactivateFireBall();
                 }
                 return true;
             }
@@ -213,7 +215,7 @@ public class GameScene {
      * - Paddle, Ball, Bricks
      * - HUD (score + lives + combo)
      */
-    public void render(Graphics g) {
+    public void render(Graphics2D g) {
         paddle.draw(g);
 
         skillEffectManager.draw((Graphics2D) g);
@@ -231,7 +233,7 @@ public class GameScene {
         }
 
         // Vẽ shield
-        powerUpEffects.drawShield(g, powerUpSystem.getShield());
+        powerUpEffects.drawShield(g, skillManager.getShield());
 
         hud.render((Graphics2D) g);
     }

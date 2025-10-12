@@ -43,4 +43,13 @@ public class ExplosionEffect {
     public boolean isFinished() {
         return alpha <= 0;
     }
+
+    /**
+     * Trả về lượng sát thương dựa trên khoảng cách đến tâm nổ
+     */
+    private int getDamageByDistance(float distance, float radius) {
+        if (distance <= radius / 3f) return 5;       // gần tâm
+        if (distance <= (2f * radius) / 3f) return 3; // trung bình
+        return 1;                                    // xa
+    }
 }

@@ -1,9 +1,6 @@
-package game;
+package game.effect;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import utils.Constants;
 
@@ -38,7 +35,7 @@ public class PowerUpEffects {
         }
     }
 
-    public void drawShield(Graphics g, Shield shield) {
+    public void drawShield(Graphics2D g, Shield shield) {
         if (shield != null && shield.isActive()) {
             shield.draw(g);
         }

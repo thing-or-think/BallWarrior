@@ -31,7 +31,7 @@ public abstract class Entity {
         clampPosition();
     }
 
-    public abstract void draw(Graphics g);
+    public abstract void draw(Graphics2D g);
 
     public void setPosition(float x, float y) {
         position.x = x;

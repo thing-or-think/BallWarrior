@@ -44,7 +44,7 @@ public class Paddle extends Entity {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics2D g) {
         if (img!=null) {
             g.drawImage(img,(int)position.x,(int)position.y,Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,null);
         }else {

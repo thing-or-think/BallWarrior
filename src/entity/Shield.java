@@ -34,7 +34,7 @@ public class Shield extends Entity {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics2D g) {
         if (active) {
             g.setColor(Color.CYAN);
             g.fillRect((int)getX(), (int)getY(), getWidth(), getHeight());

@@ -1,5 +1,7 @@
 package game.effect;
 
+import entity.Shield;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,6 +9,7 @@ import java.util.List;
 
 public class SkillEffectManager {
     private final List<ExplosionEffect> explosions;
+    private Shield shield;
 
     public SkillEffectManager() {
         explosions = new ArrayList<>();
@@ -29,6 +32,9 @@ public class SkillEffectManager {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for (ExplosionEffect e : explosions) {
             e.draw(g);
+        }
+        if (shield != null) {
+            shield.draw(g);
         }
     }
 
