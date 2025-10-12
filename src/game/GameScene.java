@@ -102,7 +102,6 @@ public class GameScene {
 
         // Cập nhật PowerUpSystem
         powerUpSystem.update(deltaTime);
-        powerUpEffects.update(deltaTime);
 
         // Xử lý va chạm đặc biệt của FireBall trước va chạm thông thường
        // handleFireBallCollision();
@@ -233,8 +232,6 @@ public class GameScene {
 
         // Vẽ shield
         powerUpEffects.drawShield(g, powerUpSystem.getShield());
-        // Vẽ các hiệu ứng khác
-        powerUpEffects.draw(g);
 
         hud.render((Graphics2D) g);
     }

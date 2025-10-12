@@ -97,33 +97,6 @@ public class PowerUpSystem {
         }
     }
 
-    private void activateExplosion() {
-        float explosionRadius = 100f;
-
-        for (Ball b : balls) {
-            float explosionX = b.getX() + b.getWidth() / 2f;
-            float explosionY = b.getY() + b.getHeight() / 2f;
-
-            powerUpEffects.spawnExplosion(explosionX, explosionY, explosionRadius);
-
-            System.out.println("Explosion triggered at ball (" + explosionX + "," + explosionY + ")");
-
-            for (Brick brick : bricks) {
-                if (!brick.isDestroyed()) {
-                    float dx = (brick.getX() + brick.getWidth()/2) - explosionX;
-                    float dy = (brick.getY() + brick.getHeight()/2) - explosionY;
-                    float distance = (float) Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance <= explosionRadius) {
-                        int damage = getDamageByDistance(distance, explosionRadius);
-                        brick.hit(damage);
-                        System.out.println("Brick at (" + brick.getX() + "," + brick.getY() + ") took " + damage + " damage");
-                    }
-                }
-            }
-        }
-    }
-
     private int getDamageByDistance(float distance, float radius) {
         if (distance <= radius / 3f) return 5;   // gần tâm
         if (distance <= (2f * radius) / 3f) return 3; // trung bình
