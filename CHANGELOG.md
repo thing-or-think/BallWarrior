@@ -1,8 +1,53 @@
 # Changelog
+Tất cả thay đổi đáng chú ý của dự án này sẽ được ghi lại trong tệp này.  
+Định dạng dựa theo [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-Tất cả các thay đổi đáng chú ý trong dự án này được ghi lại ở đây.  
-Tuân theo [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) và Semantic Versioning.
+---
 
+## [0.3.0] - 2025-10-07
+
+### Added
+- Thêm hệ thống quản lý màn chơi:
+    - `LevelData.java`: chứa thông tin cấu hình cơ bản cho từng level (tên, số hàng/cột, bản đồ gạch...).
+    - `LevelManager.java`: quản lý việc **load/save** dữ liệu level, hỗ trợ đọc file JSON.
+- Tích hợp thư viện **GSON** để parse dữ liệu level từ JSON (định dạng dễ mở rộng và chỉnh sửa).
+- Thêm ví dụ file `levels/level1.json` mô tả bản đồ gạch mẫu cho game Arkanoid.
+- Thêm thư mục `ui/base/` chứa các lớp trừu tượng dùng chung:
+    - `Scene.java`: lớp cơ sở trừu tượng cho mọi màn hình (menu, shop, pause, game over...).
+    - `Button.java`: lớp cơ sở trừu tượng cho các loại nút giao diện.
+- Thêm thư mục `ui/button/` chứa các lớp nút kế thừa:
+    - `TextButton.java`: nút hiển thị chữ, tự căn giữa, dùng cho menu chính.
+- Thêm thư mục `ui/scene/` chứa các màn hình cụ thể kế thừa `Scene`:
+    - `MenuScene.java`: màn hình menu chính (Play, Exit...).
+    - `ShopScene.java`: màn hình cửa hàng (mua/chọn skin).
+    - `PauseScene.java`: màn hình tạm dừng game, có các nút:
+        - `Resume`: quay lại trò chơi.
+        - `Menu`: trở về màn hình chính.
+    - `GameOverScene.java`: màn hình kết thúc game (thắng/thua).
+- Thêm hiệu ứng **highlight** cho nút đang được chọn trong `PauseScene`.
+
+### Changed
+- Tái cấu trúc toàn bộ thư mục `ui/` theo hướng đối tượng:
+    - Phân tách riêng phần `Button` và `Scene` để tăng tính mô-đun.
+    - `Button` cũ được chia thành nhiều lớp con kế thừa, thay thế các nhánh `if-else` bằng đa hình.
+- `Scene` nay là lớp trừu tượng, cung cấp cơ chế chung cho vẽ nền, xử lý input và vòng lặp `repaint`.
+- Cập nhật `SceneManager` để quản lý `PauseScene` và chuyển đổi qua lại giữa các scene (`GameScene`, `MenuScene`, `ShopScene`...).
+- `GameScene` được điều chỉnh để có thể **tạm dừng game** bằng phím `ESC`.
+- `GameScene` nay sử dụng `LevelManager` để khởi tạo danh sách `Brick` theo dữ liệu JSON.
+- Cấu trúc thư mục `game/` được tổ chức lại:
+    - Tách riêng lớp dữ liệu (`LevelData`) và lớp điều khiển (`LevelManager`).
+    - Dễ mở rộng cho nhiều màn chơi khác nhau (Level 1, Level 2...).
+
+### Fixed
+- Sửa lỗi **căn giữa text** khi hover ở menu.
+- Sửa lỗi **sai vùng click** trong các nút hình chữ nhật ở màn hình shop.
+- Sửa lỗi **vòng lặp repaint** không dừng khi chuyển từ `GameScene` sang `PauseScene`.
+- Sửa lỗi **giữ phím ESC** khiến game chuyển scene nhiều lần liên tiếp.
+---
+
+## [Unreleased]
+- Hỗ trợ phím **mũi tên** để di chuyển và **Enter** để chọn.
+- Đang phát triển: thêm `SettingsScene` và `AnimatedButton` để hỗ trợ hiệu ứng động trong UI.
 ---
 ## [0.2.0] - 2025-10-02
 

@@ -43,7 +43,7 @@ public abstract class Scene extends JPanel {
         repaintTimer = new Timer(1000 / 60, e -> {
             update();
             repaint();
-//            input.update();
+            input.update();
         });
         repaintTimer.start();
 

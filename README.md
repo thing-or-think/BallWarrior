@@ -19,7 +19,7 @@ Minh họa hệ thống Collision:
 <img src="./docs/collision_animation.gif" alt="Collision Demo" width="400"/>
 ---
 
-## 📂 Cấu trúc thư mục
+## 📂 Cấu trúc thư mục 
 ```bash
 BallWarrior/
 ├── src/
@@ -76,6 +76,13 @@ BallWarrior/
 │   │   ├── LevelData.java         # Cấu trúc dữ liệu chuẩn cho 1 màn chơi (brick map, skin…)
 │   │   ├── ScoreSystem.java       # Quản lý điểm số, mạng
 │   │   └── PowerUpSystem.java     # Quản lý item rơi ra, hiệu ứng power-up
+│   │
+│   ├── game/collision/            # Module va chạm (tách riêng, dễ mở rộng)
+│   │   ├── CollisionSystem.java   # Điều phối va chạm (tìm nearest collision)
+│   │   ├── CollisionResult.java   # Data class (entity, hitPoint…)
+│   │   ├── CollisionUtils.java    # Hàm tiện ích (isBetween, getLineIntersection, circleLineIntersection…)
+│   │   ├── CircleVsAABB.java      # Ball vs Paddle/Brick (AABB)
+│   │   └── CircleVsCircle.java    # Ball vs Ball / PowerUp (nếu cần)
 │   │
 │   ├── entity/                    # Các đối tượng trong game
 │   │   ├── Entity.java            # Lớp cha (position, velocity, draw, update)
