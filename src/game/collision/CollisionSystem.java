@@ -69,7 +69,7 @@ public class CollisionSystem {
         // Xử lý hiệu ứng tùy loại entity
         Entity hit = result.getEntity();
         if (hit instanceof Brick) {
-            ((Brick) hit).hit();
+            ((Brick) hit).hit(1);
         } else if (hit instanceof Paddle) {
             CircleVsAABB.handleBallInsideEntity(ball, hit);
             // Có thể thêm logic điều chỉnh góc theo vị trí chạm
@@ -89,9 +89,19 @@ public class CollisionSystem {
             // Broad-phase check
             if (!broadPhaseCheck(ball, e)) continue;
 
+            // Logic đặc biệt cho Fireball vs Brick
+//            if (ball.isFireBall() && e instanceof Brick) {
+//                CollisionResult result = CircleVsAABB.intersect(ball, e);
+//                if (result != null) {
+//                    // Fireball va chạm với gạch, trả về một kết quả va chạm đặc biệt.
+//                    // Điều này cho phép GameScene phá hủy gạch nhưng không xử lý phản xạ.
+//                    return new CollisionResult(e, new Vector2D(), new Vector2D(), 0);
+//                }
+//            }
+
             // Narrow-phase check
             CollisionResult result = null;
-            if (e instanceof Paddle || e instanceof Brick) {
+            if (e instanceof Paddle || e instanceof Brick || e instanceof Shield) {
                 result = CircleVsAABB.intersect(ball, e);
             }
 

@@ -12,6 +12,7 @@ public abstract class Scene extends JPanel {
     protected ImageIcon background;
     protected final String name;
     private Timer repaintTimer;
+    protected float deltaTime;
 
     public Scene(String name, InputHandler input) {
         this.name = name;
@@ -40,8 +41,14 @@ public abstract class Scene extends JPanel {
     public void startRepaintLoop() {
         if (repaintTimer != null) repaintTimer.stop();
 
+        final long[] lastTime = {System.nanoTime()};
+
         repaintTimer = new Timer(1000 / 60, e -> {
-            update();
+            long currentTime = System.nanoTime();
+            deltaTime = (currentTime - lastTime[0]) / 1_000_000_000f; // giây
+            lastTime[0] = currentTime;
+
+            update(); // dùng deltaTime trong update()
             repaint();
             input.update();
         });

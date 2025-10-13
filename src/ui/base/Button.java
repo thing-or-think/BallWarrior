@@ -1,7 +1,6 @@
 package ui.base;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public abstract class Button extends TextElement {
 
@@ -10,7 +9,6 @@ public abstract class Button extends TextElement {
     protected Rectangle bound;         // Vùng va chạm / click
     protected boolean hovered;         // Trạng thái hover
     protected Runnable activity;       // Hành động khi click
-    protected BufferedImage icon;      // Icon
 
     // Constructor 1: tự đo kích thước theo text
     public Button(String text, int x, int y, FontMetrics fm, Font font) {
