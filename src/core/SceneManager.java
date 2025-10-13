@@ -1,7 +1,7 @@
 package core;
 
 import ui.base.Scene;
-import game.GameScene;
+import ui.scene.GameScene;
 import ui.scene.LevelSelectScene;
 import ui.scene.MenuScene;
 import ui.scene.PauseScene;

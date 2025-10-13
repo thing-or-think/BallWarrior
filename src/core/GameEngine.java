@@ -1,10 +1,6 @@
 package core;
 
-import game.GameScene;
-import utils.Constants;
-
 import javax.swing.*;
-import java.awt.*;
 
 public class GameEngine {
     private final JFrame frame;

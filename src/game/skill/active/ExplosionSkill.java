@@ -1,6 +1,6 @@
 package game.skill.active;
 
-import game.effect.SkillEffectManager;
+import game.skill.effect.SkillEffectManager;
 import game.skill.base.ActiveSkill;
 import entity.Ball;
 import entity.Brick;

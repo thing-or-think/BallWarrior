@@ -42,27 +42,27 @@ BallWarrior/
 │   │   │   ├── base/
 │   │   │   │   ├── Skill.java              # Abstract base class
 │   │   │   │   ├── ActiveSkill.java        # Base cho skill chủ động (Q/W/E)
-│   │   │   │   └── PowerUpSkill.java       # Base cho skill bị động (item rơi)
+│   │   │   │   └── PassiveSkill.java       # Base cho skill bị động (item rơi)
 │   │   │   ├── active/
 │   │   │   │   ├── LaserSkill.java
 │   │   │   │   ├── ShieldSkill.java
 │   │   │   │   └── TimeSlowSkill.java
 │   │   │   │
-│   │   │   ├── powerup/
+│   │   │   ├── PassiveSkill/
 │   │   │   │   ├── ExpandSkill.java
 │   │   │   │   ├── MultiBallSkill.java
 │   │   │   │   ├── CatchSkill.java
 │   │   │   │   ├── LaserPowerUpSkill.java
 │   │   │   │   └── ExtraLifeSkill.java
 │   │   │   │
+│   │   │   ├── effect/         
+│   │   │   │   ├── SkillEffect.java          # abstract class SkillEffect
+│   │   │   │   ├── ExplosionEffect.java      # kế thừa SkillEffect, hiển thị vụ nổ
+│   │   │   │   ├── FireBallEffect.java       # kế thừa SkillEffect, hiệu ứng bóng lửa
+│   │   │   │   ├── ShieldEffect.java         # kế thừa SkillEffect, hiệu ứng shield
+│   │   │   │   └── SkillEffectManager.java   # quản lý tất cả SkillEffect đang hoạt động
+│   │   │   │
 │   │   │   └── SkillManager.java       # Quản lý tất cả skill trong game
-│   │   │
-│   │   ├── effect/         
-│   │   │   ├── SkillEffect.java          # abstract class SkillEffect
-│   │   │   ├── ExplosionEffect.java      # kế thừa SkillEffect, hiển thị vụ nổ
-│   │   │   ├── FireBallEffect.java       # kế thừa SkillEffect, hiệu ứng bóng lửa
-│   │   │   ├── ShieldEffect.java         # kế thừa SkillEffect, hiệu ứng shield
-│   │   │   └── SkillEffectManager.java   # quản lý tất cả SkillEffect đang hoạt động
 │   │   │
 │   │   ├── collision/                 # Module va chạm (tách riêng, dễ mở rộng)
 │   │   │   ├── CollisionSystem.java   # Điều phối va chạm (tìm nearest collision)
@@ -71,18 +71,12 @@ BallWarrior/
 │   │   │   ├── CircleVsAABB.java      # Ball vs Paddle/Brick (AABB)
 │   │   │   └── CircleVsCircle.java    # Ball vs Ball / PowerUp (nếu cần)
 │   │   │
-│   │   ├── GameScene.java         # Cảnh chơi chính (ball, paddle, brick…)
-│   │   ├── LevelManager.java      # Quản lý dữ liệu level (load/save, parse JSON/TXT)
-│   │   ├── LevelData.java         # Cấu trúc dữ liệu chuẩn cho 1 màn chơi (brick map, skin…)
-│   │   ├── ScoreSystem.java       # Quản lý điểm số, mạng
-│   │   └── PowerUpSystem.java     # Quản lý item rơi ra, hiệu ứng power-up
-│   │
-│   ├── game/collision/            # Module va chạm (tách riêng, dễ mở rộng)
-│   │   ├── CollisionSystem.java   # Điều phối va chạm (tìm nearest collision)
-│   │   ├── CollisionResult.java   # Data class (entity, hitPoint…)
-│   │   ├── CollisionUtils.java    # Hàm tiện ích (isBetween, getLineIntersection, circleLineIntersection…)
-│   │   ├── CircleVsAABB.java      # Ball vs Paddle/Brick (AABB)
-│   │   └── CircleVsCircle.java    # Ball vs Ball / PowerUp (nếu cần)
+│   │   ├── GameWorld.java       # Xử lý logic gameplay: paddle, bóng, gạch, va chạm, kỹ năng
+│   │   ├── LevelManager.java    # Quản lý dữ liệu màn chơi (load/save từ JSON hoặc file)
+│   │   ├── LevelData.java       # Định nghĩa cấu trúc dữ liệu của một màn chơi (bản đồ gạch, số hàng/cột, màu sắc)
+│   │   ├── LevelBuilder.java    # Tạo danh sách gạch từ dữ liệu level (LevelData)
+│   │   ├── ScoreSystem.java     # Quản lý điểm, combo và số mạng của người chơi
+│   │   └── PowerUpSystem.java   # Quản lý item rơi ra và xử lý hiệu ứng power-up (tăng tốc, nhân bóng, v.v.)
 │   │
 │   ├── entity/                    # Các đối tượng trong game
 │   │   ├── Entity.java            # Lớp cha (position, velocity, draw, update)
@@ -116,7 +110,8 @@ BallWarrior/
 │   │   │   ├── PauseScene.java        # Màn hình tạm dừng game
 │   │   │   ├── GameOverScene.java     # Màn hình kết thúc (thắng / thua)
 │   │   │   ├── LevelSelectScene.java  # Màn chọn màn chơi (hiển thị preview, metadata)
-│   │   │   └── LevelEditorScene.java  # Màn tạo/sửa level (UI kéo thả, save/load)
+│   │   │   ├── LevelEditorScene.java  # Màn tạo/sửa level (UI kéo thả, save/load)
+│   │   │   └── GameScene.java       # Quản lý scene chính của gameplay (vòng lặp update/render, chuyển cảnh)
 │   │   │
 │   │   ├── panel/                     # Các panel phụ trong UI
 │   │   │   └── LevelPreviewPanel.java # Vẽ preview của 1 màn chơi (dùng lại ở nhiều nơi)

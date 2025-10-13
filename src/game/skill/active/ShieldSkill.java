@@ -2,7 +2,7 @@ package game.skill.active;
 
 import entity.Shield;
 import game.collision.CollisionSystem;
-import game.effect.SkillEffectManager;
+import game.skill.effect.SkillEffectManager;
 import game.skill.base.ActiveSkill;
 import utils.Constants;
 

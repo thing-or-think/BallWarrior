@@ -55,4 +55,8 @@ public class Paddle extends Entity {
     public BufferedImage getSprite (int index) {
         return sprites[index];
     }
+
+    public InputHandler getInput() {
+        return input;
+    }
 }

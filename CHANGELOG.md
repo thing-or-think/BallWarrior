@@ -3,6 +3,80 @@ Tất cả thay đổi đáng chú ý của dự án này sẽ được ghi lạ
 Định dạng dựa theo [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
+## [0.4.0] - 2025-10-13
+
+### 🆕 Thêm mới
+
+- **Hệ thống kỹ năng (Skill System)**
+    - Thư mục mới: `game/skill/`
+    - Chức năng: xử lý kỹ năng chủ động (Active), bị động (Passive) và hiệu ứng (Effect).
+    - **Cấu trúc:**
+        - `base/`
+            - `Skill.java` – lớp abstract gốc cho mọi kỹ năng.
+            - `ActiveSkill.java` – kỹ năng chủ động (kích hoạt bằng Q/W/E...).
+            - `PassiveSkill.java` – kỹ năng bị động (tự kích hoạt khi điều kiện đủ).
+        - `active/`
+            - `LaserSkill.java`, `ShieldSkill.java`, `TimeSlowSkill.java`.
+        - `passive/`
+            - `ExpandSkill.java`, `MultiBallSkill.java`, `CatchSkill.java`, `LaserPowerUpSkill.java`, `ExtraLifeSkill.java`.
+        - `effect/`
+            - `SkillEffect.java` (abstract), `ExplosionEffect.java`, `FireBallEffect.java`, `ShieldEffect.java`.
+    - `SkillManager.java` – quản lý kỹ năng người chơi.
+    - `SkillEffectManager.java` – quản lý hiệu ứng kỹ năng đang hoạt động.
+
+- **GameWorld.java**
+    - Tách riêng logic gameplay (bóng, paddle, va chạm, kỹ năng).
+    - Thay thế phần xử lý logic trước đây trong `GameScene.java`.
+
+- **LevelBuilder.java**
+    - Sinh đối tượng gạch (`Brick`) từ dữ liệu trong `LevelData`.
+
+- **ui/element/ComboLabel.java**
+    - Hiệu ứng hiển thị combo động (phóng to, đổi màu, fade-out).
+
+---
+
+### 🔄 Thay đổi
+
+- `GameScene.java` **được di chuyển** từ `game/` → `ui/scene/`
+    - Nay chỉ quản lý hiển thị và giao tiếp UI.
+    - Logic gameplay chuyển hoàn toàn sang `GameWorld.java`.
+
+- **HUD.java**
+    - Bổ sung hiển thị thanh năng lượng, kỹ năng và thời gian hồi chiêu (cooldown).
+
+- **ScoreSystem.java**
+    - Nâng cấp quản lý chuỗi combo và điểm thưởng khi phá gạch liên tiếp.
+
+---
+
+### 🔧 Sửa lỗi & Tối ưu
+
+- Xóa thư mục trùng lặp `game/collision/` (trước đó khai báo hai lần).
+- Tối ưu mô hình cảnh:
+    - `GameScene` chỉ xử lý phần hiển thị.
+    - `GameWorld` xử lý vật lý, va chạm và kỹ năng.
+- Cập nhật mô tả file trong toàn bộ cây thư mục – rõ ràng, đồng bộ và chuyên nghiệp hơn.
+
+---
+
+### 📁 Tổng kết thay đổi chính
+
+| Hạng mục                        | Trạng thái     | Ghi chú                                      |
+|---------------------------------|----------------|---------------------------------------------|
+| `game/skill/`                   | 🆕 Thêm mới     | Hệ thống kỹ năng hoàn chỉnh                 |
+| `GameWorld.java`                | 🆕 Thêm mới     | Tách logic gameplay                         |
+| `ui/element/ComboLabel.java`    | 🆕 Thêm mới     | Hiệu ứng combo động                         |
+| `LevelBuilder.java`             | 🆕 Thêm mới     | Xây dựng màn chơi từ dữ liệu                |
+| `GameScene.java`                | 🔄 Di chuyển     | Từ `game/` sang `ui/scene/`                 |
+| `game/collision/`               | 🔧 Sửa lỗi cấu trúc | Xóa trùng lặp, tổ chức lại                 |
+| `ScoreSystem.java`              | ✨ Nâng cấp      | Quản lý combo, chuỗi điểm liên tiếp         |
+
+---
+
+## [Unreleased]
+
+---
 
 ## [0.3.0] - 2025-10-07
 

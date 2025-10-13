@@ -1,13 +1,12 @@
-package game.effect;
+package game.skill.effect;
 
 import java.awt.*;
 
 import utils.Constants;
 
 import entity.Ball;
-import entity.Shield;
 
-public class PowerUpEffects {
+public class PassiveSkill {
 
     //vẽ bóng lửa
     public void drawFireBallEffect(Graphics g, Ball ball) {

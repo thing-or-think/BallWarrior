@@ -19,32 +19,28 @@ public class MultiBallSkill extends ActiveSkill {
         this.balls = balls;
     }
 
+    @Override
     protected void performAction() {
-        if (balls == null || balls.isEmpty()) {
-            return;
-        }
+        if (balls == null || balls.isEmpty()) return;
 
         List<Ball> newBalls = new ArrayList<>();
-        float angle90Deg = (float) Math.toRadians(90);
+        float angle30Deg = (float) Math.toRadians(30); // lệch 30 độ
 
-        // Tạo bản sao để tránh ConcurrentModificationException
         for (Ball b : new ArrayList<>(balls)) {
             Vector2D originalVelocity = b.getVelocity();
 
-            // Bỏ qua nếu bóng đang dính hoặc tốc độ quá chậm
-            if (b.isStuck() || originalVelocity.length() < 1.0f) {
+            if (b.isStuck() || originalVelocity.length() < 1.0f)
                 continue;
-            }
 
-            // Tạo hai vector mới từ hướng ban đầu
+            // Sao chép vector vận tốc ban đầu
             Vector2D newVelocity1 = new Vector2D(originalVelocity.x, originalVelocity.y);
             Vector2D newVelocity2 = new Vector2D(originalVelocity.x, originalVelocity.y);
 
-            // Xoay trái / phải 90 độ
-            newVelocity1.rotate(-angle90Deg);
-            newVelocity2.rotate(angle90Deg);
+            // Xoay trái / phải 30 độ
+            newVelocity1.rotate(-angle30Deg);
+            newVelocity2.rotate(angle30Deg);
 
-            // Tạo hai bóng mới với vận tốc mới
+            // Tạo hai bóng mới
             Ball newBall1 = new Ball(b.getX(), b.getY());
             newBall1.setVelocity(newVelocity1.x, newVelocity1.y);
             newBall1.setStuck(false);
@@ -55,8 +51,8 @@ public class MultiBallSkill extends ActiveSkill {
             newBall2.setStuck(false);
             newBalls.add(newBall2);
 
-            // Có thể bỏ bóng gốc nếu muốn (như code trước)
-             balls.remove(b);
+            // Xóa bóng gốc nếu cần
+            balls.remove(b);
         }
 
         balls.addAll(newBalls);

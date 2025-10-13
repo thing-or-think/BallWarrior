@@ -1,4 +1,4 @@
-package game.effect;
+package game.skill.effect;
 
 import java.awt.*;
 
