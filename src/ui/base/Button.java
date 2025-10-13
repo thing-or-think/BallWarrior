@@ -1,6 +1,7 @@
 package ui.base;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public abstract class Button extends TextElement {
 
@@ -9,6 +10,7 @@ public abstract class Button extends TextElement {
     protected Rectangle bound;         // Vùng va chạm / click
     protected boolean hovered;         // Trạng thái hover
     protected Runnable activity;       // Hành động khi click
+    protected BufferedImage icon;      // Icon
 
     // Constructor 1: tự đo kích thước theo text
     public Button(String text, int x, int y, FontMetrics fm, Font font) {
@@ -26,6 +28,17 @@ public abstract class Button extends TextElement {
     public Button(String text, int x, int y, int width, int height, Font font) {
         super(text, x, y, font);
 
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+
+        this.bound = new Rectangle(x, y, width, height);
+    }
+    // Constructor 3: dùng icon
+    public Button(String text, BufferedImage icon, int x, int y, int width, int height) {
+        super(text, x, y, new Font("Serif", Font.PLAIN, 32));
+        this.icon = icon;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -59,6 +72,10 @@ public abstract class Button extends TextElement {
 
     public void performAction() {
         if (activity != null) activity.run();
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     /** Getter tiện dụng nếu cần */

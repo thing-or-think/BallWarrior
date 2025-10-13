@@ -44,38 +44,24 @@ public class GridPanel extends JPanel {
         initMouse();
     }
 
-    /** Gán danh sách skin và tính lại scroll */
-    public void setSkins(List<Skins> skins) {
-        this.skins = skins;
-        updateSkinBounds();
-        calcMaxScroll();
-        repaint();
-    }
-    /** Gán vị trí từng skin (gọi khi load hoặc scroll) */
-    private void updateSkinBounds() {
-        if (skins == null) return;
+    /** Khởi tạo mouse listener */
+    private void initMouse() {
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                handleMouseClick(e.getX(), e.getY());
+            }
+        });
 
-        int x0 = gap;
-        int y0 = gap - scrollY + 80;
-        for (int i = 0; i < skins.size(); i++) {
-            int row = i / cols;
-            int col = i % cols;
-            int x = x0 + col * (itemSize + gap);
-            int y = y0 + row * (itemSize + gap);
-            skins.get(i).setBounds(new Rectangle(x, y, itemSize, itemSize));
-        }
+        addMouseWheelListener(e -> {
+            int notches = e.getWheelRotation();
+            scrollY += notches * 20;
+            clampScroll();
+            updateSkinBounds();
+            repaint();
+        });
     }
-    /** Tính độ dài vùng cuộn */
-    private void calcMaxScroll() {
-        if (skins == null) {
-            maxScroll = 0;
-            return;
-        }
-        int rows = (int) Math.ceil(skins.size() / (double) cols);
-        int contentHeight = rows * (itemSize + gap);
-        int visibleHeight = getHeight() - 95;
-        maxScroll = Math.max(0, contentHeight - visibleHeight);
-    }
+
     /** Khi click vào 1 skin */
     private void handleSkinClick(Skins skin) {
         System.out.println("Clicked: " + skin.getName());
@@ -103,23 +89,6 @@ public class GridPanel extends JPanel {
         if (scrollY > maxScroll) scrollY = maxScroll;
     }
 
-    /** Khởi tạo mouse listener */
-    private void initMouse() {
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                handleMouseClick(e.getX(), e.getY());
-            }
-        });
-
-        addMouseWheelListener(e -> {
-            int notches = e.getWheelRotation();
-            scrollY += notches * 20;
-            clampScroll();
-            updateSkinBounds();
-            repaint();
-        });
-    }
     /** Vẽ toàn bộ panel */
     @Override
     protected void paintComponent(Graphics g) {
@@ -190,6 +159,39 @@ public class GridPanel extends JPanel {
         if (skins == null) return 0;
         int rows = (int) Math.ceil(skins.size() / (double) cols);
         return rows * (itemSize + gap);
+    }
+
+    /** Gán danh sách skin và tính lại scroll */
+    public void setSkins(List<Skins> skins) {
+        this.skins = skins;
+        updateSkinBounds();
+        calcMaxScroll();
+        repaint();
+    }
+    /** Gán vị trí từng skin (gọi khi load hoặc scroll) */
+    private void updateSkinBounds() {
+        if (skins == null) return;
+
+        int x0 = gap;
+        int y0 = gap - scrollY + 80;
+        for (int i = 0; i < skins.size(); i++) {
+            int row = i / cols;
+            int col = i % cols;
+            int x = x0 + col * (itemSize + gap);
+            int y = y0 + row * (itemSize + gap);
+            skins.get(i).setBounds(new Rectangle(x, y, itemSize, itemSize));
+        }
+    }
+    /** Tính độ dài vùng cuộn */
+    private void calcMaxScroll() {
+        if (skins == null) {
+            maxScroll = 0;
+            return;
+        }
+        int rows = (int) Math.ceil(skins.size() / (double) cols);
+        int contentHeight = rows * (itemSize + gap);
+        int visibleHeight = getHeight() - 95;
+        maxScroll = Math.max(0, contentHeight - visibleHeight);
     }
 
     // ===== Getter / Setter =====

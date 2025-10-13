@@ -4,6 +4,8 @@ import core.ResourceLoader;
 import core.DataChangeListener;
 import entity.Skins;
 import ui.scene.ShopScene;
+import ui.base.Button;
+import ui.button.BuyButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,27 +13,29 @@ import java.awt.*;
 public class InfoPanel extends JPanel {
     private Skins selectedSkin;
 
-    private Rectangle buyButtonBounds;
-    private boolean hovered = false;
+//    private Rectangle buyButtonBounds;
+//    private boolean hovered = false;
+    private BuyButton buyButton;
     private boolean isBall;
     private DataChangeListener dataChangeListener;
     private ShopScene shopScene;
 
     public InfoPanel() {
         setOpaque(false);
-        buyButtonBounds = new Rectangle(120, 420, 160, 50);
+        setLayout(null);
+        buyButton = new BuyButton("BUY",120,420,160,50,new Font("Serif", Font.BOLD, 24),() -> handleAction());
 
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent e) {
-                hovered = buyButtonBounds.contains(e.getPoint());
+                buyButton.setHovered(buyButton.contains(e.getX(),e.getY()));
                 repaint();
             }
         });
 
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent e) {
-                if (selectedSkin != null && buyButtonBounds.contains(e.getPoint())) {
-                    handleAction();
+                if (selectedSkin != null && buyButton.contains(e.getX(),e.getY())) {
+                    buyButton.onClick();
                 }
             }
         });
@@ -39,6 +43,7 @@ public class InfoPanel extends JPanel {
 
     public void showSkinInfo(Skins skin) {
         this.selectedSkin = skin;
+        updateBuyButtonText();
         repaint();
     }
 
@@ -46,10 +51,31 @@ public class InfoPanel extends JPanel {
         this.dataChangeListener = listener;
     }
 
+    private void updateBuyButtonText() {
+        if (selectedSkin == null) return;
+        String text;
+        if (selectedSkin.isBought()) {
+            if (shopScene != null) {
+                int currentlyEquippedId = isBall
+                        ? shopScene.getEquippedBallId()
+                        : shopScene.getEquippedPaddleId();
+                if (selectedSkin.getId() == currentlyEquippedId) {
+                    text = "EQUIPPED";
+                } else {
+                    text = "EQUIP";
+                }
+            } else {
+                text = "EQUIP";
+            }
+        } else {
+            text = "BUY " + selectedSkin.getPrice() + "$";
+        }
+        buyButton.setText(text);
+    }
+
     private void handleAction() {
         if (selectedSkin == null) return;
         int purchaseId = selectedSkin.getId();
-
         // 1. XÁC ĐỊNH LOẠI SKIN VÀ ĐƯỜNG DẪN FILE
         String currentTab = shopScene.getCurrentTab();
         boolean isBall = currentTab.equals("BALLS");
@@ -57,26 +83,19 @@ public class InfoPanel extends JPanel {
         String dataFilePath = isBall ? "docs/balls.txt" : "docs/paddles.txt";
         // Tiền vẫn được lưu trong docs/balls.txt
         String moneyFilePath = "docs/balls.txt";
-
         // 2. LẤY ID HIỆN TẠI ĐANG TRANG BỊ
         int currentlyEquippedId = isBall
                 ? shopScene.getEquippedBallId()
                 : shopScene.getEquippedPaddleId();
-
         if (selectedSkin.isBought()) {
             if (purchaseId != currentlyEquippedId) {
-
                 // 2.1 LƯU ID MỚI VÀO FILE
                 if (isBall) {
                     ResourceLoader.setEquippedBallId(dataFilePath, purchaseId);
-                    //entity.Ball.loadEquippedAssets();
                 } else {
                     ResourceLoader.setEquippedPaddleId(dataFilePath, purchaseId);
-                    //entity.Paddle.loadEquippedAssets();
                 }
-
                 System.out.println("Equipped " + selectedSkin.getName() + " (ID: " + purchaseId + ")");
-
                 // 2.2 THÔNG BÁO TẢI LẠI DỮ LIỆU
                 if (dataChangeListener != null) {
                     dataChangeListener.onDataChanged();
@@ -84,21 +103,16 @@ public class InfoPanel extends JPanel {
             } else {
                 System.out.println(selectedSkin.getName() + " đã được trang bị.");
             }
-
         } else {
             int money = ResourceLoader.getMoney(moneyFilePath);
             int price = selectedSkin.getPrice();
-
             if (money >= price) {
                 money -= price;
                 selectedSkin.setBought(true);
-
                 // LƯU TRẠNG THÁI VÀO FILE
                 ResourceLoader.setMoney("docs/balls.txt", money);
                 ResourceLoader.updateIsBought(dataFilePath, purchaseId);
-
                 System.out.println("Đã mua " + selectedSkin.getName() + " với giá " + price + " (ID: " + purchaseId + ")");
-
                 // THÔNG BÁO CHO SHOP ĐỂ TẢI LẠI DỮ LIỆU
                 if (dataChangeListener != null) {
                     dataChangeListener.onDataChanged();
@@ -107,6 +121,7 @@ public class InfoPanel extends JPanel {
                 System.out.println("Không đủ tiền để mua " + selectedSkin.getName());
             }
         }
+        updateBuyButtonText();
         repaint();
     }
 
@@ -157,42 +172,7 @@ public class InfoPanel extends JPanel {
                 g2.fillRect(getWidth() / 2 - 100, 200, 200, 50);
             }
         }
-
-        // button vàng
-        g2.setColor(hovered ? new Color(255, 230, 50) : new Color(255, 210, 0));
-        g2.fillRoundRect(buyButtonBounds.x, buyButtonBounds.y, buyButtonBounds.width, buyButtonBounds.height, 25, 25);
-
-        g2.setColor(Color.BLACK);
-        g2.setStroke(new BasicStroke(3));
-        g2.drawRoundRect(buyButtonBounds.x, buyButtonBounds.y, buyButtonBounds.width, buyButtonBounds.height, 25, 25);
-
-        // text BUY/EQUIP
-        String text = "BUY";
-        if (selectedSkin.isBought()) {
-            if (shopScene != null) {
-                int currentlyEquippedId = isBall
-                        ? shopScene.getEquippedBallId()
-                        : shopScene.getEquippedPaddleId();
-                if (selectedSkin.getId() == currentlyEquippedId) {
-                    text = "EQUIPPED";
-                } else {
-                    text = "EQUIP";
-                }
-            } else {
-                text = "EQUIP";
-            }
-            g2.setFont(new Font("Serif", Font.BOLD, 24));
-            int textWidth = g2.getFontMetrics().stringWidth(text);
-            int textX = buyButtonBounds.x + (buyButtonBounds.width - textWidth) / 2;
-            int textY = buyButtonBounds.y + buyButtonBounds.height / 2 + 8;
-            g2.drawString(text, textX, textY);
-        } else {
-            g2.setFont(new Font("Serif", Font.BOLD, 24));
-            int textWidth = g2.getFontMetrics().stringWidth(text);
-            int textX = buyButtonBounds.x + (buyButtonBounds.width - textWidth) / 2;
-            int textY = buyButtonBounds.y + buyButtonBounds.height / 2 + 8;
-            g2.drawString(text, textX, textY);
-        }
+        buyButton.draw(g2);
     }
     public void setIsBall(boolean isBall) {
         this.isBall = isBall;

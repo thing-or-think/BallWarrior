@@ -4,8 +4,10 @@ import core.DataChangeListener;
 import core.InputHandler;
 import core.ResourceLoader;
 import entity.Skins;
-import core.Button;
+import ui.button.IconButton;
 import ui.base.Scene;
+import ui.base.Button;
+import ui.button.IconButton;
 import ui.button.MenuButton;
 import utils.Constants;
 
@@ -17,7 +19,6 @@ import java.util.List;
 public class ShopScene extends Scene implements DataChangeListener {
     private final List<Button> buttons = new ArrayList<>();
     private Runnable onBack;
-    //private boolean mouseHandled = false;
 
     private String currentTab = "BALLS";
     private static BufferedImage iconBack = ResourceLoader.loadImg("assets/images/Xbutton.png");
@@ -25,6 +26,7 @@ public class ShopScene extends Scene implements DataChangeListener {
     private static BufferedImage iconPaddle = ResourceLoader.loadImg("assets/images/iconPaddle.png");
     private static BufferedImage iconGacha = ResourceLoader.loadImg("assets/images/Xbutton.png");
     private final GridPanel gridPanel;
+    private final GachaPanel gachaPanel;
 
     private List<Skins> ballSkins;
     private List<Skins> paddleSkins;
@@ -38,6 +40,13 @@ public class ShopScene extends Scene implements DataChangeListener {
         this.gridPanel.setBounds(0,55,Constants.WIDTH,Constants.HEIGHT -60);
         add(gridPanel);
         this.gridPanel.setShopScene(this);
+
+        this.gachaPanel = new GachaPanel(input);
+        this.gachaPanel.setShopScene(this);
+        this.gachaPanel.setDataChangeListener(this);
+        this.gachaPanel.setBounds(0, 55, Constants.WIDTH, Constants.HEIGHT - 60);
+        this.gachaPanel.setVisible(false);
+        add(gachaPanel);
         initUI();
         initButtons();
         initInput();
@@ -56,10 +65,10 @@ public class ShopScene extends Scene implements DataChangeListener {
 
     /** Tạo các button */
     private void initButtons() {
-        buttons.add(new Button("BACK",iconBack,20,0,50,50));
-        buttons.add(new Button("BALLS",iconBall,250,0,50,50));
-        buttons.add(new Button("PADDLES",iconPaddle,350,0,50,50));
-        buttons.add(new Button("GACHA",iconGacha,450,0,50,50));
+        buttons.add(new IconButton("BACK",iconBack,20,0,50,50,() -> onBack.run()));
+        buttons.add(new IconButton("BALLS",iconBall,250,0,50,50,() -> handleButtonClick("BALLS")));
+        buttons.add(new IconButton("PADDLES",iconPaddle,350,0,50,50,() -> handleButtonClick("PADDLES")));
+        buttons.add(new IconButton("GACHA",iconGacha,450,0,50,50,() -> handleButtonClick("GACHA")));
     }
 
     @Override
@@ -68,9 +77,9 @@ public class ShopScene extends Scene implements DataChangeListener {
         int my = input.getMouseY();
 
         for (Button button : buttons) {
-            button.hovered = button.contains(mx,my);
-            if (button.hovered && input.consumeClick()) {
-                handleButtonClick(button.text);
+            button.setHovered(button.contains(mx,my));
+            if (button.isHovered() && input.consumeClick()) {
+                handleButtonClick(button.getText());
             }
         }
     }
@@ -78,6 +87,8 @@ public class ShopScene extends Scene implements DataChangeListener {
     /** Xử lý sự kiện click button */
     private void handleButtonClick(String text) {
         System.out.println("Clicked " + text);
+        gridPanel.setVisible(true);
+        gachaPanel.setVisible(false);
         switch (text) {
             case "BACK":
                 onBack.run();
@@ -96,7 +107,8 @@ public class ShopScene extends Scene implements DataChangeListener {
                 break;
             case "GACHA":
                 currentTab = "GACHA";
-                gridPanel.setCurrentTab(currentTab);
+                gridPanel.setVisible(false);
+                gachaPanel.setVisible(true);
                 break;
             default:
                 break;
@@ -133,9 +145,9 @@ public class ShopScene extends Scene implements DataChangeListener {
     /** Vẽ button */
     private void drawButtons(Graphics2D g2) {
         for (Button button : buttons) {
-            if (button.text == currentTab) {
+            if (button.getText() == currentTab) {
                 g2.setColor(new Color(255, 255, 0, 100));
-                g2.fillRect(button.bound.x,button.bound.y,50,50);
+                g2.fillRect(button.getBounds().x,button.getBounds().y,50,50);
             }
             button.draw(g2);
         }
@@ -164,12 +176,16 @@ public class ShopScene extends Scene implements DataChangeListener {
     public String getCurrentTab() {
         return currentTab;
     }
-
     public int getEquippedBallId() {
         return equippedBallId;
     }
-
     public int getEquippedPaddleId() {
         return equippedPaddleId;
+    }
+    public List<Skins> getBallSkins() {
+        return ballSkins;
+    }
+    public List<Skins> getPaddleSkins() {
+        return paddleSkins;
     }
 }
