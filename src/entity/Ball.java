@@ -115,14 +115,6 @@ public class Ball extends Entity{
         return new Vector2D(position.x + width / 2, position.y + height / 2);
     }
 
-    public boolean isFireBall() {
-        return isFireBall;
-    }
-
-    public void setFireBall(boolean val) {
-        isFireBall = val;
-    }
-
     public boolean isStuck() {
         return stuck;
     }

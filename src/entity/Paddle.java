@@ -76,9 +76,6 @@ public class Paddle extends Entity {
             g.fillRect((int) position.x, (int) position.y, width, height);
         }
     }
-    public BufferedImage getSprite (int index) {
-        return sprites[index];
-    }
 
     public InputHandler getInput() {
         return input;

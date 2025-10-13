@@ -1,4 +1,4 @@
-#EQUIPPED_PADDLE_ID:6
+#EQUIPPED_PADDLE_ID:10
 # id, name, hasImage, rarity, price, isBought, colorOrPath
 0, Basic Red, false, COMMON, 0, true, RED
 1, Basic Blue, false, COMMON, 0, true, BLUE

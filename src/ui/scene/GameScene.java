@@ -2,6 +2,8 @@ package ui.scene;
 
 import core.InputHandler;
 import core.SceneManager;
+import entity.Ball;
+import entity.Paddle;
 import game.GameWorld;
 import ui.HUD;
 import ui.base.Scene;
@@ -37,5 +39,10 @@ public class GameScene extends Scene {
     protected void render(Graphics2D g2) {
         world.render(g2);
         hud.render(g2);
+    }
+
+    public void forceUpdateGameAssets() {
+        // Tải lại Skin vào cache static
+        world.forceUpdateGameAssets();
     }
 }

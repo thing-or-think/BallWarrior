@@ -74,29 +74,11 @@ public class SkillManager {
         if (input.isKeyJustPressed(KeyEvent.VK_E)) {
             explosionSkill.activate();
         }
-
         // R - Fire Ball
         if (input.isKeyJustPressed(KeyEvent.VK_R)) {
-            activateFireBall();
+            System.out.println("Fire Ball activated!");
         }
-    }
 
-    private void activateFireBall() {
-        if (!fireBallActive) {
-            for (Ball b : balls) {
-                b.setFireBall(true);
-            }
-            fireBallActive = true;
-        }
-    }
-
-    public void deactivateFireBall() {
-        if (fireBallActive) {
-            for (Ball b : balls) {
-                b.setFireBall(false);
-            }
-            fireBallActive = false;
-        }
     }
 
     public Shield getShield() {

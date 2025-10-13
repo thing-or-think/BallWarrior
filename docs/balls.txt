@@ -1,5 +1,5 @@
-#33550
-#EQUIPPED_BALL_ID:2
+#28550
+#EQUIPPED_BALL_ID:11
 # id, name, hasImg, rarity, price, isBought, colorOrPath
 0,Basic Red,false,COMMON,0,true,RED
 1, Basic Blue, false, COMMON, 0, true, BLUE
@@ -12,6 +12,6 @@
 8,Fire Orb,true,EPIC,1000,true,assets/images/Balls/ball.png
 9,Watermelon,true,LEGENDARY,1000,true,assets/images/Balls/watermelon.png
 10,Beach Ball,true,LEGENDARY,5000,true,assets/images/Balls/ballBeach.png
-11,  Pokeball,  true,  LEGENDARY,  5000, false,  assets/images/Balls/pokeball.png
+11,Pokeball,true,LEGENDARY,5000,true,assets/images/Balls/pokeball.png
 12,UET Ball,true,LEGENDARY,5000,true,assets/images/Balls/UET.png
 

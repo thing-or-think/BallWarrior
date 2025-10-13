@@ -95,9 +95,6 @@ public class GameWorld {
             }
         } else if (entity instanceof Shield || entity instanceof Paddle) {
             if (collisionSystem.resolveCollision(ball, result)) {
-                if (ball.isFireBall()) {
-                    skillManager.deactivateFireBall();
-                }
                 scoreSystem.resetCombo();
             }
         }
@@ -118,10 +115,28 @@ public class GameWorld {
         balls.clear();
         balls.add(ball);
         scoreSystem.resetCombo();
-        skillManager.deactivateFireBall();
     }
 
     public ScoreSystem getScoreSystem() {
         return scoreSystem;
+    }
+
+    public void forceUpdateGameAssets() {
+        // Tải lại Skin vào cache static
+        Ball.loadEquippedAssets();
+        Paddle.loadEquippedAssets();
+
+        // Cập nhật đối tượng đang tồn tại
+        for (Ball ball : balls) {
+            if (ball != null) {
+                ball.setImg(Ball.equippedBallImage);
+                ball.setColor(Ball.equippedBallColor);
+
+            }
+        }
+        if (paddle != null) {
+            paddle.setImg(Paddle.equippedPaddleImage);
+            paddle.setColor(Paddle.equippedPaddleColor);
+        }
     }
 }
