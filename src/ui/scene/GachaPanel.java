@@ -3,6 +3,7 @@ package ui.scene;
 import core.DataChangeListener;
 import core.InputHandler;
 import core.ResourceLoader;
+import data.PlayerData;
 import entity.Skins;
 import ui.base.Button;
 import ui.button.BuyButton;
@@ -27,12 +28,14 @@ public class GachaPanel extends JPanel {
     private final int gachaCost = 1000;
     private Button spinButton;
     private boolean hovered = false;
+    private final PlayerData playerData;
 
-    public GachaPanel(InputHandler input) {
+    public GachaPanel(InputHandler input, PlayerData playerData) {
         this.input = input;
         setLayout(null);
         setBackground(Color.DARK_GRAY);
         this.background = ResourceLoader.loadImg("assets/images/shopBg.jpg");
+        this.playerData = playerData;
         initUI();
         initMouse();
     }
@@ -81,13 +84,13 @@ public class GachaPanel extends JPanel {
     }
     private void handleGachaSpin() {
         //if (shopScene == null) return;
-        int money = ResourceLoader.getMoney("docs/balls.txt");
+        int money = playerData.getCoins();
         if (money < gachaCost) {
             System.out.println("KHÔNG ĐỦ TIỀN!");
             return;
         }
         money -= gachaCost;
-        ResourceLoader.setMoney("docs/balls.txt", money);
+        playerData.setCoins(money);
 
         awardedSkin = openGacha();
         if (awardedSkin == null) return;
@@ -100,6 +103,7 @@ public class GachaPanel extends JPanel {
         if (!awardedSkin.isBought()) {
             awardedSkin.setBought(true);
             ResourceLoader.updateIsBought(dataFilePath, purchaseId);
+            shopScene.onDataChanged();
             System.out.println("🎉 CHÚC MỪNG! Bạn nhận được Skin MỚI: " + awardedName);
         } else {
             System.out.println("✨ TRÙNG SKIN: " + awardedName + " phải CHỊU");

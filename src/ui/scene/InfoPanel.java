@@ -2,6 +2,7 @@ package ui.scene;
 
 import core.ResourceLoader;
 import core.DataChangeListener;
+import data.PlayerData;
 import entity.Skins;
 import ui.scene.ShopScene;
 import ui.base.Button;
@@ -19,8 +20,10 @@ public class InfoPanel extends JPanel {
     private boolean isBall;
     private DataChangeListener dataChangeListener;
     private ShopScene shopScene;
+    private final PlayerData playerData;
 
-    public InfoPanel() {
+    public InfoPanel(PlayerData playerData) {
+        this.playerData = playerData;
         setOpaque(false);
         setLayout(null);
         buyButton = new BuyButton("BUY",120,420,160,50,new Font("Serif", Font.BOLD, 24),() -> handleAction());
@@ -104,14 +107,15 @@ public class InfoPanel extends JPanel {
                 System.out.println(selectedSkin.getName() + " đã được trang bị.");
             }
         } else {
-            int money = ResourceLoader.getMoney(moneyFilePath);
+            int money = playerData.getCoins();
             int price = selectedSkin.getPrice();
             if (money >= price) {
                 money -= price;
                 selectedSkin.setBought(true);
                 // LƯU TRẠNG THÁI VÀO FILE
-                ResourceLoader.setMoney("docs/balls.txt", money);
+                playerData.setCoins(money);
                 ResourceLoader.updateIsBought(dataFilePath, purchaseId);
+                shopScene.onDataChanged();
                 System.out.println("Đã mua " + selectedSkin.getName() + " với giá " + price + " (ID: " + purchaseId + ")");
                 // THÔNG BÁO CHO SHOP ĐỂ TẢI LẠI DỮ LIỆU
                 if (dataChangeListener != null) {

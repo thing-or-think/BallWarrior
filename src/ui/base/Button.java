@@ -9,6 +9,7 @@ public abstract class Button extends TextElement {
     protected int width, height;       // Kích thước nút
     protected Rectangle bound;         // Vùng va chạm / click
     protected boolean hovered;         // Trạng thái hover
+    protected boolean clicked;         // Trạng tháy clicked
     protected Runnable activity;       // Hành động khi click
     protected BufferedImage icon;      // Icon
 
@@ -90,4 +91,9 @@ public abstract class Button extends TextElement {
     public int getCenterY() {
         return y + height / 2;
     }
+
+    public void setClicked(boolean clicked) {
+        this.clicked = clicked;
+    }
+
 }

@@ -3,7 +3,10 @@ package ui.scene;
 import core.DataChangeListener;
 import core.InputHandler;
 import core.ResourceLoader;
+import core.ResourceSaver;
+import data.PlayerData;
 import entity.Skins;
+import ui.base.ButtonGroup;
 import ui.button.IconButton;
 import ui.base.Scene;
 import ui.base.Button;
@@ -18,6 +21,7 @@ import java.util.List;
 
 public class ShopScene extends Scene implements DataChangeListener {
     private final List<Button> buttons = new ArrayList<>();
+    private final ButtonGroup buttonGroup;
     private Runnable onBack;
 
     private String currentTab = "BALLS";
@@ -27,6 +31,7 @@ public class ShopScene extends Scene implements DataChangeListener {
     private static BufferedImage iconGacha = ResourceLoader.loadImg("assets/images/Xbutton.png");
     private final GridPanel gridPanel;
     private final GachaPanel gachaPanel;
+    private final PlayerData playerData;
 
     private List<Skins> ballSkins;
     private List<Skins> paddleSkins;
@@ -35,17 +40,21 @@ public class ShopScene extends Scene implements DataChangeListener {
 
     public ShopScene(InputHandler input, Runnable onBack) {
         super("ShopScene", input);
+        playerData = new PlayerData(ResourceLoader.loadPlayerData());
+
         this.onBack = onBack;
-        this.gridPanel = new GridPanel(input);
+        this.gridPanel = new GridPanel(input, playerData);
         this.gridPanel.setBounds(0,55,Constants.WIDTH,Constants.HEIGHT -60);
         add(gridPanel);
         this.gridPanel.setShopScene(this);
 
-        this.gachaPanel = new GachaPanel(input);
+        this.gachaPanel = new GachaPanel(input, playerData);
         this.gachaPanel.setShopScene(this);
         this.gachaPanel.setDataChangeListener(this);
         this.gachaPanel.setBounds(0, 55, Constants.WIDTH, Constants.HEIGHT - 60);
         this.gachaPanel.setVisible(false);
+
+        buttonGroup = new ButtonGroup();
         add(gachaPanel);
         initUI();
         initButtons();
@@ -58,17 +67,23 @@ public class ShopScene extends Scene implements DataChangeListener {
         setLayout(null);
         ballSkins = ResourceLoader.loadSkins("docs/balls.txt");
         paddleSkins = ResourceLoader.loadSkins("docs/paddles.txt");
-        this.equippedBallId = ResourceLoader.getEquippedBallId("docs/balls.txt");
-        this.equippedPaddleId = ResourceLoader.getEquippedPaddleId("docs/paddles.txt");
+        equippedBallId = ResourceLoader.getEquippedBallId("docs/balls.txt");
+        equippedPaddleId = ResourceLoader.getEquippedPaddleId("docs/paddles.txt");
         gridPanel.setSkins(ballSkins);
     }
 
     /** Tạo các button */
     private void initButtons() {
         buttons.add(new IconButton("BACK",iconBack,20,0,50,50,() -> onBack.run()));
-        buttons.add(new IconButton("BALLS",iconBall,250,0,50,50,() -> handleButtonClick("BALLS")));
-        buttons.add(new IconButton("PADDLES",iconPaddle,350,0,50,50,() -> handleButtonClick("PADDLES")));
-        buttons.add(new IconButton("GACHA",iconGacha,450,0,50,50,() -> handleButtonClick("GACHA")));
+        buttons.add(new IconButton("BALLS",iconBall,250,0,50,50,() -> handleBalls()));
+        buttons.add(new IconButton("PADDLES",iconPaddle,350,0,50,50,() -> handlePaddles()));
+        buttons.add(new IconButton("GACHA",iconGacha,450,0,50,50,() -> handleGacha()));
+        Color color = new Color(255, 255, 0, 100);
+        for (Button button : buttons) {
+            button.setColor(color);
+            buttonGroup.add((IconButton) button);
+            ((IconButton) button).setButtonGroup(buttonGroup);
+        }
     }
 
     @Override
@@ -79,39 +94,8 @@ public class ShopScene extends Scene implements DataChangeListener {
         for (Button button : buttons) {
             button.setHovered(button.contains(mx,my));
             if (button.isHovered() && input.consumeClick()) {
-                handleButtonClick(button.getText());
+                button.onClick();
             }
-        }
-    }
-
-    /** Xử lý sự kiện click button */
-    private void handleButtonClick(String text) {
-        System.out.println("Clicked " + text);
-        gridPanel.setVisible(true);
-        gachaPanel.setVisible(false);
-        switch (text) {
-            case "BACK":
-                onBack.run();
-                break;
-            case "BALLS":
-                currentTab = "BALLS";
-                gridPanel.setSkins(ballSkins);
-                gridPanel.setIsBall(true);
-                gridPanel.setCurrentTab(currentTab);
-                break;
-            case "PADDLES":
-                currentTab = "PADDLES";
-                gridPanel.setSkins(paddleSkins);
-                gridPanel.setIsBall(false);
-                gridPanel.setCurrentTab(currentTab);
-                break;
-            case "GACHA":
-                currentTab = "GACHA";
-                gridPanel.setVisible(false);
-                gachaPanel.setVisible(true);
-                break;
-            default:
-                break;
         }
     }
 
@@ -125,6 +109,8 @@ public class ShopScene extends Scene implements DataChangeListener {
         // CẬP NHẬT ID TRANG BỊ MỚI NHẤT
         this.equippedBallId = ResourceLoader.getEquippedBallId("docs/balls.txt");
         this.equippedPaddleId = ResourceLoader.getEquippedPaddleId("docs/paddles.txt");
+
+        ResourceSaver.savePlayerData(playerData);
 
         // CẬP NHẬT GRIDPANEL ĐỂ HIỂN THỊ DỮ LIỆU MỚI
         if (currentTab.equals("BALLS")) {
@@ -142,22 +128,11 @@ public class ShopScene extends Scene implements DataChangeListener {
         g2.drawImage(bar,0,0,800,50,null);
     }
 
-    /** Vẽ button */
-    private void drawButtons(Graphics2D g2) {
-        for (Button button : buttons) {
-            if (button.getText() == currentTab) {
-                g2.setColor(new Color(255, 255, 0, 100));
-                g2.fillRect(button.getBounds().x,button.getBounds().y,50,50);
-            }
-            button.draw(g2);
-        }
-    }
-
     /** 💰 Vẽ tiền người chơi có */
     private void drawMoney(Graphics2D g2) {
         g2.setColor(Color.YELLOW);
         g2.setFont(new Font("Monospaced", Font.BOLD, 22));
-        int money = ResourceLoader.getMoney("docs/balls.txt");
+        int money = playerData.getCoins();
         g2.drawString(money + "\uD83D\uDCB0",690,30);
     }
     @Override
@@ -165,8 +140,33 @@ public class ShopScene extends Scene implements DataChangeListener {
         update();
         drawBackground(g2);
         drawMoney(g2);
-        drawButtons(g2);
+        for (Button button : buttons) {
+            button.draw(g2);
+        }
+    }
 
+    private void handleBalls() {
+        currentTab = "BALLS";
+        gridPanel.setVisible(true);
+        gachaPanel.setVisible(false);
+        gridPanel.setSkins(ballSkins);
+        gridPanel.setIsBall(true);
+        gridPanel.setCurrentTab(currentTab);
+    }
+
+    private void handlePaddles() {
+        currentTab = "PADDLES";
+        gridPanel.setVisible(true);
+        gachaPanel.setVisible(false);
+        gridPanel.setSkins(paddleSkins);
+        gridPanel.setIsBall(false);
+        gridPanel.setCurrentTab(currentTab);
+    }
+
+    private void handleGacha() {
+        currentTab = "GACHA";
+        gridPanel.setVisible(false);
+        gachaPanel.setVisible(true);
     }
 
     public void setOnBack(Runnable onBack) {

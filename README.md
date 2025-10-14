@@ -117,6 +117,13 @@ BallWarrior/
 │   │   │   └── LevelPreviewPanel.java # Vẽ preview của 1 màn chơi (dùng lại ở nhiều nơi)
 │   │   │
 │   │   └── HUD.java                   # Heads-up display trong gameplay (điểm, mạng…)
+│   │   
+│   ├── data/                
+│   │   ├── PlayerData.java
+│   │   ├── Equipped.java
+│   │   ├── Inventory.java
+│   │   ├── Ball.java
+│   │   └── Paddle.java
 │   │
 │   └── utils/                     # Tiện ích chung
 │       ├── MathUtils.java         # Hàm toán học 2D, giao điểm đoạn thẳng…

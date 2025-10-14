@@ -15,6 +15,31 @@ public class Ball extends Entity{
     private boolean stuck = true; // mặc định dính paddle
     private boolean isFireBall = false; //mặc định bóng thường
 
+    public static void loadEquippedAssets(int ballId, List<Skins> balls) {
+        int equippedBallId = ballId;
+        Skins equippedSkin = null;
+        for (Skins skin : balls) {
+            if (skin.getId() == equippedBallId) {
+                equippedSkin = skin;
+                break;
+            }
+        }
+        if (equippedSkin != null) {
+            if (equippedSkin.getImg() != null) {
+                equippedBallImage = equippedSkin.getImg();
+                equippedBallColor = null;
+            } else {
+                equippedBallColor = equippedSkin.getColor();
+                equippedBallImage = null;
+            }
+        } else {
+            equippedBallImage = ResourceLoader.loadImg("assets/images/Balls/ball.png");
+            equippedBallColor = Color.RED;
+        }
+        System.out.println("✅ Assets Ball Equipped Loaded to static field.");
+    }
+
+
     public static void loadEquippedAssets() {
         int equippedBallId = ResourceLoader.getEquippedBallId("docs/balls.txt");
         List<Skins> allBalls = ResourceLoader.loadSkins("docs/balls.txt");

@@ -2,9 +2,8 @@ package ui.scene;
 
 import core.InputHandler;
 import core.ResourceLoader;
+import data.PlayerData;
 import entity.Skins;
-import ui.scene.ShopScene;
-import ui.scene.InfoPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,15 +28,17 @@ public class GridPanel extends JPanel {
     private BufferedImage background;
     private ShopScene shopScene;
     private InfoPanel infoPanel;
+    private final PlayerData playerData;
 
-    public GridPanel(InputHandler input) {
+    public GridPanel(InputHandler input, PlayerData playerData) {
         this.input = input;
+        this.playerData = playerData;
         setLayout(null);
         setBackground(Color.DARK_GRAY);
         setDoubleBuffered(true);
         this.background = ResourceLoader.loadImg("assets/images/shopBg.jpg");
         // Panel hiển thị thông tin skin
-        this.infoPanel = new InfoPanel();
+        this.infoPanel = new InfoPanel(playerData);
         this.infoPanel.setBounds(400, 50, 400, 500);
         this.infoPanel.setVisible(false);
         add(infoPanel);

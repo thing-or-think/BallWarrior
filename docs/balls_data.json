@@ -1,0 +1,122 @@
+{
+  "equippedBallId": 11,
+  "balls": [
+    {
+      "id": 0,
+      "name": "Basic Red",
+      "hasImg": false,
+      "rarity": "COMMON",
+      "price": 0,
+      "isBought": true,
+      "colorOrPath": "RED"
+    },
+    {
+      "id": 1,
+      "name": "Basic Blue",
+      "hasImg": false,
+      "rarity": "COMMON",
+      "price": 0,
+      "isBought": true,
+      "colorOrPath": "BLUE"
+    },
+    {
+      "id": 2,
+      "name": "Basic Cyan",
+      "hasImg": false,
+      "rarity": "COMMON",
+      "price": 100,
+      "isBought": true,
+      "colorOrPath": "CYAN"
+    },
+    {
+      "id": 3,
+      "name": "Basic Yellow",
+      "hasImg": false,
+      "rarity": "COMMON",
+      "price": 100,
+      "isBought": false,
+      "colorOrPath": "YELLOW"
+    },
+    {
+      "id": 4,
+      "name": "Basic Orange",
+      "hasImg": false,
+      "rarity": "RARE",
+      "price": 100,
+      "isBought": false,
+      "colorOrPath": "ORANGE"
+    },
+    {
+      "id": 5,
+      "name": "Basic Black",
+      "hasImg": false,
+      "rarity": "RARE",
+      "price": 100,
+      "isBought": true,
+      "colorOrPath": "BLACK"
+    },
+    {
+      "id": 6,
+      "name": "Basic Magenta",
+      "hasImg": false,
+      "rarity": "RARE",
+      "price": 500,
+      "isBought": false,
+      "colorOrPath": "MAGENTA"
+    },
+    {
+      "id": 7,
+      "name": "Basic Pink",
+      "hasImg": false,
+      "rarity": "RARE",
+      "price": 500,
+      "isBought": false,
+      "colorOrPath": "PINK"
+    },
+    {
+      "id": 8,
+      "name": "Fire Orb",
+      "hasImg": true,
+      "rarity": "EPIC",
+      "price": 1000,
+      "isBought": true,
+      "colorOrPath": "assets/images/Balls/ball.png"
+    },
+    {
+      "id": 9,
+      "name": "Watermelon",
+      "hasImg": true,
+      "rarity": "LEGENDARY",
+      "price": 1000,
+      "isBought": true,
+      "colorOrPath": "assets/images/Balls/watermelon.png"
+    },
+    {
+      "id": 10,
+      "name": "Beach Ball",
+      "hasImg": true,
+      "rarity": "LEGENDARY",
+      "price": 5000,
+      "isBought": true,
+      "colorOrPath": "assets/images/Balls/ballBeach.png"
+    },
+    {
+      "id": 11,
+      "name": "Pokeball",
+      "hasImg": true,
+      "rarity": "LEGENDARY",
+      "price": 5000,
+      "isBought": true,
+      "colorOrPath": "assets/images/Balls/pokeball.png"
+    },
+    {
+      "id": 12,
+      "name": "UET Ball",
+      "hasImg": true,
+      "rarity": "LEGENDARY",
+      "price": 5000,
+      "isBought": true,
+      "colorOrPath": "assets/images/Balls/UET.png"
+    }
+  ]
+}

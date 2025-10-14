@@ -68,6 +68,7 @@ public class SceneManager {
     public void goToGame() {
         setScene(gameScene);
         gameScene.forceUpdateGameAssets();
+
     }
 
     public void goToShop() {

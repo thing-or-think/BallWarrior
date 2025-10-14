@@ -1,5 +1,7 @@
 package core;
 
+import com.google.gson.Gson;
+import data.PlayerData;
 import entity.Rarity;
 import entity.Skins;
 
@@ -15,6 +17,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceLoader {
+
+    private static final String DATA_PATH = "assets/data/playerData.json";
+
+    public static PlayerData loadPlayerData() {
+        try (FileReader reader = new FileReader(DATA_PATH)) {
+            // Đọc JSON thành đối tượng PlayerData
+            return new Gson().fromJson(reader, PlayerData.class);
+
+        } catch (FileNotFoundException e) {
+            // Lỗi file không tồn tại → có thể tạo file mặc định hoặc báo lỗi
+            System.err.println("Không tìm thấy file dữ liệu: " + DATA_PATH);
+            e.printStackTrace();
+            return null;
+
+        } catch (IOException e) {
+            // Lỗi đọc file
+            System.err.println("Lỗi khi đọc file dữ liệu!");
+            e.printStackTrace();
+            return null;
+
+        } catch (Exception e) {
+            // Bắt các lỗi còn lại (JSON sai format, null,...)
+            System.err.println("Lỗi không xác định khi tải dữ liệu người chơi!");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static BufferedImage loadImg (String path) {
         BufferedImage img;
         try {
@@ -120,49 +150,6 @@ public class ResourceLoader {
             System.out.println("✅ Đã ghi thành công trạng thái skin mới vào file.");
         } catch (IOException e) {
             System.err.println("❌ LỖI GHI FILE: Vui lòng kiểm tra quyền truy cập hoặc đường dẫn: " + new File(filePath).getAbsolutePath());
-            e.printStackTrace();
-        }
-    }
-
-    /** Lấy số tiền hiện tại từ file */
-    public static int getMoney(String filePath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.startsWith("#") && !line.contains(",")) {
-                    line = line.replace("#", "").trim();
-                    return Integer.parseInt(line);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    /** Ghi lại số tiền mới vào file */
-    public static void setMoney(String filePath, int newMoney) {
-        try {
-            List<String> lines = new ArrayList<>();
-            boolean moneyUpdated = false;
-            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if (!moneyUpdated && line.trim().startsWith("#") && !line.contains(",")) {
-                        line = "#" + newMoney;
-                        moneyUpdated = true;
-                    }
-                    lines.add(line);
-                }
-            }
-            try (PrintWriter pw = new PrintWriter(new FileWriter(filePath))) {
-                for (String l : lines) pw.println(l);
-            }
-            System.out.println("✅Đã cập nhật số tiền mới: " + newMoney);
-
-        } catch (Exception e) {
-            System.err.println("❌Lỗi khi cập nhật số tiền: " + e.getMessage());
             e.printStackTrace();
         }
     }

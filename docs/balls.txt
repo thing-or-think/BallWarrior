@@ -8,7 +8,7 @@
 4, Basic Orange, false, RARE, 100, false, ORANGE
 5,Basic Black,false,RARE,100,true,BLACK
 6, Basic Magenta, false, RARE, 500, false, MAGENTA
-7, Basic Pink, false, RARE, 500, false, PINK
+7,Basic Pink,false,RARE,500,true,PINK
 8,Fire Orb,true,EPIC,1000,true,assets/images/Balls/ball.png
 9,Watermelon,true,LEGENDARY,1000,true,assets/images/Balls/watermelon.png
 10,Beach Ball,true,LEGENDARY,5000,true,assets/images/Balls/ballBeach.png

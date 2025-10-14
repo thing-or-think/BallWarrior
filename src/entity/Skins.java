@@ -10,6 +10,7 @@ public class Skins {
     private final Rarity rarity;
     private final int price;
     private boolean isBought = false;
+    private String colorOrPath;
     private final Color color;
     private Rectangle bounds;
     //Img
