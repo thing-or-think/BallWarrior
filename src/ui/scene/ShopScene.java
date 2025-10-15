@@ -188,4 +188,8 @@ public class ShopScene extends Scene implements DataChangeListener {
     public List<Skins> getPaddleSkins() {
         return paddleSkins;
     }
+
+    public PlayerData getPlayerData() {
+        return playerData;
+    }
 }
