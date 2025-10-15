@@ -1,19 +1,24 @@
 package data;
 
+import entity.Rarity;
+
 public class SkinData {
     private int id;
     private String name;
-    private boolean hasImg;
-    private String rarity;
+    private Rarity rarity;
     private int price;
     private boolean isBought;
-    private String colorOrPath;
+    public Display display;
+
+    public static class Display {
+        public String type; // "color" hoặc "image"
+        public String value; // màu hoặc path ảnh
+    }
 
     public int getId() { return id; }
     public String getName() { return name; }
-    public boolean isHasImg() { return hasImg; }
-    public String getRarity() { return rarity; }
+    public Rarity getRarity() { return rarity; }
     public int getPrice() { return price; }
     public boolean isBought() { return isBought; }
-    public String getColorOrPath() { return colorOrPath; }
+    public Display getDisplay() { return display; }
 }
