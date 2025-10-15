@@ -17,12 +17,12 @@ public class GameScene extends Scene {
     private SceneManager sceneManager;
     private final PlayerData playerData;
 
-    public GameScene(InputHandler input, SceneManager sceneManager) {
+    public GameScene(InputHandler input, SceneManager sceneManager, PlayerData playerData) {
         super("Game", input);
         this.sceneManager = sceneManager;
         world = new GameWorld(input);
         hud = new HUD(world.getScoreSystem());
-        playerData = new PlayerData(ResourceLoader.loadPlayerData());
+        this.playerData = playerData;
     }
 
     @Override
@@ -48,7 +48,6 @@ public class GameScene extends Scene {
     public void forceUpdateGameAssets() {
         // Tải lại Skin vào cache static
         world.forceUpdateGameAssets();
-        playerData.setPlayerData(ResourceLoader.loadPlayerData());
         System.out.println(playerData.getCoins());
     }
 }
