@@ -9,238 +9,290 @@
       {
         "id": 0,
         "name": "Basic Red",
-        "hasImg": false,
         "rarity": "COMMON",
         "price": 0,
         "isBought": true,
-        "colorOrPath": "RED"
+        "display": {
+          "type": "color",
+          "value": "RED"
+        }
       },
       {
         "id": 1,
         "name": "Basic Blue",
-        "hasImg": false,
         "rarity": "COMMON",
         "price": 0,
         "isBought": true,
-        "colorOrPath": "BLUE"
+        "display": {
+          "type": "color",
+          "value": "BLUE"
+        }
       },
       {
         "id": 2,
         "name": "Basic Cyan",
-        "hasImg": false,
         "rarity": "COMMON",
         "price": 100,
         "isBought": true,
-        "colorOrPath": "CYAN"
+        "display": {
+          "type": "color",
+          "value": "CYAN"
+        }
       },
       {
         "id": 3,
         "name": "Basic Yellow",
-        "hasImg": false,
         "rarity": "COMMON",
         "price": 100,
         "isBought": false,
-        "colorOrPath": "YELLOW"
+        "display": {
+          "type": "color",
+          "value": "YELLOW"
+        }
       },
       {
         "id": 4,
         "name": "Basic Orange",
-        "hasImg": false,
         "rarity": "RARE",
         "price": 100,
         "isBought": false,
-        "colorOrPath": "ORANGE"
+        "display": {
+          "type": "color",
+          "value": "ORANGE"
+        }
       },
       {
         "id": 5,
         "name": "Basic Black",
-        "hasImg": false,
         "rarity": "RARE",
         "price": 100,
         "isBought": true,
-        "colorOrPath": "BLACK"
+        "display": {
+          "type": "color",
+          "value": "BLACK"
+        }
       },
       {
         "id": 6,
         "name": "Basic Magenta",
-        "hasImg": false,
         "rarity": "RARE",
         "price": 500,
         "isBought": false,
-        "colorOrPath": "MAGENTA"
+        "display": {
+          "type": "color",
+          "value": "MAGENTA"
+        }
       },
       {
         "id": 7,
         "name": "Basic Pink",
-        "hasImg": false,
         "rarity": "RARE",
         "price": 500,
         "isBought": false,
-        "colorOrPath": "PINK"
+        "display": {
+          "type": "color",
+          "value": "PINK"
+        }
       },
       {
         "id": 8,
         "name": "Fire Orb",
-        "hasImg": true,
         "rarity": "EPIC",
         "price": 1000,
         "isBought": true,
-        "colorOrPath": "assets/images/Balls/ball.png"
+        "display": {
+          "type": "image",
+          "value": "assets/images/Balls/ball.png"
+        }
       },
       {
         "id": 9,
         "name": "Watermelon",
-        "hasImg": true,
         "rarity": "LEGENDARY",
         "price": 1000,
         "isBought": true,
-        "colorOrPath": "assets/images/Balls/watermelon.png"
+        "display": {
+          "type": "image",
+          "value": "assets/images/Balls/watermelon.png"
+        }
       },
       {
         "id": 10,
         "name": "Beach Ball",
-        "hasImg": true,
         "rarity": "LEGENDARY",
         "price": 5000,
         "isBought": true,
-        "colorOrPath": "assets/images/Balls/ballBeach.png"
+        "display": {
+          "type": "image",
+          "value": "assets/images/Balls/ballBeach.png"
+        }
       },
       {
         "id": 11,
         "name": "Pokeball",
-        "hasImg": true,
         "rarity": "LEGENDARY",
         "price": 5000,
         "isBought": true,
-        "colorOrPath": "assets/images/Balls/pokeball.png"
+        "display": {
+          "type": "image",
+          "value": "assets/images/Balls/pokeball.png"
+        }
       },
       {
         "id": 12,
         "name": "UET Ball",
-        "hasImg": true,
         "rarity": "LEGENDARY",
         "price": 5000,
         "isBought": true,
-        "colorOrPath": "assets/images/Balls/UET.png"
+        "display": {
+          "type": "image",
+          "value": "assets/images/Balls/UET.png"
+        }
       }
     ],
     "paddles": [
       {
         "id": 0,
         "name": "Basic Red",
-        "hasImage": false,
         "rarity": "COMMON",
         "price": 0,
         "isBought": true,
-        "colorOrPath": "RED"
+        "display": {
+          "type": "color",
+          "value": "RED"
+        }
       },
       {
         "id": 1,
         "name": "Basic Blue",
-        "hasImage": false,
         "rarity": "COMMON",
         "price": 0,
         "isBought": true,
-        "colorOrPath": "BLUE"
+        "display": {
+          "type": "color",
+          "value": "BLUE"
+        }
       },
       {
         "id": 2,
         "name": "Basic Green",
-        "hasImage": false,
         "rarity": "COMMON",
         "price": 150,
         "isBought": false,
-        "colorOrPath": "GREEN"
+        "display": {
+          "type": "color",
+          "value": "GREEN"
+        }
       },
       {
         "id": 3,
         "name": "Basic Yellow",
-        "hasImage": false,
         "rarity": "COMMON",
         "price": 150,
         "isBought": false,
-        "colorOrPath": "YELLOW"
+        "display": {
+          "type": "color",
+          "value": "YELLOW"
+        }
       },
       {
         "id": 4,
         "name": "Basic Cyan",
-        "hasImage": false,
         "rarity": "RARE",
         "price": 0,
         "isBought": true,
-        "colorOrPath": "CYAN"
+        "display": {
+          "type": "color",
+          "value": "CYAN"
+        }
       },
       {
         "id": 5,
         "name": "Basic Orange",
-        "hasImage": false,
         "rarity": "RARE",
         "price": 0,
         "isBought": true,
-        "colorOrPath": "ORANGE"
+        "display": {
+          "type": "color",
+          "value": "ORANGE"
+        }
       },
       {
         "id": 6,
         "name": "Basic Pink",
-        "hasImage": false,
         "rarity": "RARE",
         "price": 0,
         "isBought": true,
-        "colorOrPath": "PINK"
+        "display": {
+          "type": "color",
+          "value": "PINK"
+        }
       },
       {
         "id": 7,
         "name": "Shadow Paddle",
-        "hasImage": false,
         "rarity": "EPIC",
         "price": 400,
         "isBought": false,
-        "colorOrPath": "BLACK"
+        "display": {
+          "type": "color",
+          "value": "BLACK"
+        }
       },
       {
         "id": 8,
         "name": "Wood Paddle",
-        "hasImage": true,
         "rarity": "EPIC",
         "price": 200,
         "isBought": true,
-        "colorOrPath": "assets/images/Paddles/woodPaddle.png"
+        "display": {
+          "type": "image",
+          "value": "assets/images/Paddles/woodPaddle.png"
+        }
       },
       {
         "id": 9,
         "name": "Metal Paddle",
-        "hasImage": true,
         "rarity": "EPIC",
         "price": 600,
         "isBought": false,
-        "colorOrPath": "assets/images/Paddles/paddle3.png"
+        "display": {
+          "type": "image",
+          "value": "assets/images/Paddles/paddle3.png"
+        }
       },
       {
         "id": 10,
         "name": "☘️RailWay Paddle",
-        "hasImage": true,
         "rarity": "EPIC",
         "price": 1200,
         "isBought": true,
-        "colorOrPath": "assets/images/Paddles/railway.png"
+        "display": {
+          "type": "image",
+          "value": "assets/images/Paddles/railway.png"
+        }
       },
       {
         "id": 11,
         "name": "Dragon Paddle",
-        "hasImage": true,
         "rarity": "LEGENDARY",
         "price": 2500,
         "isBought": false,
-        "colorOrPath": "assets/images/Paddles/paddle2.png"
+        "display": {
+          "type": "image",
+          "value": "assets/images/Paddles/paddle2.png"
+        }
       },
       {
         "id": 12,
         "name": "Ass Paddle",
-        "hasImage": true,
         "rarity": "LEGENDARY",
         "price": 2500,
         "isBought": true,
-        "colorOrPath": "assets/images/Paddles/ass.png"
+        "display": {
+          "type": "image",
+          "value": "assets/images/Paddles/ass.png"
+        }
       }
     ]
   }
