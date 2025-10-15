@@ -26,8 +26,8 @@ public class SceneManager {
         this.frame = frame;
         this.input = input;
 
-        gameScene = new GameScene(input, this);
         shopScene = new ShopScene(input, null); // tạm null
+        gameScene = new GameScene(input, this, shopScene.getPlayerData());
         menuScene = new MenuScene(
                 input,
                 this::goToLevelSelect,
