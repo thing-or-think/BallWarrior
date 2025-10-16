@@ -162,7 +162,6 @@ public class ShopScene extends Scene implements DataChangeListener {
     }
     @Override
     protected void render(Graphics2D g2) {
-        update();
         drawBackground(g2);
         drawMoney(g2);
         drawButtons(g2);
