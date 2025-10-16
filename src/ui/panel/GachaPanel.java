@@ -1,4 +1,4 @@
-package ui.scene;
+package ui.panel;
 
 import core.DataChangeListener;
 import core.InputHandler;
@@ -7,12 +7,11 @@ import data.PlayerData;
 import entity.Skins;
 import ui.base.Button;
 import ui.button.BuyButton;
+import ui.scene.ShopScene;
 import utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Random;
