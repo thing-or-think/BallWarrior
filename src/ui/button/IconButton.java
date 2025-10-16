@@ -17,6 +17,7 @@ public class IconButton extends Button {
     @Override
     public void draw(Graphics2D g) {
         if (clicked) {
+            g.setColor(this.color);
             g.fillRect(bound.x, bound.y, bound.width, bound.height);
         }
         if (icon != null) {
