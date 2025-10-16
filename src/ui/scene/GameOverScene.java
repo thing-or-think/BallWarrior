@@ -22,10 +22,8 @@ public class GameOverScene extends Scene {
         this.onMainMenu = onMainMenu;
 
         initUI();
-        startRepaintLoop(); // dùng loop sẵn của Scene
     }
 
-    /** Khởi tạo UI cơ bản */
     @Override
     protected void initUI() {
         setBackground(Color.BLACK);
@@ -43,7 +41,6 @@ public class GameOverScene extends Scene {
         button.setActivity(onMainMenu);
     }
 
-    /** Cập nhật trạng thái */
     @Override
     protected void update() {
         int mx = input.getMouseX();
@@ -55,16 +52,6 @@ public class GameOverScene extends Scene {
         }
     }
 
-    /** Xử lý click */
-    private void handleButtonClick(String text) {
-        System.out.println("Clicked " + text);
-        if ("MAIN MENU".equals(text)) {
-            input.resetMouse();
-            onMainMenu.run();
-        }
-    }
-
-    /** Vẽ cảnh (gọi sau drawBackground) */
     @Override
     protected void render(Graphics2D g2) {
         // Nếu có background ảnh riêng, vẽ đè lên
