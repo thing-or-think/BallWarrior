@@ -8,7 +8,7 @@ public class Equipped {
 
     public Equipped(Equipped equipped) {
         this.ballId = new AtomicInteger(equipped.ballId.get());
-        this.paddleId = new AtomicInteger(equipped.ballId.get());
+        this.paddleId = new AtomicInteger(equipped.paddleId.get());
     }
 
     public int getBallId() { return ballId.get(); }
