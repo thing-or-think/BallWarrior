@@ -69,7 +69,7 @@ public class SkinButton extends Button {
         g2.drawImage(getBackgroundByRarity(), x, y, width, height, null);
 
         // Vẽ phần hiển thị skin (đã được loadDisplay() chuẩn bị sẵn)
-        if (color != null) {
+        if (!color.equals(color.WHITE)) {
             g2.setColor(color);
             g2.fillOval(x + width / 4, y + height / 4 - 10, width / 2, height / 2);
         } else if (icon != null) {
