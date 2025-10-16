@@ -9,6 +9,7 @@ public class ScoreSystem {
 
     private int score; // điểm hiện tại
     private int lives; // số mạng còn lại
+    private float combo; //combo
 
     /**
      * Constructor mặc định.
@@ -22,10 +23,12 @@ public class ScoreSystem {
      * Đặt lại trạng thái ban đầu:
      * - Điểm = 0
      * - Mạng = 3 (mặc định)
+     * - Combo = 1
      */
     public void reset() {
         this.score = 0;
         this.lives = 3; // mặc định 3 mạng
+        this.combo = 1f; //mặc định 1
     }
 
     // --- Quản lý điểm ---
@@ -35,7 +38,7 @@ public class ScoreSystem {
      * @param points số điểm cộng thêm
      */
     public void addScore(int points) {
-        score += points;
+        score += points * combo;
     }
 
     /**
@@ -43,6 +46,21 @@ public class ScoreSystem {
      */
     public int getScore() {
         return score;
+    }
+
+    // --- Quản lý combo ---
+
+    // cập nhật combo
+    public void increaseCombo(float amount) {
+        combo = Math.min(combo + amount, 3f);
+    }
+
+    public void resetCombo() {
+        combo = 1f;
+    }
+
+    public float getCombo() {
+        return combo;
     }
 
     // --- Quản lý mạng ---

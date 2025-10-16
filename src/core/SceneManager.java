@@ -1,11 +1,7 @@
 package core;
 
 import ui.base.Scene;
-import game.GameScene;
-import ui.scene.LevelSelectScene;
-import ui.scene.MenuScene;
-import ui.scene.PauseScene;
-import ui.scene.ShopScene;
+import ui.scene.*;
 
 import javax.swing.*;
 
@@ -19,6 +15,7 @@ public class SceneManager {
     private final ShopScene shopScene;
     private final PauseScene pauseScene;
     private final LevelSelectScene levelSelectScene;
+    private final GameOverScene gameOverScene;
 
     private Scene currentScene;
 
@@ -37,6 +34,7 @@ public class SceneManager {
         );
         pauseScene = new PauseScene(input, this, gameScene);
         levelSelectScene = new LevelSelectScene(input, this);
+        gameOverScene = new GameOverScene(input, this::goToMenu);
 
         shopScene.setOnBack(() -> setScene(menuScene));
 
@@ -67,6 +65,7 @@ public class SceneManager {
 
     public void goToGame() {
         setScene(gameScene);
+        gameScene.forceUpdateGameAssets();
     }
 
     public void goToShop() {
@@ -76,4 +75,8 @@ public class SceneManager {
     public void goToPause() { setScene(pauseScene); }
 
     public void goToLevelSelect() { setScene(levelSelectScene); }
+
+    public void goToGameOver() {
+        setScene(gameOverScene);
+    }
 }

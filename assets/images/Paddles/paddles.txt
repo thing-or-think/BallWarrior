@@ -1,0 +1,13 @@
+# id, name, hasImage, rarity, price, isBought, colorOrPath
+1, Basic Red, false, COMMON, 0, true, RED
+2, Basic Blue, false, COMMON, 0, true, BLUE
+3, Basic Green, false, COMMON, 150, false, GREEN
+4, Basic Yellow, false, COMMON, 150, false, YELLOW
+5, Basic Cyan, false, COMMON, 0, true, CYAN
+6, Basic Orange, false, RARE, 0, true, ORANGE
+7, Basic Pink, false, RARE, 0, true, PINK
+8, Shadow Paddle, false, EPIC, 400, false, BLACK
+9, Wood Paddle, true, COMMON, 200, false, assets/images/Paddles/paddle2.png
+10, Metal Paddle, true, RARE, 600, false, assets/images/Paddles/paddle3.png
+11, Energy Paddle, true, EPIC, 1200, false, assets/images/Paddles/paddle3.png
+12, Ass Paddle, true, LEGENDARY, 2500, false, assets/images/Paddles/ass.png

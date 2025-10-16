@@ -14,6 +14,7 @@ public abstract class Entity {
     protected int width;
     protected int height;
     protected BufferedImage img;
+    protected Color color;
 
     // 2. Constructor
     public Entity(float x, float y, int width, int height) {
@@ -31,7 +32,7 @@ public abstract class Entity {
         clampPosition();
     }
 
-    public abstract void draw(Graphics g);
+    public abstract void draw(Graphics2D g);
 
     public void setPosition(float x, float y) {
         position.x = x;
@@ -67,13 +68,26 @@ public abstract class Entity {
 
     // 5. Getters
     public float getX() { return position.x; }
+
     public float getY() { return position.y; }
+
     public int getWidth() { return width; }
+
     public int getHeight() { return height; }
+
     public Vector2D getVelocity() { return velocity; }
+
     public Vector2D getPosition() { return new Vector2D(position.x, position.y); }
+
     public Vector2D getPreviousPosition() { return previousPosition; }
 
+    public Vector2D getCenter() {
+        return new Vector2D(position.x + width / 2f, position.y + height / 2f);
+    }
     //6. Setters
     public void setImg (BufferedImage i) {this.img = i; }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

@@ -6,18 +6,42 @@ import core.InputHandler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class Paddle extends Entity {
-
     private InputHandler input;
-    private BufferedImage[] sprites = new BufferedImage[2];
+    public static BufferedImage equippedPaddleImage = null;
+    public static Color equippedPaddleColor = null;
+
+    public static void loadEquippedAssets() {
+        int equippedPaddleId = ResourceLoader.getEquippedPaddleId("docs/paddles.txt");
+        List<Skins> allBalls = ResourceLoader.loadSkins("docs/paddles.txt");
+        Skins equippedSkin = null;
+        for (Skins skin : allBalls) {
+            if (skin.getId() == equippedPaddleId) {
+                equippedSkin = skin;
+                break;
+            }
+        }
+        if (equippedSkin != null) {
+            if (equippedSkin.getImg() != null) {
+                equippedPaddleImage = equippedSkin.getImg();
+                equippedPaddleColor = null;
+            } else {
+                equippedPaddleColor = equippedSkin.getColor();
+                equippedPaddleImage = null;
+            }
+        } else {
+            equippedPaddleImage = null;
+            equippedPaddleColor = Color.RED;
+        }
+        System.out.println("✅ Assets Paddle Equipped Loaded to static field.");
+    }
 
     public Paddle(float x, float y, InputHandler input) {
         super(x, y, Constants.PADDLE_WIDTH, Constants.PADDLE_HEIGHT);
         this.input = input;
-        sprites[0] = ResourceLoader.loadImg("BallWarrior-master/assets/images/paddle2.png");
-        sprites[1] = ResourceLoader.loadImg("BallWarrior-master/assets/images/paddle3.png");
-        this.setImg(sprites[0]);
+        this.img = equippedPaddleImage;
     }
 
     @Override
@@ -44,15 +68,16 @@ public class Paddle extends Entity {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics2D g) {
         if (img!=null) {
             g.drawImage(img,(int)position.x,(int)position.y,Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,null);
         }else {
-            g.setColor(Color.CYAN);
+            g.setColor(equippedPaddleColor);
             g.fillRect((int) position.x, (int) position.y, width, height);
         }
     }
-    public BufferedImage getSprite (int index) {
-        return sprites[index];
+
+    public InputHandler getInput() {
+        return input;
     }
 }

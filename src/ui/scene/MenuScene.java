@@ -38,7 +38,7 @@ public class MenuScene extends Scene {
 
     @Override
     protected void initUI() {
-        background = new ImageIcon("BallWarrior-master/assets/images/background2.gif");
+        background = new ImageIcon("assets/images/background2.gif");
     }
 
     @Override
