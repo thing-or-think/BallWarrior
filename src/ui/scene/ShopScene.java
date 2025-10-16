@@ -14,6 +14,7 @@ import ui.button.IconButton;
 import ui.button.MenuButton;
 import utils.Constants;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -29,12 +30,15 @@ public class ShopScene extends Scene implements DataChangeListener {
     private static BufferedImage iconBall = ResourceLoader.loadImg("assets/images/iconBall.png");
     private static BufferedImage iconPaddle = ResourceLoader.loadImg("assets/images/iconPaddle.png");
     private static BufferedImage iconGacha = ResourceLoader.loadImg("assets/images/Xbutton.png");
+
     private final GridPanel gridPanel;
     private final GachaPanel gachaPanel;
+
     private final PlayerData playerData;
 
     private List<Skins> ballSkins;
     private List<Skins> paddleSkins;
+
     private int equippedBallId;
     private int equippedPaddleId;
 
@@ -53,6 +57,7 @@ public class ShopScene extends Scene implements DataChangeListener {
         this.gachaPanel.setDataChangeListener(this);
         this.gachaPanel.setBounds(0, 55, Constants.WIDTH, Constants.HEIGHT - 60);
         this.gachaPanel.setVisible(false);
+        this.background = new ImageIcon(ResourceLoader.loadImg("assets/images/topBar.png"));
 
         buttonGroup = new ButtonGroup();
         add(gachaPanel);
@@ -80,10 +85,15 @@ public class ShopScene extends Scene implements DataChangeListener {
         buttons.add(new IconButton("GACHA",iconGacha,450,0,50,50,() -> handleGacha()));
         Color color = new Color(255, 255, 0, 100);
         for (Button button : buttons) {
+            if (button.getText().equals("BACK")) {
+                button.setColor(new Color(0,0,0,0));
+                continue;
+            }
             button.setColor(color);
             buttonGroup.add((IconButton) button);
             ((IconButton) button).setButtonGroup(buttonGroup);
         }
+        buttons.get(1).setClicked(true);
     }
 
     @Override
@@ -135,10 +145,9 @@ public class ShopScene extends Scene implements DataChangeListener {
         int money = playerData.getCoins();
         g2.drawString(money + "\uD83D\uDCB0",690,30);
     }
+
     @Override
     protected void render(Graphics2D g2) {
-        update();
-        drawBackground(g2);
         drawMoney(g2);
         for (Button button : buttons) {
             button.draw(g2);
