@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ButtonGroup {
-    private List<IconButton> buttons = new ArrayList<>();
+    private List<Button> buttons = new ArrayList<>();
 
-    public void add(IconButton button) {
+    public void add(Button button) {
         buttons.add(button);
     }
 
-    public void select(IconButton button) {
-        for (IconButton b : buttons) {
+    public void select(Button button) {
+        for (Button b : buttons) {
             b.setClicked(b == button);
         }
     }
