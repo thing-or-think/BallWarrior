@@ -16,7 +16,7 @@ public class Inventory {
     public List<SkinData> getPaddles() { return paddles; }
 
     public void setInventory(Inventory inventory) {
-        this.balls = new ArrayList<>(inventory.balls);
-        this.paddles = new ArrayList<>(inventory.paddles);
+        this.balls = new ArrayList<>(inventory.getBalls());
+        this.paddles = new ArrayList<>(inventory.getPaddles());
     }
 }
