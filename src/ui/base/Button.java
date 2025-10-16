@@ -96,4 +96,16 @@ public abstract class Button extends TextElement {
         this.clicked = clicked;
     }
 
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setBound(Rectangle bound) {
+        this.bound = bound;
+        this.x = bound.x;
+        this.y = bound.y;
+        this.width = bound.width;
+        this.height = bound.height;
+    }
 }
