@@ -1,9 +1,10 @@
-package ui.scene;
+package ui.panel;
 
 import core.InputHandler;
 import core.ResourceLoader;
 import data.PlayerData;
 import entity.Skins;
+import ui.scene.ShopScene;
 
 import javax.swing.*;
 import java.awt.*;
