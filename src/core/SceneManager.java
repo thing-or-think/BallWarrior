@@ -1,11 +1,13 @@
 package core;
 
+import data.PlayerData;
+import test.ShopScene;
 import ui.base.Scene;
 import ui.scene.GameScene;
 import ui.scene.LevelSelectScene;
 import ui.scene.MenuScene;
 import ui.scene.PauseScene;
-import ui.scene.ShopScene;
+//import ui.scene.ShopScene;
 
 import javax.swing.*;
 
@@ -17,6 +19,7 @@ public class SceneManager {
     private final GameScene gameScene;
     private final MenuScene menuScene;
     private final ShopScene shopScene;
+//    private final ShopScene shopScene;
     private final PauseScene pauseScene;
     private final LevelSelectScene levelSelectScene;
 
@@ -26,8 +29,10 @@ public class SceneManager {
         this.frame = frame;
         this.input = input;
 
-        shopScene = new ShopScene(input, null); // tạm null
-        gameScene = new GameScene(input, this, shopScene.getPlayerData());
+        PlayerData playerData = ResourceLoader.loadPlayerData();
+
+        shopScene = new ShopScene(input, playerData); // tạm null
+        gameScene = new GameScene(input, this, playerData);
         menuScene = new MenuScene(
                 input,
                 this::goToLevelSelect,
