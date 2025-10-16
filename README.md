@@ -114,7 +114,11 @@ BallWarrior/
 │   │   │   └── GameScene.java       # Quản lý scene chính của gameplay (vòng lặp update/render, chuyển cảnh)
 │   │   │
 │   │   ├── panel/                     # Các panel phụ trong UI
-│   │   │   └── LevelPreviewPanel.java # Vẽ preview của 1 màn chơi (dùng lại ở nhiều nơi)
+│   │   │   ├── LevelPreviewPanel.java # Vẽ preview của 1 màn chơi (dùng lại ở nhiều nơi)
+│   │   │   ├── GridPanel.java
+│   │   │   ├── GachaPanel.java
+│   │   │   ├── InfoPanel.java
+│   │   │   └── SkinGrid.java
 │   │   │
 │   │   └── HUD.java                   # Heads-up display trong gameplay (điểm, mạng…)
 │   │   
