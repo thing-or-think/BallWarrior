@@ -8,17 +8,45 @@ import utils.Vector2D;
 
 public class Brick extends Entity {
 
+    // loại brick
+    public enum Type {
+        BEDROCK, COBBLESTONE, GOLD, DIAMOND
+    }
+
     private int health;   // Độ bền (số lần cần đánh để vỡ)
-    private Color color;  // Màu gạch
+    private int scoreValue;
+    private Type type;
     private final int initialHealth; // máu gốc
 
-    public Brick(float x, float y, int width, int height, int health, Color color) {
+    public Brick(float x, float y, int width, int height, Type type) {
         super(x, y, width, height);
-        this.health = health;
-        this.initialHealth = this.health;
-        this.color = color;
+        this.type = type;
         this.velocity = new Vector2D(0, 0); // gạch đứng yên
-        this.img = ResourceLoader.loadImg("assets/images/red.png");
+
+        switch (type) {
+            case BEDROCK:
+                this.health = Integer.MAX_VALUE; // không bao giờ vỡ
+                this.scoreValue = 0;
+                this.img = ResourceLoader.loadImg("assets/images/Brick/bedrock.png");
+                break;
+            case COBBLESTONE:
+                this.health = 1;
+                this.scoreValue = 100;
+                this.img = ResourceLoader.loadImg("assets/images/Brick/cobblestone.png");
+                break;
+            case GOLD:
+                this.health = 5;
+                this.scoreValue = 500;
+                this.img = ResourceLoader.loadImg("assets/images/Brick/gold.png");
+                break;
+            case DIAMOND:
+                this.health = 10;
+                this.scoreValue = 10000;
+                this.img = ResourceLoader.loadImg("assets/images/Brick/diamond.png");
+                break;
+        }
+
+        this.initialHealth = this.health;
     }
 
     @Override
@@ -41,9 +69,9 @@ public class Brick extends Entity {
 
     // hit có damage (skill bom, fireball, v.v.)
     public void hit(int damage) {
-        //if (type != Type.BEDROCK) { // Bedrock không thể phá
+        if (type != Type.BEDROCK) { // Bedrock không thể phá
             health -= damage;
-        //}
+        }
     }
 
     public boolean isDestroyed() {
@@ -54,7 +82,11 @@ public class Brick extends Entity {
         return initialHealth;
     }
 
+    public Type getType() {
+        return type;
+    }
+
     public int getScoreValue(){
-        return 100;
+        return scoreValue;
     }
 }

@@ -123,5 +123,7 @@ public class Ball extends Entity{
         this.stuck = stuck;
     }
 
-    public int getRadius() { return radius; }
+    public int getRadius() {
+        return radius;
+    }
 }

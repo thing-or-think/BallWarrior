@@ -94,6 +94,10 @@ public class ScoreSystem {
      * @return true nếu số mạng <= 0
      */
     public boolean isGameOver() {
-        return lives <= 0;
+        if(lives <= 0) {
+            lives = 3;
+            return true;
+        }
+        return false;
     }
 }
