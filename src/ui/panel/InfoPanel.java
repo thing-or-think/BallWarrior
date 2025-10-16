@@ -1,11 +1,10 @@
-package ui.scene;
+package ui.panel;
 
 import core.ResourceLoader;
 import core.DataChangeListener;
 import data.PlayerData;
 import entity.Skins;
 import ui.scene.ShopScene;
-import ui.base.Button;
 import ui.button.BuyButton;
 
 import javax.swing.*;
