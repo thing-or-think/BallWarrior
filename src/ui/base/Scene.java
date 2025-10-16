@@ -35,6 +35,7 @@ public abstract class Scene extends JPanel {
     protected void initInput() {
         addMouseListener(input.createMouseAdapter());
         addMouseMotionListener(input.createMouseAdapter());
+        addMouseWheelListener(input.createMouseAdapter());
         addKeyListener(input);
     }
 
@@ -57,7 +58,6 @@ public abstract class Scene extends JPanel {
         setFocusable(true);
         requestFocusInWindow();
     }
-
 
     public void stopRepaintLoop() {
         if (repaintTimer != null) repaintTimer.stop();
