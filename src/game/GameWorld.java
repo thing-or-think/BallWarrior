@@ -139,4 +139,8 @@ public class GameWorld {
             paddle.setColor(Paddle.equippedPaddleColor);
         }
     }
+
+    public boolean isGameOver() {
+        return scoreSystem.isGameOver();
+    }
 }

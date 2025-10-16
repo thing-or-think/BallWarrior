@@ -36,7 +36,12 @@ public class GameScene extends Scene {
             sceneManager.goToPause();
             return;
         }
+
         world.update(deltaTime);
+
+        if (world.isGameOver()) {
+            sceneManager.goToGameOver();
+        }
     }
 
     @Override

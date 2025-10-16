@@ -104,8 +104,39 @@ public class ShopScene extends Scene implements DataChangeListener {
         for (Button button : buttons) {
             button.setHovered(button.contains(mx,my));
             if (button.isHovered() && input.consumeClick()) {
-                button.onClick();
+                handleButtonClick(button.getText());
             }
+        }
+    }
+
+    /** Xử lý sự kiện click button */
+    private void handleButtonClick(String text) {
+        System.out.println("Clicked " + text);
+        gridPanel.setVisible(true);
+        gachaPanel.setVisible(false);
+        switch (text) {
+            case "BACK":
+                onBack.run();
+                break;
+            case "BALLS":
+                currentTab = "BALLS";
+                gridPanel.setSkins(ballSkins);
+                gridPanel.setIsBall(true);
+                gridPanel.setCurrentTab(currentTab);
+                break;
+            case "PADDLES":
+                currentTab = "PADDLES";
+                gridPanel.setSkins(paddleSkins);
+                gridPanel.setIsBall(false);
+                gridPanel.setCurrentTab(currentTab);
+                break;
+            case "GACHA":
+                currentTab = "GACHA";
+                gridPanel.setVisible(false);
+                gachaPanel.setVisible(true);
+                break;
+            default:
+                break;
         }
     }
 
@@ -138,6 +169,17 @@ public class ShopScene extends Scene implements DataChangeListener {
         g2.drawImage(bar,0,0,800,50,null);
     }
 
+    /** Vẽ button */
+    private void drawButtons(Graphics2D g2) {
+        for (Button button : buttons) {
+            if (button.getText() == currentTab) {
+                g2.setColor(new Color(255, 255, 0, 100));
+                g2.fillRect(button.getBounds().x,button.getBounds().y,50,50);
+            }
+            button.draw(g2);
+        }
+    }
+
     /** 💰 Vẽ tiền người chơi có */
     private void drawMoney(Graphics2D g2) {
         g2.setColor(Color.YELLOW);
@@ -148,6 +190,8 @@ public class ShopScene extends Scene implements DataChangeListener {
 
     @Override
     protected void render(Graphics2D g2) {
+        update();
+        drawBackground(g2);
         drawMoney(g2);
         for (Button button : buttons) {
             button.draw(g2);

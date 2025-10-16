@@ -40,7 +40,7 @@ public class LevelSelectScene extends Scene {
 
         buttons.add(new LeftArrowButton(40, 300, 40, 40));
         buttons.add(new RightArrowButton(720, 300, 40, 40));
-        buttons.add(new PlayButton("Play", 340, 480, 120, 40, new Font("Serif", Font.PLAIN, 32), () -> sceneManager.goToGame()));
+        buttons.add(new PlayButton("Play", 340, 520, 120, 40, new Font("Serif", Font.PLAIN, 32), () -> sceneManager.goToGame()));
     }
 
     @Override
@@ -58,6 +58,9 @@ public class LevelSelectScene extends Scene {
     @Override
     protected void render(Graphics2D g) {
         titleLabel.draw(g);
+
+        g.setColor(Color.WHITE);
+        g.drawRect(150, 120, 500, 360);
 
         for (Button button : buttons) {
             button.draw(g);

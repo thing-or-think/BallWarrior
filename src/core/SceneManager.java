@@ -3,11 +3,7 @@ package core;
 import data.PlayerData;
 import test.scene.ShopScene;
 import ui.base.Scene;
-import ui.scene.GameScene;
-import ui.scene.LevelSelectScene;
-import ui.scene.MenuScene;
-import ui.scene.PauseScene;
-//import ui.scene.ShopScene;
+import ui.scene.*;
 
 import javax.swing.*;
 
@@ -22,6 +18,7 @@ public class SceneManager {
 //    private final ShopScene shopScene;
     private final PauseScene pauseScene;
     private final LevelSelectScene levelSelectScene;
+    private final GameOverScene gameOverScene;
 
     private Scene currentScene;
 
@@ -44,6 +41,7 @@ public class SceneManager {
         levelSelectScene = new LevelSelectScene(input, this);
 
         shopScene.setOnBack(() -> setScene(menuScene));
+        gameOverScene = new GameOverScene(input, this::goToMenu);
 
         // 3️⃣ Bắt đầu từ menu
         setScene(menuScene);
@@ -73,7 +71,6 @@ public class SceneManager {
     public void goToGame() {
         setScene(gameScene);
         gameScene.forceUpdateGameAssets();
-
     }
 
     public void goToShop() {
@@ -83,4 +80,8 @@ public class SceneManager {
     public void goToPause() { setScene(pauseScene); }
 
     public void goToLevelSelect() { setScene(levelSelectScene); }
+
+    public void goToGameOver() {
+        setScene(gameOverScene);
+    }
 }
