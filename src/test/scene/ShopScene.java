@@ -1,8 +1,9 @@
-package test;
+package test.scene;
 
 import core.InputHandler;
 import core.ResourceLoader;
 import data.PlayerData;
+import test.panel.GridPanel;
 import ui.base.Button;
 import ui.base.ButtonGroup;
 import ui.base.Scene;

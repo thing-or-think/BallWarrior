@@ -1,7 +1,7 @@
 package core;
 
 import data.PlayerData;
-import test.ShopScene;
+import test.scene.ShopScene;
 import ui.base.Scene;
 import ui.scene.GameScene;
 import ui.scene.LevelSelectScene;

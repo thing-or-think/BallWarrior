@@ -10,8 +10,8 @@ import ui.base.ButtonGroup;
 import ui.button.IconButton;
 import ui.base.Scene;
 import ui.base.Button;
-import ui.button.IconButton;
-import ui.button.MenuButton;
+import ui.panel.GachaPanel;
+import ui.panel.GridPanel;
 import utils.Constants;
 
 import javax.swing.*;
