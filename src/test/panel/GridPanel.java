@@ -105,4 +105,8 @@ public class GridPanel extends JPanel {
         g2.setColor(Color.LIGHT_GRAY);
         g2.fillRect(barX, thumbY, 10, thumbH);
     }
+
+    public void setSkins(List<SkinData> skins) {
+        skinGrid.setSkins(skins);
+    }
 }
