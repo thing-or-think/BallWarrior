@@ -97,9 +97,11 @@ public class ShopScene extends Scene {
     }
 
     private void handleBalls() {
+        gridPanel.setSkins(playerData.getInventory().getBalls());
     }
 
     private void handlePaddles() {
+        gridPanel.setSkins(playerData.getInventory().getPaddles());
     }
 
     private void handleGacha() {
