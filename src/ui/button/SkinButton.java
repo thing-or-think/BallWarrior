@@ -9,40 +9,74 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class SkinButton extends Button {
-    private SkinData skinData;
+    private final SkinData skinData;
 
-    private static final BufferedImage common = ResourceLoader.loadImg("assets/images/CommonBg.jpg");
-    private static final BufferedImage rare = ResourceLoader.loadImg("assets/images/RareBg.jpg");
-    private static final BufferedImage epic = ResourceLoader.loadImg("assets/images/EpicBg.jpg");
-    private static final BufferedImage legendary = ResourceLoader.loadImg("assets/images/LegendaryBg.jpg");
+    private static final BufferedImage COMMON_BG = ResourceLoader.loadImg("assets/images/CommonBg.jpg");
+    private static final BufferedImage RARE_BG = ResourceLoader.loadImg("assets/images/RareBg.jpg");
+    private static final BufferedImage EPIC_BG = ResourceLoader.loadImg("assets/images/EpicBg.jpg");
+    private static final BufferedImage LEGENDARY_BG = ResourceLoader.loadImg("assets/images/LegendaryBg.jpg");
 
     public SkinButton(int x, int y, int width, int height, SkinData skinData) {
-        super(null, null, x, y, width, height);
+        super("SkinButton", null, x, y, width, height);
         this.skinData = skinData;
+        loadDisplay();
     }
 
     public SkinButton(int x, int y, int width, int height, SkinData skinData, Runnable activity) {
-        super(null, null, x, y, width, height);
+        super("SkinButton", null, x, y, width, height);
         this.activity = activity;
         this.skinData = skinData;
+        loadDisplay();
+    }
+
+    public SkinButton(SkinData skinData) {
+        super("SkinButton", null, 0, 0, 0, 0);
+        this.skinData = skinData;
+        loadDisplay();
+    }
+
+    private void loadDisplay() {
+        if (skinData == null || skinData.display == null) return;
+
+        String type = skinData.display.type;
+        String value = skinData.display.value;
+
+        if ("color".equalsIgnoreCase(type)) {
+            try {
+                this.color = Color.decode(value);
+            } catch (Exception e) {
+                this.color = Color.WHITE;
+            }
+        } else if ("image".equalsIgnoreCase(type)) {
+            this.icon = ResourceLoader.loadImg(value);
+        }
+    }
+
+    private BufferedImage getBackgroundByRarity() {
+        return switch (skinData.getRarity()) {
+            case COMMON -> COMMON_BG;
+            case RARE -> RARE_BG;
+            case EPIC -> EPIC_BG;
+            case LEGENDARY -> LEGENDARY_BG;
+        };
     }
 
     @Override
     public void draw(Graphics2D g2) {
-        switch (skinData.getRarity()) {
-            case COMMON -> g2.drawImage(common, x, y, width, height, null);
-            case RARE -> g2.drawImage(rare, x, y, width, height, null);
-            case EPIC -> g2.drawImage(epic, x, y, width, height, null);
-            case LEGENDARY -> g2.drawImage(legendary, x, y, width, height, null);
-        }
+        if (skinData == null) return;
 
-        if (skinData.display.type == "color") {
-            g2.setColor(skinData.display.value != null ? color : Color.WHITE);
+        // Nền theo độ hiếm
+        g2.drawImage(getBackgroundByRarity(), x, y, width, height, null);
+
+        // Vẽ phần hiển thị skin (đã được loadDisplay() chuẩn bị sẵn)
+        if (color != null) {
+            g2.setColor(color);
             g2.fillOval(x + width / 4, y + height / 4 - 10, width / 2, height / 2);
-        } else {
-            g2.drawImage(ResourceLoader.loadImg(skinData.display.value), x + width / 4, y + height / 4 - 10, width / 2, height / 2, null);
+        } else if (icon != null) {
+            g2.drawImage(icon, x + width / 4, y + height / 4 - 10, width / 2, height / 2, null);
         }
 
+        // Nếu chưa mua
         if (!skinData.isBought()) {
             g2.setColor(new Color(0, 0, 0, 150));
             g2.fillRect(x, y, width, height);
@@ -52,12 +86,14 @@ public class SkinButton extends Button {
             g2.drawString(skinData.getPrice() + " 💰", x + width / 3, y + height - 10);
         }
 
+        // Hover hiệu ứng
         if (hovered) {
             g2.setColor(new Color(255, 255, 255, 180));
             g2.setStroke(new BasicStroke(3f));
             g2.drawRect(x, y, width, height);
         }
 
+        // Click (đang trang bị)
         if (clicked) {
             g2.setColor(Color.GREEN);
             g2.setStroke(new BasicStroke(4f));
@@ -70,7 +106,7 @@ public class SkinButton extends Button {
 
     @Override
     public void onClick() {
-        activity.run();
+        if (activity != null) activity.run();
         clicked = true;
     }
 }
