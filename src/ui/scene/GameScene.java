@@ -8,6 +8,7 @@ import game.GameWorld;
 import ui.HUD;
 import ui.base.Scene;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 
 public class GameScene extends Scene {
     private GameWorld world;
@@ -24,6 +25,14 @@ public class GameScene extends Scene {
     @Override
     protected void initUI() {
 
+    }
+
+    /**
+     * Phương thức để bắt đầu/tải một màn chơi cụ thể
+     * @param levelPath Đường dẫn file level
+     */
+    public void startGame(String levelPath) {
+        world.resetAndLoadLevel(levelPath);
     }
 
     @Override

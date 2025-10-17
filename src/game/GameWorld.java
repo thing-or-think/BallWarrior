@@ -32,20 +32,43 @@ public class GameWorld {
         paddle = new Paddle(Constants.WIDTH / 2 - Constants.PADDLE_WIDTH / 2,
                 Constants.HEIGHT - Constants.PADDLE_HEIGHT - 30, input);
         balls = new ArrayList<>();
+        bricks = new ArrayList<>(); // Khởi tạo rỗng
         scoreSystem = new ScoreSystem();
-        levelManager = new LevelManager();
-        levelManager.load("assets/levels/level1.json");
-
-        LevelData level = levelManager.getCurrentLevel();
-        bricks = LevelBuilder.buildBricks(level);
-
+        levelManager = new LevelManager(); // Khởi tạo LevelManager
         collisionSystem = new CollisionSystem(paddle);
         skillEffectManager = new SkillEffectManager();
         skillManager = new SkillManager(input, paddle, balls, bricks, scoreSystem, collisionSystem, skillEffectManager);
 
-        collisionSystem.register(paddle);
-        for (Brick brick : bricks) collisionSystem.register(brick);
+        // Không load level mặc định ở đây nữa mà gọi một phương thức riêng để load level
+    }
 
+    /**
+     * Phương thức để reset và tải một màn chơi mới
+     * @param levelPath Đường dẫn đến file JSON của level
+     */
+    public void resetAndLoadLevel(String levelPath) {
+        // 1. Dọn dẹp trạng thái cũ
+        scoreSystem.reset();
+        balls.clear();
+        bricks.clear();
+
+        // Reset hệ thống va chạm (quan trọng)
+        collisionSystem = new CollisionSystem(paddle);
+        collisionSystem.register(paddle);
+
+        // 2. Tải dữ liệu level mới
+        LevelData level = levelManager.loadLevelByPath(levelPath);
+        if (level != null) {
+            List<Brick> newBricks = LevelBuilder.buildBricks(level);
+            this.bricks.addAll(newBricks);
+
+            // 3. Đăng ký lại các viên gạch mới vào hệ thống va chạm
+            for (Brick brick : this.bricks) {
+                collisionSystem.register(brick);
+            }
+        }
+
+        // 4. Reset lại bóng
         resetBall();
     }
 

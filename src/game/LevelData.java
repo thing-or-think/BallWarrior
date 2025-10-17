@@ -12,6 +12,8 @@ public class LevelData {
     public int cols;             // Số cột gạch
     public int[][] brickMap;     // Ma trận bản đồ gạch (0 = trống, 1 = gạch)
 
+    public transient String filePath;
+
     // ==== CONSTRUCTOR ========================================================
     public LevelData(String name, int rows, int cols, int[][] brickMap) {
         this.name = name;
@@ -22,6 +24,11 @@ public class LevelData {
 
     // Constructor trống (cần khi dùng Gson)
     public LevelData() {}
+
+    // [ MỚI ] Setter cho filePath
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 
     @Override
     public String toString() {

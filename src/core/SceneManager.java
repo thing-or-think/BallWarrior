@@ -63,9 +63,15 @@ public class SceneManager {
         setScene(menuScene);
     }
 
-    public void goToGame() {
+    //Sửa đổi goToGame để nhận đường dẫn level
+    public void goToGame(String levelPath) {
+        gameScene.startGame(levelPath); // Yêu cầu GameScene chuẩn bị level
         setScene(gameScene);
         gameScene.forceUpdateGameAssets();
+    }
+
+    public void goToGame() {
+        goToGame("assets/levels/level1.json"); // Mặc định vào level 1
     }
 
     public void goToShop() {
