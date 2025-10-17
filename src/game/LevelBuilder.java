@@ -9,9 +9,13 @@ import java.util.List;
 public class LevelBuilder {
     public static List<Brick> buildBricks(LevelData level) {
         List<Brick> bricks = new ArrayList<>();
-        int brickWidth = Constants.WIDTH / level.cols;
-        int brickHeight = 25;
-        int brickSize = 40;
+        int brickSize = 50;
+        // Tổng chiều rộng của dãy gạch
+        int totalWidth = level.cols * brickSize;
+
+        // Tính điểm bắt đầu để căn giữa + cách trục X 50
+        int startX = (Constants.WIDTH - totalWidth) / 2;
+        int startY = 50;
 
         for (int r = 0; r < level.rows; r++) {
             for (int c = 0; c < level.cols; c++) {
@@ -23,8 +27,8 @@ public class LevelBuilder {
                     default: type = Brick.Type.DIAMOND; break;
                 }
                 bricks.add(new Brick(
-                        50 + c * (brickSize + 5),
-                        50 + r * (brickSize + 5),
+                        startX + c * (brickSize),
+                        startY + r * (brickSize),
                         brickSize,
                         brickSize,
                         type

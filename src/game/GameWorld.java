@@ -89,7 +89,7 @@ public class GameWorld {
             if (collisionSystem.resolveCollision(ball, result)) {
                 if (brick.isDestroyed()) {
                     scoreSystem.addScore(brick.getScoreValue());
-                    scoreSystem.increaseCombo(0.5f);
+                    scoreSystem.increaseCombo(0.25f);
                     collisionSystem.unregister(brick);
                 }
             }
