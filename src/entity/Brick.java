@@ -6,6 +6,8 @@ import java.awt.*;
 
 import utils.Vector2D;
 
+import java.awt.image.BufferedImage;
+
 public class Brick extends Entity {
 
     // loại brick
@@ -17,6 +19,17 @@ public class Brick extends Entity {
     private int scoreValue;
     private Type type;
     private final int initialHealth; // máu gốc
+
+    // 🔹 Ảnh crack overlay
+    private BufferedImage crackOverlay;
+    private static final BufferedImage[] crackStages = new BufferedImage[10]; // Minecraft có 10 cấp
+
+    static {
+        // 🔹 Load tất cả ảnh crack vào bộ nhớ (chỉ 1 lần)
+        for (int i = 0; i < 10; i++) {
+            crackStages[i] = ResourceLoader.loadImg("assets/images/Brick/cracks/destroy" + i + ".png");
+        }
+    }
 
     public Brick(float x, float y, int width, int height, Type type) {
         super(x, y, width, height);
@@ -47,6 +60,7 @@ public class Brick extends Entity {
         }
 
         this.initialHealth = this.health;
+        this.crackOverlay = null;
     }
 
     @Override
@@ -62,6 +76,11 @@ public class Brick extends Entity {
             g.setColor(color);
             g.fillRect((int) position.x, (int) position.y, width, height);
         }
+
+        // 🔥 Vẽ crack overlay nếu có
+        if (crackOverlay != null && type != Type.BEDROCK && !isDestroyed()) {
+            g.drawImage(crackOverlay, (int) position.x, (int) position.y, width, height, null);
+        }
         // Vẽ viền
         g.setColor(Color.BLACK);
         g.drawRect((int) position.x, (int) position.y, width, height);
@@ -69,9 +88,17 @@ public class Brick extends Entity {
 
     // hit có damage (skill bom, fireball, v.v.)
     public void hit(int damage) {
-        if (type != Type.BEDROCK) { // Bedrock không thể phá
-            health -= damage;
-        }
+        if (type == Type.BEDROCK) return;
+
+        health -= damage;
+        if (health < 0) health = 0;
+
+        // 🎯 Tính mức độ nứt dựa trên tỉ lệ máu còn lại
+        float percent = 1f - ((float) health / initialHealth);
+        int level = Math.min(9, Math.max(0, (int) (percent * 10))); // 0–9
+
+        // Gán ảnh crack tương ứng
+        crackOverlay = crackStages[level];
     }
 
     public boolean isDestroyed() {
