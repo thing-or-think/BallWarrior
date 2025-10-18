@@ -8,10 +8,12 @@ import ui.base.ButtonGroup;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SkinButton extends Button {
     private boolean isEquipped;
     private final SkinData skinData;
+    private static AtomicInteger equippedSkinId;
 
     private static final BufferedImage COMMON_BG = ResourceLoader.loadImg("assets/images/CommonBg.jpg");
     private static final BufferedImage RARE_BG = ResourceLoader.loadImg("assets/images/RareBg.jpg");
@@ -71,6 +73,8 @@ public class SkinButton extends Button {
     @Override
     public void draw(Graphics2D g2) {
         if (skinData == null) return;
+
+        isEquipped = (equippedSkinId != null && skinData.getId() == equippedSkinId.get());
 
         // Nền theo độ hiếm
         g2.drawImage(getBackgroundByRarity(), x, y, width, height, null);
@@ -139,11 +143,11 @@ public class SkinButton extends Button {
         clicked = true;
     }
 
-    public void setEquipped(boolean isEquipped) {
-        this.isEquipped = isEquipped;
-    }
-
     public SkinData getSkinData() {
         return skinData;
+    }
+
+    public static void setEquippedSkinId(AtomicInteger equippedSkinId) {
+        SkinButton.equippedSkinId = equippedSkinId;
     }
 }

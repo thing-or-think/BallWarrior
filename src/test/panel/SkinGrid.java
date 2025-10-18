@@ -24,11 +24,11 @@ public class SkinGrid {
         buttons.clear();
         buttonGroup.removeAll();
         this.equippedSkinId = equippedSkinId;
+        SkinButton.setEquippedSkinId(equippedSkinId);
         if (skinData == null) return;
 
         for (SkinData data : skinData) {
             SkinButton skinButton = new SkinButton(data);
-            skinButton.setEquipped(equippedSkinId.get() == data.getId());
 
             buttons.add(skinButton);
             buttonGroup.add(skinButton);

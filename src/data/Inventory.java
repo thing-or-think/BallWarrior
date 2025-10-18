@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 public class Inventory {
 
     private List<SkinData> items;
-    private List<SkinData> balls;
-    private List<SkinData> paddles;
+    private transient List<SkinData> balls;
+    private transient List<SkinData> paddles;
 
     public Inventory(Inventory inventory) {
         this.items = new ArrayList<>(inventory.getItems());
