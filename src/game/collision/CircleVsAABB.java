@@ -19,44 +19,64 @@ import utils.Vector2D;
 public class CircleVsAABB {
 
     public static CollisionResult intersect(Ball ball, Entity box) {
-        Vector2D startCenter = ball.getPreviousPosition().added(new Vector2D(ball.getRadius(), ball.getRadius())); // tâm bóng ở frame trước
-        Vector2D endCenter = ball.getPosition().added(new Vector2D(ball.getRadius(), ball.getRadius()));           // tâm bóng ở frame hiện tại
-
-        Vector2D[][] expandedEdges = CollisionUtils.getSweptAabbEdges(ball, box);
-        Vector2D[][] originalEdges = CollisionUtils.getSweptAabbEdges(null, box);
-        CollisionResult bestResult = null;
-
-        for (int edgeIndex = 0; edgeIndex < expandedEdges.length; edgeIndex++) {
-            Vector2D intersection = CollisionUtils.getLineIntersection(
-                    startCenter, endCenter,
-                    expandedEdges[edgeIndex][0], expandedEdges[edgeIndex][1]
-            );
-
-            if (intersection != null) {
-                if (CollisionUtils.isBetween(originalEdges[edgeIndex][0].x, originalEdges[edgeIndex][1].x, intersection.x) ||
-                        CollisionUtils.isBetween(originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y, intersection.y)) {
-
-                    Vector2D offset = intersection.subtracted(startCenter);
-                    float time = offset.length() / ball.getVelocity().length();
-                    Vector2D hitPoint = new Vector2D(
-                            CollisionUtils.clamp(intersection.x, originalEdges[edgeIndex][0].x, originalEdges[edgeIndex][1].x),
-                            CollisionUtils.clamp(intersection.y, originalEdges[edgeIndex][0].y, originalEdges[edgeIndex][1].y)
-                    );
-                    Vector2D normal = originalEdges[edgeIndex][1].subtracted(originalEdges[edgeIndex][0]).normalRight().normalized();
-                    Vector2D reflectedVelocity = CollisionUtils.reflect(ball.getVelocity(), normal);
-                    CollisionResult edgeResult = new CollisionResult(box, hitPoint, normal, time, reflectedVelocity);
-                    if ((bestResult == null || time < bestResult.getTime() - Constants.COLLISION_EPSILON) && edgeResult.isValid(ball)) {
-                        bestResult = edgeResult;
-                    }
-                } else {
-                    CollisionResult cornerResult = checkCorners(ball, startCenter, endCenter, originalEdges[edgeIndex], box);
-                    if (bestResult == null || cornerResult.getTime() < bestResult.getTime() - Constants.COLLISION_EPSILON) {
-                        bestResult = cornerResult;
-                    }
-                }
-            }
+        if (ball.getVelocity().x == 0 && ball.getVelocity().y == 0) {
+            return null;
         }
-        return bestResult;
+
+
+        float radius = ball.getRadius();
+        Vector2D expandedMin = new Vector2D(box.getX() - radius, box.getY() - radius);
+        Vector2D expandedMax = new Vector2D(box.getX() + box.getWidth() + radius, box.getY() + box.getHeight() + radius);
+
+        Vector2D startPoint = ball.getPreviousPosition().added(new Vector2D(radius, radius));
+
+        Vector2D velocity = ball.getVelocity();
+
+        float t_near_x, t_far_x, t_near_y, t_far_y;
+
+        if (velocity.x == 0) {
+            if (startPoint.x < expandedMin.x || startPoint.x > expandedMax.x) {
+                return null;
+            }
+            t_near_x = -Float.MAX_VALUE;
+            t_far_x = Float.MAX_VALUE;
+        } else {
+            t_near_x = (expandedMin.x - startPoint.x) / velocity.x;
+            t_far_x = (expandedMax.x - startPoint.x) / velocity.x;
+        }
+
+        if (velocity.y == 0) {
+            if (startPoint.y < expandedMin.y || startPoint.y > expandedMax.y) {
+                return null;
+            }
+            t_near_y = -Float.MAX_VALUE;
+            t_far_y = Float.MAX_VALUE;
+        } else {
+            t_near_y = (expandedMin.y - startPoint.y) / velocity.y;
+            t_far_y = (expandedMax.y - startPoint.y) / velocity.y;
+        }
+
+        if (t_near_x > t_far_x) { float temp = t_near_x; t_near_x = t_far_x; t_far_x = temp; }
+        if (t_near_y > t_far_y) { float temp = t_near_y; t_near_y = t_far_y; t_far_y = temp; }
+
+        float t_entry = Math.max(t_near_x, t_near_y);
+        float t_exit = Math.min(t_far_x, t_far_y);
+
+        if (t_entry >= t_exit || t_entry > 1.0f || t_entry < 0.0f) {
+            return null;
+        }
+
+        Vector2D normal;
+        if (t_near_x > t_near_y) {
+            normal = new Vector2D(-Math.signum(velocity.x), 0);
+        } else {
+            normal = new Vector2D(0, -Math.signum(velocity.y));
+        }
+
+        Vector2D hitPoint = startPoint.added(velocity.multiplied(t_entry));
+        Vector2D reflectedVelocity = CollisionUtils.reflect(ball.getVelocity(), normal);
+
+        return new CollisionResult(box, hitPoint, normal, t_entry, reflectedVelocity);
     }
 
     // Kiểm tra va chạm với 4 góc (point vs moving point with radius)
