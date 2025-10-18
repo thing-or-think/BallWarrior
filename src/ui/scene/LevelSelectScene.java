@@ -17,6 +17,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.image.BufferedImage;
 
 public class LevelSelectScene extends Scene {
 
@@ -28,6 +29,12 @@ public class LevelSelectScene extends Scene {
     private LevelManager levelManager;
     private List<LevelData> availableLevels;
     private int currentLevelIndex = 0;
+
+    // Vị trí và kích thước khung preview
+    private static final int PREVIEW_X = 150;
+    private static final int PREVIEW_Y = 120;
+    private static final int PREVIEW_WIDTH = 500;
+    private static final int PREVIEW_HEIGHT = 360;
 
     public LevelSelectScene(InputHandler input, SceneManager sceneManager) {
         super("LevelSelectScene", input);
@@ -53,15 +60,15 @@ public class LevelSelectScene extends Scene {
 
         // --- Khởi tạo các nút ---
         // Nút mũi tên trái
-        buttons.add(new LeftArrowButton(40, 300, 60, 60));
+        buttons.add(new LeftArrowButton(PREVIEW_X - 80, PREVIEW_Y + PREVIEW_HEIGHT / 2 - 30, 60, 60));
         buttons.get(0).setActivity(this::selectPreviousLevel);
 
         // Nút mũi tên phải
-        buttons.add(new RightArrowButton(Constants.WIDTH - 100, 300, 60, 60));
+        buttons.add(new RightArrowButton(PREVIEW_X + PREVIEW_WIDTH + 20, PREVIEW_Y + PREVIEW_HEIGHT / 2 - 30, 60, 60));
         buttons.get(1).setActivity(this::selectNextLevel);
 
         // Nút Play
-        buttons.add(new PlayButton("Play", Constants.WIDTH / 2 - 60, 520, 120, 40, new Font("Serif", Font.PLAIN, 32), this::playSelectedLevel));
+        buttons.add(new PlayButton("Play", Constants.WIDTH / 2 - 60, PREVIEW_Y + PREVIEW_HEIGHT + 40, 120, 50, new Font("Serif", Font.BOLD, 32), this::playSelectedLevel)); // Y từ 80 -> 15 để lên cao hơn
     }
 
     // Các phương thức xử lý logic chọn level
@@ -109,31 +116,44 @@ public class LevelSelectScene extends Scene {
         titleLabel.draw(g);
 
         // Vẽ khung preview
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
         g.drawRect(150, 120, 500, 360);
 
         // Vẽ thông tin level được chọn
         if (availableLevels != null && !availableLevels.isEmpty()) {
             LevelData selectedLevel = availableLevels.get(currentLevelIndex);
 
+            if (selectedLevel.previewImage != null) {
+                g.drawImage(selectedLevel.previewImage, PREVIEW_X, PREVIEW_Y, PREVIEW_WIDTH, PREVIEW_HEIGHT, null);
+            } else {
+                // Hiển thị thông báo nếu không tải được ảnh
+                g.setColor(Color.DARK_GRAY);
+                g.fillRect(PREVIEW_X + 1, PREVIEW_Y + 1, PREVIEW_WIDTH - 2, PREVIEW_HEIGHT - 2);
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("Serif", Font.ITALIC, 20));
+                String noPreviewMsg = "No Preview Image";
+                FontMetrics fmMsg = g.getFontMetrics();
+                int msgWidth = fmMsg.stringWidth(noPreviewMsg);
+                g.drawString(noPreviewMsg, (Constants.WIDTH - msgWidth) / 2, PREVIEW_Y + PREVIEW_HEIGHT / 2);
+            }
+
             // Vẽ tên level
-            g.setFont(new Font("Serif", Font.BOLD, 40));
+            g.setFont(new Font("Serif", Font.BOLD, 32));
             FontMetrics fm = g.getFontMetrics();
             String levelName = selectedLevel.name.toUpperCase();
             int textWidth = fm.stringWidth(levelName);
-            g.drawString(levelName, (Constants.WIDTH - textWidth) / 2, 320);
+            g.setColor(Color.WHITE);
+            g.drawString(levelName, (Constants.WIDTH - textWidth) / 2, PREVIEW_Y + PREVIEW_HEIGHT + 30); // Y từ 50 -> 25
 
         } else {
             // Thông báo nếu không tìm thấy level
             g.setFont(new Font("Serif", Font.ITALIC, 24));
-            FontMetrics fm = g.getFontMetrics();
             String message = "No levels found in 'assets/levels'";
+            FontMetrics fm = g.getFontMetrics();
             int textWidth = fm.stringWidth(message);
             g.setColor(Color.GRAY);
-            g.drawString(message, (Constants.WIDTH - textWidth) / 2, 320);
+            g.drawString(message, (Constants.WIDTH - textWidth) / 2, PREVIEW_Y + PREVIEW_HEIGHT / 2);
         }
-
-
         // Vẽ các nút
         for (Button button : buttons) {
             button.draw(g);

@@ -1,5 +1,5 @@
 {
-  "name": "The Wall",
+  "name": "Level 2",
   "rows": 7,
   "cols": 12,
   "brickMap": [
@@ -10,5 +10,6 @@
     [1,1,0,1,0,0,0,0,1,0,1,1],
     [0,1,1,0,0,0,0,0,0,1,1,0],
     [0,0,1,1,1,1,1,1,1,1,0,0]
-  ]
+  ],
+  "previewImagePath": "level2_preview.png"
 }

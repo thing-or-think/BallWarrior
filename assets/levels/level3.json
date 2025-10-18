@@ -1,5 +1,5 @@
 {
-  "name": "Checkerboard",
+  "name": "Level 3",
   "rows": 6,
   "cols": 10,
   "brickMap": [
@@ -9,5 +9,6 @@
     [0,1,0,1,0,1,0,1,0,1],
     [1,0,1,0,1,0,1,0,1,0],
     [0,1,0,1,0,1,0,1,0,1]
-  ]
+  ],
+  "previewImagePath": "level3_preview.png"
 }

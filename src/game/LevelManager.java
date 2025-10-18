@@ -1,7 +1,8 @@
 package game;
 
 import com.google.gson.Gson;
-
+import core.ResourceLoader;
+import java.awt.image.BufferedImage;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -31,7 +32,14 @@ public class LevelManager {
                 try (FileReader reader = new FileReader(file)) {
                     LevelData level = gson.fromJson(reader, LevelData.class);
                     if (level != null) {
-                        level.setFilePath(file.getPath()); // Lưu đường dẫn
+                        level.setFilePath(file.getPath());
+
+                        if (level.previewImagePath != null && !level.previewImagePath.isEmpty()) {
+                            String imagePath = "assets/previews/" + level.previewImagePath;
+                            BufferedImage img = ResourceLoader.loadImg(imagePath);
+                            level.setPreviewImage(img);
+                        }
+
                         allLevels.add(level);
                     }
                 } catch (IOException e) {
