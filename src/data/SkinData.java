@@ -4,6 +4,7 @@ import entity.Rarity;
 
 public class SkinData {
     private int id;
+    private String type;
     private String name;
     private Rarity rarity;
     private int price;
@@ -15,6 +16,7 @@ public class SkinData {
         public String value; // màu hoặc path ảnh
     }
 
+    public String getType() { return type; }
     public int getId() { return id; }
     public String getName() { return name; }
     public Rarity getRarity() { return rarity; }
