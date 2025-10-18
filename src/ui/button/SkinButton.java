@@ -44,6 +44,11 @@ public class SkinButton extends Button {
         if ("color".equalsIgnoreCase(type)) {
             try {
                 this.color = Color.decode(value);
+
+                if (color == null) {
+                    color = Color.WHITE;
+                }
+
             } catch (Exception e) {
                 this.color = Color.WHITE;
             }
@@ -69,11 +74,20 @@ public class SkinButton extends Button {
         g2.drawImage(getBackgroundByRarity(), x, y, width, height, null);
 
         // Vẽ phần hiển thị skin (đã được loadDisplay() chuẩn bị sẵn)
-        if (!color.equals(color.WHITE)) {
+        if (!Color.WHITE.equals(color)) {
             g2.setColor(color);
-            g2.fillOval(x + width / 4, y + height / 4 - 10, width / 2, height / 2);
+            if (skinData.getType().equals("ball")) {
+                g2.fillOval(x + width / 4, y + height / 4 - 10, width / 2, height / 2);
+            } else {
+                g2.fillRect(x + width/2 - 30, y + height/2 - 10, 60, 20);  // <-- Vẽ paddle (hình chữ nhật)
+            }
         } else if (icon != null) {
-            g2.drawImage(icon, x + width / 4, y + height / 4 - 10, width / 2, height / 2, null);
+            if (skinData.getType().equals("ball")) {
+                g2.drawImage(icon, x + width / 4, y + height / 4 - 10, width / 2, height / 2, null);
+            } else {
+                g2.drawImage(icon, x + 10, y + height/2 - 10, width - 20, 20, null);  // <-- Vẽ paddle từ ảnh
+
+            }
         }
 
         // Nếu chưa mua
