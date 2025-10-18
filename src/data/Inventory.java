@@ -2,16 +2,26 @@ package data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Inventory {
+
+    private List<SkinData> items;
     private List<SkinData> balls;
     private List<SkinData> paddles;
 
     public Inventory(Inventory inventory) {
-        this.balls = new ArrayList<>(inventory.balls);
-        this.paddles = new ArrayList<>(inventory.paddles);
+        this.items = new ArrayList<>(inventory.getItems());
+        this.balls = this.items.stream()
+                .filter(item -> "ball".equals(item.getType()))
+                .collect(Collectors.toList());
+        this.paddles = this.items.stream()
+                .filter(item -> "paddle".equals(item.getType()))
+                .collect(Collectors.toList());
+        System.out.println(paddles.size());
     }
 
+    public List<SkinData> getItems() { return items; }
     public List<SkinData> getBalls() { return balls; }
     public List<SkinData> getPaddles() { return paddles; }
 
