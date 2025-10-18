@@ -17,6 +17,9 @@ public class InputHandler extends KeyAdapter {
     private boolean mouseClickedOnce = false;
     private int scrollAmount = 0;
 
+    private long lastClickTime = 0;
+    private static final long CLICK_COOLDOWN = 200; // 200 mili giây
+
     private final boolean[] keys = new boolean[256];
     private final boolean[] prevKeys = new boolean[256];
 
@@ -69,7 +72,6 @@ public class InputHandler extends KeyAdapter {
             @Override
             public void mousePressed(MouseEvent e) {
                 mousePressed = true;
-                mouseClickedOnce = true;  // đánh dấu 1 lần click
                 mouseX = e.getX();
                 mouseY = e.getY();
             }
@@ -119,10 +121,17 @@ public class InputHandler extends KeyAdapter {
 
     public boolean consumeClick() {
         if (mouseClickedOnce) {
+            long currentTime = System.currentTimeMillis();
+            // Kiểm tra xem đã đủ thời gian trôi qua kể từ lần click cuối chưa
+            if (currentTime - lastClickTime > CLICK_COOLDOWN) {
+                lastClickTime = currentTime; // Cập nhật thời gian click cuối
+                mouseClickedOnce = false;      // Tiêu thụ sự kiện click này
+                return true;                   // Trả về true: click hợp lệ
+            }
+            // Nếu click quá nhanh, vẫn tiêu thụ sự kiện nhưng không coi là hợp lệ
             mouseClickedOnce = false;
-            return true;
         }
-        return false;
+        return false; // Click không hợp lệ (do quá nhanh hoặc không có sự kiện)
     }
 
 
