@@ -26,7 +26,7 @@ public class SceneManager {
         this.frame = frame;
         this.input = input;
 
-        PlayerData playerData = ResourceLoader.loadPlayerData();
+        PlayerData playerData = new PlayerData(ResourceLoader.loadPlayerData());
 
         shopScene = new ShopScene(input, playerData); // tạm null
         gameScene = new GameScene(input, this, playerData);
