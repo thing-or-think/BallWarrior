@@ -20,12 +20,12 @@ public class Brick extends Entity {
     private Type type;
     private final int initialHealth; // máu gốc
 
-    // 🔹 Ảnh crack overlay
+    // Ảnh crack overlay
     private BufferedImage crackOverlay;
     private static final BufferedImage[] crackStages = new BufferedImage[10]; // Minecraft có 10 cấp
 
     static {
-        // 🔹 Load tất cả ảnh crack vào bộ nhớ (chỉ 1 lần)
+        // Load tất cả ảnh crack vào bộ nhớ
         for (int i = 0; i < 10; i++) {
             crackStages[i] = ResourceLoader.loadImg("assets/images/Brick/cracks/destroy" + i + ".png");
         }
@@ -77,7 +77,7 @@ public class Brick extends Entity {
             g.fillRect((int) position.x, (int) position.y, width, height);
         }
 
-        // 🔥 Vẽ crack overlay nếu có
+        // Vẽ crack overlay nếu có
         if (crackOverlay != null && type != Type.BEDROCK && !isDestroyed()) {
             g.drawImage(crackOverlay, (int) position.x, (int) position.y, width, height, null);
         }
@@ -93,7 +93,7 @@ public class Brick extends Entity {
         health -= damage;
         if (health < 0) health = 0;
 
-        // 🎯 Tính mức độ nứt dựa trên tỉ lệ máu còn lại
+        // Tính mức độ nứt dựa trên tỉ lệ máu còn lại
         float percent = 1f - ((float) health / initialHealth);
         int level = Math.min(9, Math.max(0, (int) (percent * 10))); // 0–9
 
