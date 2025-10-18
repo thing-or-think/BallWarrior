@@ -16,8 +16,8 @@ public class LevelBuilder {
             for (int c = 0; c < level.cols; c++) {
                 if (level.brickMap[r][c] == 1) {
                     int x = c * brickWidth;
-                    int y = 100 + r * brickHeight;
-                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 1, Color.RED));
+                    int y = 100 + r * brickWidth;
+                    bricks.add(new Brick(x, y, brickWidth, brickWidth, 1, Color.RED));
                 }
             }
         }

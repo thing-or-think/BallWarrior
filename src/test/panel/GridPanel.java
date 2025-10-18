@@ -4,6 +4,7 @@ import core.InputHandler;
 import core.ResourceLoader;
 import data.SkinData;
 import ui.base.Button;
+import ui.button.SkinButton;
 import utils.ScrollManager;
 
 import javax.swing.*;
@@ -17,14 +18,16 @@ public class GridPanel extends JPanel {
     private final SkinGrid skinGrid = new SkinGrid();
     private final ScrollManager scroll = new ScrollManager();
     private final BufferedImage background;
-    private AtomicInteger equippedSkinId;
+    private final InfoPanel infoPanel;
 
-    public GridPanel(InputHandler input, List<SkinData> skins, AtomicInteger equippedSkinId) {
+    public GridPanel(InputHandler input,
+                     InfoPanel infoPanel,
+                     List<SkinData> skins,
+                     AtomicInteger equippedSkinId) {
         this.input = input;
         this.background = ResourceLoader.loadImg("assets/images/shopBg.jpg");
-        this.equippedSkinId = equippedSkinId;
-
-        skinGrid.setSkins(skins, equippedSkinId);
+        this.infoPanel = infoPanel;
+        setSkins(skins, equippedSkinId);
     }
 
     public void update() {
@@ -110,7 +113,12 @@ public class GridPanel extends JPanel {
     }
 
     public void setSkins(List<SkinData> skins, AtomicInteger equippedSkinId) {
-        this.equippedSkinId = equippedSkinId;
         skinGrid.setSkins(skins, equippedSkinId);
+        for (Button button : skinGrid.getButtons()) {
+            button.setActivity(() -> infoPanel.setSkinData(((SkinButton) button).getSkinData()));
+            if (((SkinButton) button).getSkinData().getId() == equippedSkinId.get()) {
+                infoPanel.setSkinData(((SkinButton) button).getSkinData());
+            }
+        }
     }
 }

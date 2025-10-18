@@ -55,7 +55,7 @@ public class SkinGrid {
         }
     }
 
-    public java.util.List<Button> getButtons() {
+    public List<Button> getButtons() {
         return buttons;
     }
 

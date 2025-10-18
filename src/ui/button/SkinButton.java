@@ -133,11 +133,17 @@ public class SkinButton extends Button {
         } else {
             clicked = true;
         }
-        if (activity != null) activity.run();
+        if (activity != null) {
+            activity.run();
+        }
         clicked = true;
     }
 
     public void setEquipped(boolean isEquipped) {
         this.isEquipped = isEquipped;
+    }
+
+    public SkinData getSkinData() {
+        return skinData;
     }
 }

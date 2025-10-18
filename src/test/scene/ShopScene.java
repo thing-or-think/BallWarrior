@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ShopScene extends Scene {
     private final List<Button> buttons = new ArrayList<>();
@@ -40,14 +41,26 @@ public class ShopScene extends Scene {
         this.moneyLabel = new Label(null, 690, 10, new Font("Monospaced", Font.BOLD, 22), Color.YELLOW);
 
         this.buttonGroup = new ButtonGroup();
+        AtomicInteger equippedSkinId = playerData.getEquipped().getBallIdRef();
+
+        this.infoPanel = new InfoPanel(
+                input,
+                playerData.getInventory().getBalls().get(equippedSkinId.get()),
+                equippedSkinId
+        );
         this.gridPanel = new GridPanel(
                 input,
+                infoPanel,
                 playerData.getInventory().getBalls(),
-                playerData.getEquipped().getBallIdRef()
+                equippedSkinId
         );
         setLayout(null);
+        this.infoPanel.setBounds(Constants.WIDTH / 2, 55, 400, Constants.HEIGHT - 60);
+        add(infoPanel);
+        infoPanel.init();
         this.gridPanel.setBounds(0,55,Constants.WIDTH,Constants.HEIGHT -60);
         add(gridPanel);
+
         initUI();
     }
 

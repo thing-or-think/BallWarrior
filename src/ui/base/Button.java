@@ -1,11 +1,12 @@
 package ui.base;
 
+import utils.TextUtils;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public abstract class Button extends TextElement {
 
-    protected int x, y;                // Góc trên-trái của nút
     protected int width, height;       // Kích thước nút
     protected Rectangle bound;         // Vùng va chạm / click
     protected boolean hovered;         // Trạng thái hover
@@ -48,6 +49,15 @@ public abstract class Button extends TextElement {
         this.height = height;
 
         this.bound = new Rectangle(x, y, width, height);
+    }
+
+    public Button(String text, int x, int y, Font font, AnchorType anchorType) {
+        super(text, x, y, font, anchorType);
+        Dimension dimension = TextUtils.measureText(text, font);
+        this.width = dimension.width + 20;
+        this.height = dimension.height + 20;
+        this.bound = new Rectangle(x, y, width, height);
+        setAnchorType(anchorType);
     }
 
     /** Vẽ nút — mỗi subclass (PlayButton, LeftArrowButton, ...) sẽ override */
@@ -113,5 +123,28 @@ public abstract class Button extends TextElement {
 
     public void setButtonGroup(ButtonGroup buttonGroup) {
         this.buttonGroup = buttonGroup;
+    }
+
+    public void setAnchorType(AnchorType anchorType) {
+        super.setAnchorType(anchorType);
+        switch (anchorType) {
+            case TOP_LEFT -> {
+                // (x, y) là góc trên trái
+            }
+            case CENTER_TOP -> {
+                bound.x = bound.x - bound.width / 2;
+            }
+            case CENTER_MIDDLE -> {
+                bound.x = bound.x - bound.width / 2;
+                bound.y = bound.y - bound.height / 2;
+            }
+            case CENTER_BASELINE -> {
+                bound.x = bound.x - bound.width / 2;
+                bound.y = bound.y - bound.height;
+            }
+            case BASELINE_LEFT -> {
+                bound.y = bound.y - bound.height;
+            }
+        }
     }
 }
