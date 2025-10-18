@@ -4,6 +4,7 @@ import core.InputHandler;
 import core.ResourceLoader;
 import data.PlayerData;
 import test.panel.GridPanel;
+import test.panel.InfoPanel;
 import ui.base.Button;
 import ui.base.ButtonGroup;
 import ui.base.Scene;
@@ -22,6 +23,7 @@ public class ShopScene extends Scene {
     private final Label moneyLabel;
     private Runnable onBack;
     private GridPanel gridPanel;
+    private InfoPanel infoPanel;
 
     private String currentTab = "BALLS";
 
@@ -38,7 +40,11 @@ public class ShopScene extends Scene {
         this.moneyLabel = new Label(null, 690, 10, new Font("Monospaced", Font.BOLD, 22), Color.YELLOW);
 
         this.buttonGroup = new ButtonGroup();
-        this.gridPanel = new GridPanel(input, playerData.getInventory().getBalls());
+        this.gridPanel = new GridPanel(
+                input,
+                playerData.getInventory().getBalls(),
+                playerData.getEquipped().getBallIdRef()
+        );
         setLayout(null);
         this.gridPanel.setBounds(0,55,Constants.WIDTH,Constants.HEIGHT -60);
         add(gridPanel);
@@ -97,11 +103,17 @@ public class ShopScene extends Scene {
     }
 
     private void handleBalls() {
-        gridPanel.setSkins(playerData.getInventory().getBalls());
+        gridPanel.setSkins(
+                playerData.getInventory().getBalls(),
+                playerData.getEquipped().getBallIdRef()
+        );
     }
 
     private void handlePaddles() {
-        gridPanel.setSkins(playerData.getInventory().getPaddles());
+        gridPanel.setSkins(
+                playerData.getInventory().getPaddles(),
+                playerData.getEquipped().getPaddleIdRef()
+        );
     }
 
     private void handleGacha() {

@@ -9,6 +9,11 @@ public class BuyButton extends Button {
         super(text, x, y, width, height, font);
         setActivity(activity);
     }
+
+    public BuyButton(String text, int x, int y, int width, int height, Font font) {
+        super(text, x, y, width, height, font);
+    }
+
     @Override
     public void draw(Graphics2D g) {
         // Màu nền (hover sáng hơn)

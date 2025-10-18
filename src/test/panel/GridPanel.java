@@ -10,18 +10,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GridPanel extends JPanel {
     private final InputHandler input;
     private final SkinGrid skinGrid = new SkinGrid();
     private final ScrollManager scroll = new ScrollManager();
     private final BufferedImage background;
+    private AtomicInteger equippedSkinId;
 
-    public GridPanel(InputHandler input, List<SkinData> skins) {
+    public GridPanel(InputHandler input, List<SkinData> skins, AtomicInteger equippedSkinId) {
         this.input = input;
         this.background = ResourceLoader.loadImg("assets/images/shopBg.jpg");
+        this.equippedSkinId = equippedSkinId;
 
-        skinGrid.setSkins(skins);
+        skinGrid.setSkins(skins, equippedSkinId);
     }
 
     public void update() {
@@ -106,7 +109,8 @@ public class GridPanel extends JPanel {
         g2.fillRect(barX, thumbY, 10, thumbH);
     }
 
-    public void setSkins(List<SkinData> skins) {
-        skinGrid.setSkins(skins);
+    public void setSkins(List<SkinData> skins, AtomicInteger equippedSkinId) {
+        this.equippedSkinId = equippedSkinId;
+        skinGrid.setSkins(skins, equippedSkinId);
     }
 }

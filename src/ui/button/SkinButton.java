@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class SkinButton extends Button {
+    private boolean isEquipped;
     private final SkinData skinData;
 
     private static final BufferedImage COMMON_BG = ResourceLoader.loadImg("assets/images/CommonBg.jpg");
@@ -109,13 +110,19 @@ public class SkinButton extends Button {
         }
 
         // Click (đang trang bị)
-        if (clicked) {
+        if (isEquipped) {
             g2.setColor(Color.GREEN);
             g2.setStroke(new BasicStroke(4f));
             g2.drawRect(x, y, width, height);
 
             g2.setFont(new Font("Monospaced", Font.BOLD, 16));
             g2.drawString("EQUIPPED", x + 6, y + height - 10);
+        }
+
+        if (clicked && !isEquipped) {
+            g2.setColor(new Color(0, 255, 0, 120));
+            g2.setStroke(new BasicStroke(3f));
+            g2.drawRect(x, y, width, height);
         }
     }
 
@@ -128,5 +135,9 @@ public class SkinButton extends Button {
         }
         if (activity != null) activity.run();
         clicked = true;
+    }
+
+    public void setEquipped(boolean isEquipped) {
+        this.isEquipped = isEquipped;
     }
 }

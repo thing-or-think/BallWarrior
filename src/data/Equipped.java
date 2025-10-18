@@ -13,6 +13,8 @@ public class Equipped {
 
     public int getBallId() { return ballId.get(); }
     public int getPaddleId() { return paddleId.get(); }
+    public AtomicInteger getBallIdRef() { return ballId; }
+    public AtomicInteger getPaddleIdRef() { return paddleId; }
 
     public void setEquipped(Equipped equipped) {
         this.ballId = equipped.ballId;

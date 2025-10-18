@@ -8,6 +8,7 @@ import data.SkinData;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SkinGrid {
     private final int cols = 3;
@@ -16,16 +17,22 @@ public class SkinGrid {
 
     private final List<Button> buttons = new ArrayList<>();
     private final ButtonGroup buttonGroup = new ButtonGroup();
-    public void setSkins(java.util.List<SkinData> skinData) {
+
+    private AtomicInteger equippedSkinId;
+
+    public void setSkins(List<SkinData> skinData, AtomicInteger equippedSkinId) {
         buttons.clear();
         buttonGroup.removeAll();
+        this.equippedSkinId = equippedSkinId;
         if (skinData == null) return;
 
         for (SkinData data : skinData) {
-            Button button = new SkinButton(data);
-            buttons.add(button);
-            buttonGroup.add(button);
-            button.setButtonGroup(buttonGroup);
+            SkinButton skinButton = new SkinButton(data);
+            skinButton.setEquipped(equippedSkinId.get() == data.getId());
+
+            buttons.add(skinButton);
+            buttonGroup.add(skinButton);
+            skinButton.setButtonGroup(buttonGroup);
         }
     }
 
