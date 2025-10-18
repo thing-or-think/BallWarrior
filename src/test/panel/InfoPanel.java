@@ -74,5 +74,19 @@ public class InfoPanel extends JPanel {
             }
             label.setText(skinData.getName());
         }
+
+        if (buyButton != null) {
+            if (this.equippedSkinId.get() == this.skinData.getId()) {
+                buyButton.setText("EQUIPPED");
+            } else if (this.skinData.isBought()) {
+                buyButton.setText("EQUIP");
+            } else {
+                buyButton.setText("BUY");
+            }
+        }
+    }
+
+    public void setEquippedSkinId(AtomicInteger equippedSkinId) {
+        this.equippedSkinId = equippedSkinId;
     }
 }

@@ -114,6 +114,7 @@ public class GridPanel extends JPanel {
 
     public void setSkins(List<SkinData> skins, AtomicInteger equippedSkinId) {
         skinGrid.setSkins(skins, equippedSkinId);
+        infoPanel.setEquippedSkinId(equippedSkinId);
         for (Button button : skinGrid.getButtons()) {
             button.setActivity(() -> infoPanel.setSkinData(((SkinButton) button).getSkinData()));
             if (((SkinButton) button).getSkinData().getId() == equippedSkinId.get()) {
