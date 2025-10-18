@@ -1,13 +1,16 @@
 package test.panel;
 
 import core.InputHandler;
+import core.ResourceLoader;
 import data.SkinData;
 import ui.base.AnchorType;
+import ui.base.Button;
 import ui.button.BuyButton;
 import ui.element.Label;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,11 +20,18 @@ public class InfoPanel extends JPanel {
     private SkinData skinData;
     private Label label;
     private AtomicInteger equippedSkinId;
+    private AtomicInteger coins;
+    private Color color;
+    private BufferedImage icon;
 
-    public InfoPanel(InputHandler input, SkinData skinData, AtomicInteger equippedSkinId) {
+    public InfoPanel(InputHandler input,
+                     SkinData skinData,
+                     AtomicInteger equippedSkinId,
+                     AtomicInteger coins) {
         this.input = input;
         this.skinData = skinData;
         this.equippedSkinId = equippedSkinId;
+        this.coins = coins;
         setOpaque(false);
     }
 
@@ -41,7 +51,18 @@ public class InfoPanel extends JPanel {
                 new Font("Serif", Font.BOLD, 24),
                 AnchorType.CENTER_BASELINE
         );
+        buyButton.setActivity(() -> handleClick());
         setSkinData(skinData);
+    }
+
+    public void update() {
+        int mx = input.getMouseX() - getX();
+        int my = input.getMouseY() - getY();
+
+        buyButton.setHovered(buyButton.contains(mx, my));
+        if (buyButton.isHovered() && input.consumeClick()) {
+            buyButton.onClick();
+        }
     }
 
     @Override
@@ -50,7 +71,44 @@ public class InfoPanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         buyButton.draw(g2);
         label.draw(g2);
+        if ("image".equals(skinData.getDisplay().getType())) {
+            if ("ball".equals(skinData.getType())) {
+                g2.drawImage(icon, getWidth() / 2 - 100, 120, 200, 200, null);
+            } else {
+                g2.drawImage(icon, getWidth() / 2 - 100, 200, 200, 50, null);
+            }
+        } else {
+            g2.setColor(color);
+            if ("ball".equals(skinData.getType())) {
+                g2.fillOval(getWidth() / 2 - 80, 140, 160, 160);
+            } else {
+                g2.fillRect(getWidth() / 2 - 100, 200, 200, 50);
+            }
+        }
     }
+
+    private void loadDisplay() {
+        if (skinData == null || skinData.getDisplay() == null) return;
+
+        String type = skinData.getDisplay().getType();
+        String value = skinData.getDisplay().getValue();
+
+        if ("color".equalsIgnoreCase(type)) {
+            try {
+                this.color = Color.decode(value);
+
+                if (color == null) {
+                    color = Color.WHITE;
+                }
+
+            } catch (Exception e) {
+                this.color = Color.WHITE;
+            }
+        } else if ("image".equalsIgnoreCase(type)) {
+            this.icon = ResourceLoader.loadImg(value);
+        }
+    }
+
 
     public void setSkinData(SkinData skinData) {
         this.skinData = skinData;
@@ -84,9 +142,24 @@ public class InfoPanel extends JPanel {
                 buyButton.setText("BUY");
             }
         }
+        loadDisplay();
     }
 
     public void setEquippedSkinId(AtomicInteger equippedSkinId) {
         this.equippedSkinId = equippedSkinId;
+    }
+
+    private void handleClick() {
+        if (!skinData.isBought() && coins.get() < skinData.getPrice()) {
+            return;
+        }
+        if (!skinData.isBought()) {
+            coins.set(coins.get() - skinData.getPrice());
+            skinData.setBought(true);
+            equippedSkinId.set(skinData.getId());
+        } else if (equippedSkinId.get() != skinData.getId()) {
+            equippedSkinId.set(skinData.getId());
+        }
+        setSkinData(skinData);
     }
 }

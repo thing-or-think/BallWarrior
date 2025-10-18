@@ -83,7 +83,7 @@ public class GachaPanel extends JPanel {
     }
     private void handleGachaSpin() {
         //if (shopScene == null) return;
-        int money = playerData.getCoins();
+        int money = playerData.getCoins().get();
         if (money < gachaCost) {
             System.out.println("KHÔNG ĐỦ TIỀN!");
             return;

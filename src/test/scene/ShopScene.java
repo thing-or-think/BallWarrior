@@ -46,7 +46,8 @@ public class ShopScene extends Scene {
         this.infoPanel = new InfoPanel(
                 input,
                 playerData.getInventory().getBalls().get(equippedSkinId.get()),
-                equippedSkinId
+                equippedSkinId,
+                playerData.getCoins()
         );
         this.gridPanel = new GridPanel(
                 input,
@@ -104,6 +105,7 @@ public class ShopScene extends Scene {
         }
 
         gridPanel.update();
+        infoPanel.update();
     }
 
     @Override

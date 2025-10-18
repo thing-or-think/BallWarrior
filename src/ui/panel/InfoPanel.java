@@ -106,7 +106,7 @@ public class InfoPanel extends JPanel {
                 System.out.println(selectedSkin.getName() + " đã được trang bị.");
             }
         } else {
-            int money = playerData.getCoins();
+            int money = playerData.getCoins().get();
             int price = selectedSkin.getPrice();
             if (money >= price) {
                 money -= price;

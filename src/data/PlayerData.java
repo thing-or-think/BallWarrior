@@ -14,7 +14,7 @@ public class PlayerData {
         this.inventory = new Inventory(playerData.inventory);
     }
 
-    public int getCoins() { return coins.get(); }
+    public AtomicInteger getCoins() { return coins; }
     public void setCoins(int coins) {
         this.coins.set(coins);
     }

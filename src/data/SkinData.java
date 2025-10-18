@@ -9,11 +9,17 @@ public class SkinData {
     private Rarity rarity;
     private int price;
     private boolean isBought;
-    public Display display;
+    private Display display;
 
     public static class Display {
-        public String type; // "color" hoặc "image"
-        public String value; // màu hoặc path ảnh
+        protected String type; // "color" hoặc "image"
+        protected String value; // màu hoặc path ảnh
+        public String getType() {
+            return type;
+        }
+        public String getValue() {
+            return value;
+        }
     }
 
     public String getType() { return type; }
@@ -23,4 +29,7 @@ public class SkinData {
     public int getPrice() { return price; }
     public boolean isBought() { return isBought; }
     public Display getDisplay() { return display; }
+    public void setBought(boolean isBought) {
+        this.isBought = isBought;
+    }
 }

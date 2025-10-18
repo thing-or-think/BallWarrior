@@ -38,10 +38,10 @@ public class SkinButton extends Button {
     }
 
     private void loadDisplay() {
-        if (skinData == null || skinData.display == null) return;
+        if (skinData == null || skinData.getDisplay() == null) return;
 
-        String type = skinData.display.type;
-        String value = skinData.display.value;
+        String type = skinData.getDisplay().getType();
+        String value = skinData.getDisplay().getValue();
 
         if ("color".equalsIgnoreCase(type)) {
             try {

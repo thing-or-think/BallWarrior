@@ -184,7 +184,7 @@ public class ShopScene extends Scene implements DataChangeListener {
     private void drawMoney(Graphics2D g2) {
         g2.setColor(Color.YELLOW);
         g2.setFont(new Font("Monospaced", Font.BOLD, 22));
-        int money = playerData.getCoins();
+        int money = playerData.getCoins().get();
         g2.drawString(money + "\uD83D\uDCB0",690,30);
     }
 
