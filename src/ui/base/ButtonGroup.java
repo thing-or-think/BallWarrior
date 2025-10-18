@@ -11,6 +11,14 @@ public class ButtonGroup {
         buttons.add(button);
     }
 
+    public void remove(Button button) {
+        buttons.remove(button);
+    }
+
+    public void removeAll() {
+        buttons.clear();
+    }
+
     public void select(Button button) {
         for (Button b : buttons) {
             b.setClicked(b == button);

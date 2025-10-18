@@ -4,6 +4,7 @@ import core.ResourceLoader;
 import data.SkinData;
 import entity.Rarity;
 import ui.base.Button;
+import ui.base.ButtonGroup;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -120,6 +121,11 @@ public class SkinButton extends Button {
 
     @Override
     public void onClick() {
+        if (buttonGroup != null) {
+            buttonGroup.select(this);
+        } else {
+            clicked = true;
+        }
         if (activity != null) activity.run();
         clicked = true;
     }

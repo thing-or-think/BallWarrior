@@ -13,6 +13,8 @@ public abstract class Button extends TextElement {
     protected Runnable activity;       // Hành động khi click
     protected BufferedImage icon;      // Icon
 
+    protected ButtonGroup buttonGroup;
+
     // Constructor 1: tự đo kích thước theo text
     public Button(String text, int x, int y, FontMetrics fm, Font font) {
         super(text, x, y, font);
@@ -107,5 +109,9 @@ public abstract class Button extends TextElement {
         this.y = bound.y;
         this.width = bound.width;
         this.height = bound.height;
+    }
+
+    public void setButtonGroup(ButtonGroup buttonGroup) {
+        this.buttonGroup = buttonGroup;
     }
 }

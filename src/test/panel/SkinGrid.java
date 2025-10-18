@@ -1,6 +1,7 @@
 package test.panel;
 
 import ui.base.Button;
+import ui.base.ButtonGroup;
 import ui.button.SkinButton;
 import data.SkinData;
 
@@ -14,13 +15,17 @@ public class SkinGrid {
     private final int gap = 10;
 
     private final List<Button> buttons = new ArrayList<>();
-
+    private final ButtonGroup buttonGroup = new ButtonGroup();
     public void setSkins(java.util.List<SkinData> skinData) {
         buttons.clear();
+        buttonGroup.removeAll();
         if (skinData == null) return;
 
         for (SkinData data : skinData) {
-            buttons.add(new SkinButton(data));
+            Button button = new SkinButton(data);
+            buttons.add(button);
+            buttonGroup.add(button);
+            button.setButtonGroup(buttonGroup);
         }
     }
 
