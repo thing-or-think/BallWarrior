@@ -2,6 +2,7 @@ package test.scene;
 
 import core.InputHandler;
 import core.ResourceLoader;
+import core.ResourceSaver;
 import data.PlayerData;
 import test.panel.GachaPanel;
 import test.panel.GridPanel;
@@ -168,6 +169,9 @@ public class ShopScene extends Scene {
     }
 
     public void setOnBack(Runnable onBack) {
-        this.onBack = onBack;
+        this.onBack = () -> {
+            ResourceSaver.savePlayerData(playerData);
+            onBack.run();
+        };
     }
 }

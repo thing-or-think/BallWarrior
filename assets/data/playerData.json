@@ -13,7 +13,10 @@
         "rarity": "COMMON",
         "price": 0,
         "isBought": true,
-        "display": { "type": "color", "value": "#FF0000" }
+        "display": {
+          "type": "color",
+          "value": "#FF0000"
+        }
       },
       {
         "id": 1,
@@ -22,7 +25,10 @@
         "rarity": "COMMON",
         "price": 0,
         "isBought": true,
-        "display": { "type": "color", "value": "#0000FF" }
+        "display": {
+          "type": "color",
+          "value": "#0000FF"
+        }
       },
       {
         "id": 2,
@@ -31,7 +37,10 @@
         "rarity": "COMMON",
         "price": 100,
         "isBought": true,
-        "display": { "type": "color", "value": "#00FFFF" }
+        "display": {
+          "type": "color",
+          "value": "#00FFFF"
+        }
       },
       {
         "id": 3,
@@ -39,8 +48,11 @@
         "name": "Basic Yellow",
         "rarity": "COMMON",
         "price": 100,
-        "isBought": false,
-        "display": { "type": "color", "value": "#FFFF00" }
+        "isBought": true,
+        "display": {
+          "type": "color",
+          "value": "#FFFF00"
+        }
       },
       {
         "id": 4,
@@ -49,7 +61,10 @@
         "rarity": "RARE",
         "price": 100,
         "isBought": false,
-        "display": { "type": "color", "value": "#FFA500" }
+        "display": {
+          "type": "color",
+          "value": "#FFA500"
+        }
       },
       {
         "id": 5,
@@ -58,7 +73,10 @@
         "rarity": "RARE",
         "price": 100,
         "isBought": true,
-        "display": { "type": "color", "value": "#000000" }
+        "display": {
+          "type": "color",
+          "value": "#000000"
+        }
       },
       {
         "id": 6,
@@ -66,8 +84,11 @@
         "name": "Basic Magenta",
         "rarity": "RARE",
         "price": 500,
-        "isBought": false,
-        "display": { "type": "color", "value": "#FF00FF" }
+        "isBought": true,
+        "display": {
+          "type": "color",
+          "value": "#FF00FF"
+        }
       },
       {
         "id": 7,
@@ -76,7 +97,10 @@
         "rarity": "RARE",
         "price": 500,
         "isBought": false,
-        "display": { "type": "color", "value": "#FFC0CB" }
+        "display": {
+          "type": "color",
+          "value": "#FFC0CB"
+        }
       },
       {
         "id": 8,
@@ -85,7 +109,10 @@
         "rarity": "EPIC",
         "price": 1000,
         "isBought": true,
-        "display": { "type": "image", "value": "assets/images/Balls/ball.png" }
+        "display": {
+          "type": "image",
+          "value": "assets/images/Balls/ball.png"
+        }
       },
       {
         "id": 9,
@@ -94,7 +121,10 @@
         "rarity": "LEGENDARY",
         "price": 1000,
         "isBought": true,
-        "display": { "type": "image", "value": "assets/images/Balls/watermelon.png" }
+        "display": {
+          "type": "image",
+          "value": "assets/images/Balls/watermelon.png"
+        }
       },
       {
         "id": 10,
@@ -103,7 +133,10 @@
         "rarity": "LEGENDARY",
         "price": 5000,
         "isBought": true,
-        "display": { "type": "image", "value": "assets/images/Balls/ballBeach.png" }
+        "display": {
+          "type": "image",
+          "value": "assets/images/Balls/ballBeach.png"
+        }
       },
       {
         "id": 11,
@@ -112,7 +145,10 @@
         "rarity": "LEGENDARY",
         "price": 5000,
         "isBought": true,
-        "display": { "type": "image", "value": "assets/images/Balls/pokeball.png" }
+        "display": {
+          "type": "image",
+          "value": "assets/images/Balls/pokeball.png"
+        }
       },
       {
         "id": 12,
@@ -121,7 +157,10 @@
         "rarity": "LEGENDARY",
         "price": 5000,
         "isBought": true,
-        "display": { "type": "image", "value": "assets/images/Balls/UET.png" }
+        "display": {
+          "type": "image",
+          "value": "assets/images/Balls/UET.png"
+        }
       },
       {
         "id": 13,
@@ -130,7 +169,10 @@
         "rarity": "COMMON",
         "price": 0,
         "isBought": true,
-        "display": { "type": "color", "value": "#FF0000" }
+        "display": {
+          "type": "color",
+          "value": "#FF0000"
+        }
       },
       {
         "id": 14,
@@ -139,7 +181,10 @@
         "rarity": "COMMON",
         "price": 0,
         "isBought": true,
-        "display": { "type": "color", "value": "#0000FF" }
+        "display": {
+          "type": "color",
+          "value": "#0000FF"
+        }
       },
       {
         "id": 15,
@@ -148,7 +193,10 @@
         "rarity": "COMMON",
         "price": 150,
         "isBought": false,
-        "display": { "type": "color", "value": "#008000" }
+        "display": {
+          "type": "color",
+          "value": "#008000"
+        }
       },
       {
         "id": 16,
@@ -157,7 +205,10 @@
         "rarity": "COMMON",
         "price": 150,
         "isBought": false,
-        "display": { "type": "color", "value": "#FFFF00" }
+        "display": {
+          "type": "color",
+          "value": "#FFFF00"
+        }
       },
       {
         "id": 17,
@@ -166,7 +217,10 @@
         "rarity": "RARE",
         "price": 0,
         "isBought": true,
-        "display": { "type": "color", "value": "#00FFFF" }
+        "display": {
+          "type": "color",
+          "value": "#00FFFF"
+        }
       },
       {
         "id": 18,
@@ -175,7 +229,10 @@
         "rarity": "RARE",
         "price": 0,
         "isBought": true,
-        "display": { "type": "color", "value": "#FFA500" }
+        "display": {
+          "type": "color",
+          "value": "#FFA500"
+        }
       },
       {
         "id": 19,
@@ -184,7 +241,10 @@
         "rarity": "RARE",
         "price": 0,
         "isBought": true,
-        "display": { "type": "color", "value": "#FFC0CB" }
+        "display": {
+          "type": "color",
+          "value": "#FFC0CB"
+        }
       },
       {
         "id": 20,
@@ -192,8 +252,11 @@
         "name": "Shadow Paddle",
         "rarity": "EPIC",
         "price": 400,
-        "isBought": false,
-        "display": { "type": "color", "value": "#000000" }
+        "isBought": true,
+        "display": {
+          "type": "color",
+          "value": "#000000"
+        }
       },
       {
         "id": 21,
@@ -202,7 +265,10 @@
         "rarity": "EPIC",
         "price": 200,
         "isBought": true,
-        "display": { "type": "image", "value": "assets/images/Paddles/woodPaddle.png" }
+        "display": {
+          "type": "image",
+          "value": "assets/images/Paddles/woodPaddle.png"
+        }
       },
       {
         "id": 22,
@@ -211,7 +277,10 @@
         "rarity": "EPIC",
         "price": 600,
         "isBought": false,
-        "display": { "type": "image", "value": "assets/images/Paddles/paddle3.png" }
+        "display": {
+          "type": "image",
+          "value": "assets/images/Paddles/paddle3.png"
+        }
       },
       {
         "id": 23,
@@ -220,7 +289,10 @@
         "rarity": "EPIC",
         "price": 1200,
         "isBought": true,
-        "display": { "type": "image", "value": "assets/images/Paddles/railway.png" }
+        "display": {
+          "type": "image",
+          "value": "assets/images/Paddles/railway.png"
+        }
       },
       {
         "id": 24,
@@ -228,8 +300,11 @@
         "name": "Dragon Paddle",
         "rarity": "LEGENDARY",
         "price": 2500,
-        "isBought": false,
-        "display": { "type": "image", "value": "assets/images/Paddles/paddle2.png" }
+        "isBought": true,
+        "display": {
+          "type": "image",
+          "value": "assets/images/Paddles/paddle2.png"
+        }
       },
       {
         "id": 25,
@@ -238,7 +313,10 @@
         "rarity": "LEGENDARY",
         "price": 2500,
         "isBought": true,
-        "display": { "type": "image", "value": "assets/images/Paddles/ass.png" }
+        "display": {
+          "type": "image",
+          "value": "assets/images/Paddles/ass.png"
+        }
       }
     ]
   }
