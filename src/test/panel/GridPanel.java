@@ -21,13 +21,10 @@ public class GridPanel extends JPanel {
     private final InfoPanel infoPanel;
 
     public GridPanel(InputHandler input,
-                     InfoPanel infoPanel,
-                     List<SkinData> skins,
-                     AtomicInteger equippedSkinId) {
+                     InfoPanel infoPanel) {
         this.input = input;
         this.background = ResourceLoader.loadImg("assets/images/shopBg.jpg");
         this.infoPanel = infoPanel;
-        setSkins(skins, equippedSkinId);
     }
 
     public void update() {

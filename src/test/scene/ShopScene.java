@@ -3,6 +3,7 @@ package test.scene;
 import core.InputHandler;
 import core.ResourceLoader;
 import data.PlayerData;
+import test.panel.GachaPanel;
 import test.panel.GridPanel;
 import test.panel.InfoPanel;
 import ui.base.Button;
@@ -19,14 +20,16 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ShopScene extends Scene {
+    private enum Tab { BALLS, PADDLES, GACHA }
     private final List<Button> buttons = new ArrayList<>();
     private final ButtonGroup buttonGroup;
     private final Label moneyLabel;
     private Runnable onBack;
     private GridPanel gridPanel;
     private InfoPanel infoPanel;
+    private GachaPanel gachaPanel;
 
-    private String currentTab = "BALLS";
+    private Tab currentTab = Tab.BALLS;
 
     private final static BufferedImage iconBack = ResourceLoader.loadImg("assets/images/Xbutton.png");
     private final static BufferedImage iconBall = ResourceLoader.loadImg("assets/images/iconBall.png");
@@ -51,16 +54,19 @@ public class ShopScene extends Scene {
         );
         this.gridPanel = new GridPanel(
                 input,
-                infoPanel,
-                playerData.getInventory().getBalls(),
-                equippedSkinId
+                infoPanel
         );
+
+        this.gachaPanel = new GachaPanel(input, playerData.getCoins(), playerData.getInventory().getItems());
+
         setLayout(null);
+
         this.infoPanel.setBounds(Constants.WIDTH / 2, 55, 400, Constants.HEIGHT - 60);
         add(infoPanel);
-        infoPanel.init();
         this.gridPanel.setBounds(0,55,Constants.WIDTH,Constants.HEIGHT -60);
         add(gridPanel);
+        this.gachaPanel.setBounds(0, 55, Constants.WIDTH, Constants.WIDTH - 60);
+        add(gachaPanel);
 
         initUI();
     }
@@ -68,6 +74,8 @@ public class ShopScene extends Scene {
     @Override
     public void initUI() {
         initButtons();
+        handleBalls();
+        infoPanel.init();
     }
 
     private void initButtons() {
@@ -104,8 +112,16 @@ public class ShopScene extends Scene {
             moneyLabel.setText(moneyText);
         }
 
-        gridPanel.update();
-        infoPanel.update();
+        switch (currentTab) {
+            case BALLS:
+            case PADDLES:
+                gridPanel.update();
+                infoPanel.update();
+                break;
+            case GACHA:
+                gachaPanel.update();
+                break;
+        }
     }
 
     @Override
@@ -118,6 +134,12 @@ public class ShopScene extends Scene {
     }
 
     private void handleBalls() {
+        currentTab = Tab.BALLS;
+
+        gachaPanel.setVisible(false);
+        gridPanel.setVisible(true);
+        infoPanel.setVisible(true);
+
         gridPanel.setSkins(
                 playerData.getInventory().getBalls(),
                 playerData.getEquipped().getBallIdRef()
@@ -125,6 +147,12 @@ public class ShopScene extends Scene {
     }
 
     private void handlePaddles() {
+        currentTab = Tab.PADDLES;
+
+        gachaPanel.setVisible(false);
+        gridPanel.setVisible(true);
+        infoPanel.setVisible(true);
+
         gridPanel.setSkins(
                 playerData.getInventory().getPaddles(),
                 playerData.getEquipped().getPaddleIdRef()
@@ -132,6 +160,11 @@ public class ShopScene extends Scene {
     }
 
     private void handleGacha() {
+        currentTab = Tab.GACHA;
+
+        gachaPanel.setVisible(true);
+        gridPanel.setVisible(false);
+        infoPanel.setVisible(false);
     }
 
     public void setOnBack(Runnable onBack) {
