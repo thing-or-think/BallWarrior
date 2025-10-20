@@ -169,9 +169,6 @@ public class ShopScene extends Scene {
     }
 
     public void setOnBack(Runnable onBack) {
-        this.onBack = () -> {
-            ResourceSaver.savePlayerData(playerData);
-            onBack.run();
-        };
+        this.onBack = onBack;
     }
 }

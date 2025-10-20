@@ -1,5 +1,7 @@
 package data;
 
+import core.ResourceSaver;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerData {
@@ -12,6 +14,12 @@ public class PlayerData {
         this.coins = new AtomicInteger(playerData.coins.get());
         this.equipped = new Equipped(playerData.equipped);
         this.inventory = new Inventory(playerData.inventory);
+
+        PlayerData self = this; // giữ reference tới instance
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            ResourceSaver.savePlayerData(self);
+            System.out.println("Player data saved on exit!");
+        }));
     }
 
     public AtomicInteger getCoins() { return coins; }
