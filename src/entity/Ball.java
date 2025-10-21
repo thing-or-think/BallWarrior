@@ -13,7 +13,6 @@ public class Ball extends Entity{
     public static Color equippedBallColor = null;
     private int radius;
     private boolean stuck = true; // mặc định dính paddle
-    private boolean isFireBall = false; //mặc định bóng thường
 
     public static void loadEquippedAssets(int ballId, List<Skins> balls) {
         int equippedBallId = ballId;
@@ -110,14 +109,6 @@ public class Ball extends Entity{
             g.setColor(equippedBallColor);
             g.fillOval((int) position.x, (int) position.y, width, height);
         }
-    }
-
-    public void bounceY() {
-        velocity.y *= -1;
-    }
-
-    public void bounceX() {
-        velocity.x *= -1;
     }
 
     //phóng bóng khi nóng đang ở paddle
