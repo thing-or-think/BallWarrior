@@ -5,9 +5,9 @@ import core.ResourceSaver;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerData {
-    private AtomicInteger coins;
-    private Equipped equipped;
-    private Inventory inventory;
+    private final AtomicInteger coins;
+    private final Equipped equipped;
+    private final Inventory inventory;
 
 
     public PlayerData(PlayerData playerData) {
@@ -28,18 +28,4 @@ public class PlayerData {
     }
     public Equipped getEquipped() { return equipped; }
     public Inventory getInventory() { return inventory; }
-
-    public void setEquippedBall(int ballId) {
-        equipped.setBallId(ballId);
-    }
-
-    public void setEquippedPaddle(int paddleId) {
-        equipped.setPaddleId(paddleId);
-    }
-
-    public void setPlayerData(PlayerData playerData) {
-        this.coins.set(playerData.coins.get());
-        equipped.setEquipped(playerData.equipped);
-        inventory.setInventory(playerData.inventory);
-    }
 }

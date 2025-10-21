@@ -3,12 +3,6 @@ package utils;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-/**
- * TextUtils
- * -------------------------------------------------------------
- * Tiện ích đo kích thước chữ bằng Graphics ảo (BufferedImage).
- * -------------------------------------------------------------
- */
 public final class TextUtils {
 
     public static Dimension measureText(String text, Font font) {
