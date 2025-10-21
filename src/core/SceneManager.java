@@ -15,7 +15,6 @@ public class SceneManager {
     private final GameScene gameScene;
     private final MenuScene menuScene;
     private final ShopScene shopScene;
-//    private final ShopScene shopScene;
     private final PauseScene pauseScene;
     private final LevelSelectScene levelSelectScene;
     private final GameOverScene gameOverScene;
