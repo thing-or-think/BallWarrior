@@ -2,19 +2,11 @@ package core;
 
 import com.google.gson.Gson;
 import data.PlayerData;
-import entity.Rarity;
-import entity.Skins;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ResourceLoader {
 

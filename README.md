@@ -27,26 +27,43 @@ BallWarrior/
 │   │
 │   ├── core/                      # Lõi engine (tách biệt logic Arkanoid)
 │   │   ├── GameEngine.java        # Khởi tạo game, gắn JFrame, chạy GameLoop
-│   │   ├── SceneManager.java      # Quản lý chuyển đổi scene (Menu, Game, Pause…)
 │   │   ├── InputHandler.java      # Quản lý phím bấm, lưu trạng thái key
 │   │   ├── ResourceLoader.java    # Load ảnh, âm thanh, font từ thư mục assets
-│   │   └── SoundManager.java      # Quản lý âm thanh (phát nhạc, hiệu ứng sfx)
+│   │   ├── ResourceSaver.java     # Lưu dữ liệu hoặc tài nguyên game (ví dụ: tiến trình, cài đặt)
+│   │   ├── SoundManager.java      # Quản lý âm thanh (phát nhạc, hiệu ứng sfx)
+│   │   └── SceneManager.java      # Quản lý chuyển đổi scene (Menu, Game, Pause…)
+│   │   
+│   ├── data/                      # Dữ liệu và logic gameplay của Arkanoid
+│   │   ├── Equipped.java           # Lưu thông tin vật phẩm (ball, paddle, v.v.) đang được trang bị
+│   │   ├── Inventory.java          # Quản lý kho vật phẩm người chơi sở hữu
+│   │   ├── PlayerData.java         # Lưu dữ liệu người chơi: tiền, vật phẩm, trạng thái trang bị
+│   │   └── SkinData.java           # Mô tả thông tin chi tiết của từng skin (loại, màu, ảnh, v.v.)
+│   │
+│   ├── entity/                    # Các đối tượng trong game (ball, paddle, brick, v.v.)
+│   │   ├── Ball.java              # Quả bóng (di chuyển, nảy, va chạm)
+│   │   ├── Brick.java             # Gạch (màu sắc, độ bền, bị phá hủy khi trúng bóng)
+│   │   ├── Entity.java            # Lớp cha cho mọi thực thể (position, velocity, draw, update)
+│   │   ├── Paddle.java            # Thanh trượt do người chơi điều khiển bằng bàn phím
+│   │   └── Rarity.java            # Enum xác định độ hiếm (rarity) của skin hoặc vật phẩm
 │   │
 │   ├── game/                      # Logic gameplay Arkanoid
-│   │   ├── replay/                # Hệ thống ghi và phát lại gameplay (replay system)
-│   │   │   ├── ReplayRecorder.java   # Ghi lại hành động người chơi (input, frame state)
-│   │   │   ├── ReplayData.java       # Cấu trúc dữ liệu lưu trữ thông tin replay (frame list, seed…)
-│   │   │   └── ReplayPlayer.java     # Phát lại replay theo dữ liệu đã ghi
+│   │   ├── collision/                 # Module va chạm (tách riêng, dễ mở rộng)
+│   │   │   ├── CircleVsAABB.java      # Ball vs Paddle/Brick (AABB)
+│   │   │   ├── CircleVsCircle.java    # Ball vs Ball / PowerUp (nếu cần)
+│   │   │   ├── CollisionResult.java   # Data class (entity, hitPoint…)
+│   │   │   ├── CollisionSystem.java   # Điều phối va chạm (tìm nearest collision)
+│   │   │   └── CollisionUtils.java    # Hàm tiện ích (isBetween, getLineIntersection, circleLineIntersection…)
 │   │   │
 │   │   ├── skill/                # Hệ thống ghi và phát lại gameplay (replay system)
-│   │   │   ├── base/
-│   │   │   │   ├── Skill.java              # Abstract base class
-│   │   │   │   ├── ActiveSkill.java        # Base cho skill chủ động (Q/W/E)
-│   │   │   │   └── PassiveSkill.java       # Base cho skill bị động (item rơi)
 │   │   │   ├── active/
 │   │   │   │   ├── LaserSkill.java
 │   │   │   │   ├── ShieldSkill.java
 │   │   │   │   └── TimeSlowSkill.java
+│   │   │   │
+│   │   │   ├── base/
+│   │   │   │   ├── Skill.java              # Abstract base class
+│   │   │   │   ├── ActiveSkill.java        # Base cho skill chủ động (Q/W/E)
+│   │   │   │   └── PassiveSkill.java       # Base cho skill bị động (item rơi)
 │   │   │   │
 │   │   │   ├── PassiveSkill/
 │   │   │   │   ├── ExpandSkill.java
@@ -64,37 +81,24 @@ BallWarrior/
 │   │   │   │
 │   │   │   └── SkillManager.java       # Quản lý tất cả skill trong game
 │   │   │
-│   │   ├── collision/                 # Module va chạm (tách riêng, dễ mở rộng)
-│   │   │   ├── CollisionSystem.java   # Điều phối va chạm (tìm nearest collision)
-│   │   │   ├── CollisionResult.java   # Data class (entity, hitPoint…)
-│   │   │   ├── CollisionUtils.java    # Hàm tiện ích (isBetween, getLineIntersection, circleLineIntersection…)
-│   │   │   ├── CircleVsAABB.java      # Ball vs Paddle/Brick (AABB)
-│   │   │   └── CircleVsCircle.java    # Ball vs Ball / PowerUp (nếu cần)
+│   │   ├── replay/                # Hệ thống ghi và phát lại gameplay (replay system)
+│   │   │   ├── ReplayRecorder.java   # Ghi lại hành động người chơi (input, frame state)
+│   │   │   ├── ReplayData.java       # Cấu trúc dữ liệu lưu trữ thông tin replay (frame list, seed…)
+│   │   │   └── ReplayPlayer.java     # Phát lại replay theo dữ liệu đã ghi
 │   │   │
 │   │   ├── GameWorld.java       # Xử lý logic gameplay: paddle, bóng, gạch, va chạm, kỹ năng
-│   │   ├── LevelManager.java    # Quản lý dữ liệu màn chơi (load/save từ JSON hoặc file)
-│   │   ├── LevelData.java       # Định nghĩa cấu trúc dữ liệu của một màn chơi (bản đồ gạch, số hàng/cột, màu sắc)
 │   │   ├── LevelBuilder.java    # Tạo danh sách gạch từ dữ liệu level (LevelData)
-│   │   ├── ScoreSystem.java     # Quản lý điểm, combo và số mạng của người chơi
-│   │   └── PowerUpSystem.java   # Quản lý item rơi ra và xử lý hiệu ứng power-up (tăng tốc, nhân bóng, v.v.)
-│   │
-│   ├── entity/                    # Các đối tượng trong game
-│   │   ├── Entity.java            # Lớp cha (position, velocity, draw, update)
-│   │   ├── Ball.java              # Quả bóng (di chuyển, nảy, va chạm)
-│   │   ├── Paddle.java            # Thanh trượt điều khiển bằng phím
-│   │   ├── Brick.java             # Gạch (có màu, độ bền, phá hủy)
-│   │   ├── Skins.java             # Định nghĩa skin (tên, độ hiếm, giá, màu/ảnh)
-│   │   └── PowerUp.java           # Item tăng sức mạnh (rơi ra từ Brick)
+│   │   ├── LevelData.java       # Định nghĩa cấu trúc dữ liệu của một màn chơi (bản đồ gạch, số hàng/cột, màu sắc)
+│   │   ├── LevelManager.java    # Quản lý dữ liệu màn chơi (load/save từ JSON hoặc file)
+│   │   └── ScoreSystem.java     # Quản lý điểm, combo và số mạng của người chơi
 │   │
 │   ├── ui/                            # Toàn bộ giao diện người dùng
-│   │   ├── base/                      # Các lớp cơ sở / trừu tượng
-│   │   │   ├── Scene.java             # Lớp cha cho mọi màn hình (Menu, Shop…)
-│   │   │   ├── TextElement.java       # Lớp cha trừu tượng cho mọi phần tử có text
-│   │   │   └── Button.java            # Lớp cha trừu tượng cho các loại nút
-│   │   │
-│   │   ├── element/                   # Các phần tử giao diện cơ bản kế thừa TextElement
-│   │   │   ├── Label.java             # Hiển thị văn bản tĩnh (không tương tác)
-│   │   │   └── ComboLabel.java        # Hiển thị combo động với hiệu ứng màu và phóng to/thu nhỏ
+│   │   ├── base/                      # Các lớp cơ sở và trừu tượng cho UI và scene
+│   │   │   ├── AnchorType.java        # Enum xác định vị trí neo (anchor) của phần tử giao diện
+│   │   │   ├── Button.java            # Lớp cơ sở cho các nút bấm trong giao diện
+│   │   │   ├── Scene.java             # Lớp cha cho mọi màn hình (Menu, Shop, Game…)
+│   │   │   ├── ButtonGroup.java       # Quản lý nhóm các nút (radio, toggle, v.v.)
+│   │   │   └── TextElement.java       # Lớp cơ sở cho các phần tử hiển thị văn bản
 │   │   │
 │   │   ├── button/                    # Các loại nút kế thừa Button
 │   │   │   ├── MenuButton.java         # Nút văn bản trung tâm, dùng trong menu chính
@@ -104,35 +108,34 @@ BallWarrior/
 │   │   │   ├── RectButton.java         # Nút hình chữ nhật tiêu chuẩn (shop, pause menu, confirm…)
 │   │   │   └── IconButton.java         # Nút có biểu tượng hoặc hình ảnh (âm thanh, cài đặt, thoát…)
 │   │   │
-│   │   ├── scene/                     # Các màn hình giao diện riêng biệt
-│   │   │   ├── MenuScene.java         # Menu chính (Play, Exit…)
-│   │   │   ├── ShopScene.java         # Màn hình shop (mua/chọn skin)
-│   │   │   ├── PauseScene.java        # Màn hình tạm dừng game
-│   │   │   ├── GameOverScene.java     # Màn hình kết thúc (thắng / thua)
-│   │   │   ├── LevelSelectScene.java  # Màn chọn màn chơi (hiển thị preview, metadata)
-│   │   │   ├── LevelEditorScene.java  # Màn tạo/sửa level (UI kéo thả, save/load)
-│   │   │   └── GameScene.java       # Quản lý scene chính của gameplay (vòng lặp update/render, chuyển cảnh)
+│   │   ├── element/                   # Các phần tử giao diện cơ bản kế thừa TextElement
+│   │   │   ├── ComboLabel.java        # Hiển thị combo động với hiệu ứng màu và phóng to/thu nhỏ
+│   │   │   └── Label.java             # Hiển thị văn bản tĩnh (không tương tác)
 │   │   │
-│   │   ├── panel/                     # Các panel phụ trong UI
-│   │   │   ├── LevelPreviewPanel.java # Vẽ preview của 1 màn chơi (dùng lại ở nhiều nơi)
-│   │   │   ├── GridPanel.java
-│   │   │   ├── GachaPanel.java
-│   │   │   ├── InfoPanel.java
-│   │   │   └── SkinGrid.java
+│   │   ├── panel/                     # Các panel phụ trong giao diện UI
+│   │   │   ├── LevelPreviewPanel.java # Hiển thị preview của một màn chơi (dùng lại ở nhiều scene)
+│   │   │   ├── GachaPanel.java        # Giao diện mở gacha để nhận skin hoặc phần thưởng
+│   │   │   ├── GridPanel.java         # Bố cục hiển thị dạng lưới cho các phần tử UI
+│   │   │   ├── InfoPanel.java         # Hiển thị thông tin chi tiết (skin, vật phẩm, chỉ số…)
+│   │   │   └── SkinGrid.java          # Hiển thị danh sách skin dưới dạng lưới chọn
+│   │   │
+│   │   ├── scene/                     # Các màn hình giao diện riêng biệt
+│   │   │   ├── GameOverScene.java     # Màn hình kết thúc (thắng / thua)
+│   │   │   ├── GameScene.java       # Quản lý scene chính của gameplay (vòng lặp update/render, chuyển cảnh)
+│   │   │   ├── LevelSelectScene.java  # Màn chọn màn chơi (hiển thị preview, metadata)
+│   │   │   ├── MenuScene.java         # Menu chính (Play, Exit…)
+│   │   │   ├── PauseScene.java        # Màn hình tạm dừng game
+│   │   │   ├── ShopScene.java         # Màn hình shop (mua/chọn skin)
+│   │   │   └── LevelEditorScene.java  # Màn tạo/sửa level (UI kéo thả, save/load)
 │   │   │
 │   │   └── HUD.java                   # Heads-up display trong gameplay (điểm, mạng…)
-│   │   
-│   ├── data/                
-│   │   ├── PlayerData.java
-│   │   ├── Equipped.java
-│   │   ├── Inventory.java
-│   │   ├── Ball.java
-│   │   └── Paddle.java
 │   │
-│   └── utils/                     # Tiện ích chung
-│       ├── MathUtils.java         # Hàm toán học 2D, giao điểm đoạn thẳng…
-│       ├── Constants.java         # Các hằng số (WIDTH, HEIGHT, tốc độ…)
-│       └── Vector2D.java          # Class vector 2D (dx, dy, hỗ trợ toán học)
+│   └── utils/                     # Các tiện ích và lớp hỗ trợ dùng chung
+│       ├── Constants.java         # Chứa các hằng số toàn cục (WIDTH, HEIGHT, tốc độ, v.v.)
+│       ├── MathUtils.java         # Cung cấp các hàm toán học 2D (giao điểm, góc, độ dài, v.v.)
+│       ├── ScrollManager.java     # Quản lý cuộn nội dung trong giao diện (menu, danh sách, shop, v.v.)
+│       ├── TextUtils.java         # Xử lý và định dạng văn bản (đo kích thước, canh giữa, v.v.)
+│       └── Vector2D.java          # Lớp vector 2D (dx, dy, hỗ trợ các phép toán vector)
 │
 ├── assets/                        # Tài nguyên (cùng bậc với src)
 │   ├── images/                    # Hình ảnh

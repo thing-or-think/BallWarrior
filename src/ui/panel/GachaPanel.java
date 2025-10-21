@@ -1,4 +1,4 @@
-package ui.panel.panel;
+package ui.panel;
 
 import core.InputHandler;
 import data.SkinData;
