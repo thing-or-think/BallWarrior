@@ -15,4 +15,7 @@ public class Equipped {
 
     public AtomicInteger getBallIdRef() { return ballId; }
     public AtomicInteger getPaddleIdRef() { return paddleId; }
+
+    public int getBallId() { return ballId.get(); }
+    public int getPaddleId() { return paddleId.get(); }
 }

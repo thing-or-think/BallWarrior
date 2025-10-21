@@ -1,5 +1,6 @@
 package entity;
 
+import data.SkinData;
 import utils.Constants;
 import core.ResourceLoader;
 import utils.Vector2D;
@@ -8,61 +9,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class Ball extends Entity{
+public class Ball extends Entity {
     public static BufferedImage equippedBallImage = null;
     public static Color equippedBallColor = null;
     private int radius;
-    private boolean stuck = true; // mặc định dính paddle
-
-    public static void loadEquippedAssets(int ballId, List<Skins> balls) {
-        int equippedBallId = ballId;
-        Skins equippedSkin = null;
-        for (Skins skin : balls) {
-            if (skin.getId() == equippedBallId) {
-                equippedSkin = skin;
-                break;
-            }
-        }
-        if (equippedSkin != null) {
-            if (equippedSkin.getImg() != null) {
-                equippedBallImage = equippedSkin.getImg();
-                equippedBallColor = null;
-            } else {
-                equippedBallColor = equippedSkin.getColor();
-                equippedBallImage = null;
-            }
-        } else {
-            equippedBallImage = ResourceLoader.loadImage("assets/images/Balls/ball.png");
-            equippedBallColor = Color.RED;
-        }
-        System.out.println("✅ Assets Ball Equipped Loaded to static field.");
-    }
-
-
-    public static void loadEquippedAssets() {
-        int equippedBallId = ResourceLoader.getEquippedBallId("docs/balls.txt");
-        List<Skins> allBalls = ResourceLoader.loadSkins("docs/balls.txt");
-        Skins equippedSkin = null;
-        for (Skins skin : allBalls) {
-            if (skin.getId() == equippedBallId) {
-                equippedSkin = skin;
-                break;
-            }
-        }
-        if (equippedSkin != null) {
-            if (equippedSkin.getImg() != null) {
-                equippedBallImage = equippedSkin.getImg();
-                equippedBallColor = null;
-            } else {
-                equippedBallColor = equippedSkin.getColor();
-                equippedBallImage = null;
-            }
-        } else {
-            equippedBallImage = ResourceLoader.loadImage("assets/images/Balls/ball.png");
-            equippedBallColor = Color.RED;
-        }
-        System.out.println("✅ Assets Ball Equipped Loaded to static field.");
-    }
+    private boolean stuck = true;
+    private static SkinData skinData;
 
     public Ball(float x, float y) {
         super(x, y, Constants.BALL_SIZE, Constants.BALL_SIZE);
@@ -72,46 +24,70 @@ public class Ball extends Entity{
         this.img = equippedBallImage;
     }
 
+    public static void setSkin(SkinData skinData) {
+        if (skinData.equals(Ball.skinData)) {
+            return;
+        } else {
+            Ball.skinData = skinData;
+            loadDisplay();
+        }
+    }
+
+    private static void loadDisplay() {
+        if (skinData == null || skinData.getDisplay() == null) return;
+
+        String type = skinData.getDisplay().getType();
+        String value = skinData.getDisplay().getValue();
+
+        if ("color".equalsIgnoreCase(type)) {
+            try {
+                equippedBallColor = Color.decode(value);
+                if (equippedBallColor == null) {
+                    equippedBallColor = Color.WHITE;
+                }
+            } catch (Exception e) {
+                equippedBallColor = Color.WHITE;
+            }
+        } else if ("image".equalsIgnoreCase(type)) {
+            equippedBallImage = ResourceLoader.loadImage(value);
+        }
+    }
+
     @Override
     public void update() {
-        if (stuck) return; // nếu còn dính paddle thì không di chuyển
-
+        if (stuck) return;
         previousPosition.set(position.x, position.y);
         position.add(velocity);
-
         clampPosition();
     }
 
     @Override
     public void clampPosition() {
-        // Cạnh trái và phải
         if (position.x <= 0) {
-            position.x = 0; // đảm bảo không vượt ra ngoài
+            position.x = 0;
             velocity.x = Math.abs(velocity.x);
         } else if (position.x + width >= Constants.WIDTH) {
             position.x = Constants.WIDTH - width;
             velocity.x = -Math.abs(velocity.x);
         }
-
-        // Cạnh trên
         if (position.y <= 0) {
             position.y = 0;
             velocity.y = Math.abs(velocity.y);
         }
     }
 
-
     @Override
     public void draw(Graphics2D g) {
-        if (img != null) {
-            g.drawImage(img,(int)position.x,(int)position.y,Constants.BALL_SIZE,Constants.BALL_SIZE,null);
-        }else {
+        String type = skinData.getDisplay().getType();
+
+        if ("color".equalsIgnoreCase(type)) {
             g.setColor(equippedBallColor);
             g.fillOval((int) position.x, (int) position.y, width, height);
+        } else {
+            g.drawImage(img, (int) position.x, (int) position.y, Constants.BALL_SIZE, Constants.BALL_SIZE, null);
         }
     }
 
-    //phóng bóng khi nóng đang ở paddle
     public void launch() {
         if (stuck) {
             stuck = false;
@@ -119,7 +95,6 @@ public class Ball extends Entity{
         }
     }
 
-    //reset bóng
     public void reset(float x, float y) {
         this.position.set(x, y);
         this.previousPosition.set(x, y);
@@ -139,5 +114,7 @@ public class Ball extends Entity{
         this.stuck = stuck;
     }
 
-    public int getRadius() { return radius; }
+    public int getRadius() {
+        return radius;
+    }
 }

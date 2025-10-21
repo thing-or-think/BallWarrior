@@ -52,7 +52,12 @@ public class GameScene extends Scene {
 
     public void forceUpdateGameAssets() {
         // Tải lại Skin vào cache static
-        world.forceUpdateGameAssets();
+        int skinBallId = playerData.getEquipped().getBallId();
+        int skinPaddleId = playerData.getEquipped().getPaddleId();
+        world.forceUpdateGameAssets(
+                playerData.getInventory().getItems().get(skinBallId),
+                playerData.getInventory().getItems().get(skinPaddleId)
+        );
         System.out.println(playerData.getCoins());
     }
 }

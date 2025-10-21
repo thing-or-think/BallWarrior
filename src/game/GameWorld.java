@@ -1,6 +1,7 @@
 package game;
 
 import core.InputHandler;
+import data.SkinData;
 import entity.*;
 import game.collision.*;
 import game.skill.effect.SkillEffectManager;
@@ -121,10 +122,10 @@ public class GameWorld {
         return scoreSystem;
     }
 
-    public void forceUpdateGameAssets() {
+    public void forceUpdateGameAssets(SkinData ballSkin, SkinData paddleSkin) {
         // Tải lại Skin vào cache static
-        Ball.loadEquippedAssets();
-        Paddle.loadEquippedAssets();
+        Ball.setSkin(ballSkin);
+        Paddle.setSkin(paddleSkin);
 
         // Cập nhật đối tượng đang tồn tại
         for (Ball ball : balls) {
