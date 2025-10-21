@@ -18,7 +18,6 @@ public class Inventory {
         this.paddles = this.items.stream()
                 .filter(item -> "paddle".equals(item.getType()))
                 .collect(Collectors.toList());
-        System.out.println(paddles.size());
     }
 
     public List<SkinData> getItems() { return items; }
