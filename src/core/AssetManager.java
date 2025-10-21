@@ -9,7 +9,7 @@ public class AssetManager {
 
     public static BufferedImage getImage(String key) {
         return images.computeIfAbsent(key,
-                path -> ResourceLoader.loadImage("/textures/" + key + ".png"));
+                path -> ResourceLoader.loadImage(key));
     }
 
     public static void clear() {
