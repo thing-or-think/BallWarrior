@@ -50,31 +50,6 @@ public class Paddle extends Entity {
         }
     }
 
-    public static void loadEquippedAssets() {
-        int equippedPaddleId = ResourceLoader.getEquippedPaddleId("docs/paddles.txt");
-        List<Skins> allBalls = ResourceLoader.loadSkins("docs/paddles.txt");
-        Skins equippedSkin = null;
-        for (Skins skin : allBalls) {
-            if (skin.getId() == equippedPaddleId) {
-                equippedSkin = skin;
-                break;
-            }
-        }
-        if (equippedSkin != null) {
-            if (equippedSkin.getImg() != null) {
-                equippedPaddleImage = equippedSkin.getImg();
-                equippedPaddleColor = null;
-            } else {
-                equippedPaddleColor = equippedSkin.getColor();
-                equippedPaddleImage = null;
-            }
-        } else {
-            equippedPaddleImage = null;
-            equippedPaddleColor = Color.RED;
-        }
-        System.out.println("✅ Assets Paddle Equipped Loaded to static field.");
-    }
-
     @Override
     public void clampPosition() {
         if (position.x < 0) position.x = 0;

@@ -1,4 +1,4 @@
-package test.panel;
+package ui.panel.panel;
 
 import ui.base.Button;
 import ui.base.ButtonGroup;
