@@ -2,9 +2,7 @@ package ui.button;
 
 import core.ResourceLoader;
 import data.SkinData;
-import entity.Rarity;
 import ui.base.Button;
-import ui.base.ButtonGroup;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,10 +13,10 @@ public class SkinButton extends Button {
     private final SkinData skinData;
     private static AtomicInteger equippedSkinId;
 
-    private static final BufferedImage COMMON_BG = ResourceLoader.loadImg("assets/images/CommonBg.jpg");
-    private static final BufferedImage RARE_BG = ResourceLoader.loadImg("assets/images/RareBg.jpg");
-    private static final BufferedImage EPIC_BG = ResourceLoader.loadImg("assets/images/EpicBg.jpg");
-    private static final BufferedImage LEGENDARY_BG = ResourceLoader.loadImg("assets/images/LegendaryBg.jpg");
+    private static final BufferedImage COMMON_BG = ResourceLoader.loadImage("assets/images/CommonBg.jpg");
+    private static final BufferedImage RARE_BG = ResourceLoader.loadImage("assets/images/RareBg.jpg");
+    private static final BufferedImage EPIC_BG = ResourceLoader.loadImage("assets/images/EpicBg.jpg");
+    private static final BufferedImage LEGENDARY_BG = ResourceLoader.loadImage("assets/images/LegendaryBg.jpg");
 
     public SkinButton(int x, int y, int width, int height, SkinData skinData) {
         super("SkinButton", null, x, y, width, height);
@@ -57,7 +55,7 @@ public class SkinButton extends Button {
                 this.color = Color.WHITE;
             }
         } else if ("image".equalsIgnoreCase(type)) {
-            this.icon = ResourceLoader.loadImg(value);
+            this.icon = ResourceLoader.loadImage(value);
         }
     }
 

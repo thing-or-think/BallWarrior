@@ -15,10 +15,10 @@ public class Skins {
     private Rectangle bounds;
     //Img
     private BufferedImage img;
-    private static final BufferedImage common = ResourceLoader.loadImg("assets/images/CommonBg.jpg");
-    private static final BufferedImage rare = ResourceLoader.loadImg("assets/images/RareBg.jpg");
-    private static final BufferedImage epic = ResourceLoader.loadImg("assets/images/EpicBg.jpg");
-    private static final BufferedImage legendary = ResourceLoader.loadImg("assets/images/LegendaryBg.jpg");
+    private static final BufferedImage common = ResourceLoader.loadImage("assets/images/CommonBg.jpg");
+    private static final BufferedImage rare = ResourceLoader.loadImage("assets/images/RareBg.jpg");
+    private static final BufferedImage epic = ResourceLoader.loadImage("assets/images/EpicBg.jpg");
+    private static final BufferedImage legendary = ResourceLoader.loadImage("assets/images/LegendaryBg.jpg");
 
     /** skin phai them anh */
     public Skins(int id, String name,Rarity rarity,int price,boolean isBought,String path) {
@@ -28,7 +28,7 @@ public class Skins {
         this.price = price;
         this.isBought = isBought;
         this.color = Color.WHITE;
-        this.img = ResourceLoader.loadImg(path);
+        this.img = ResourceLoader.loadImage(path);
         this.bounds = null;
     }
     /** skin binh thuong */

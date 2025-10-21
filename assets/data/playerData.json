@@ -1,8 +1,8 @@
 {
-  "coins": 19650,
+  "coins": 17650,
   "equipped": {
     "ballId": 11,
-    "paddleId": 23
+    "paddleId": 18
   },
   "inventory": {
     "items": [
@@ -276,7 +276,7 @@
         "name": "Metal Paddle",
         "rarity": "EPIC",
         "price": 600,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "image",
           "value": "assets/images/Paddles/paddle3.png"

@@ -4,14 +4,12 @@ import core.InputHandler;
 import core.ResourceLoader;
 import data.SkinData;
 import ui.base.AnchorType;
-import ui.base.Button;
 import ui.button.BuyButton;
 import ui.element.Label;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InfoPanel extends JPanel {
@@ -105,7 +103,7 @@ public class InfoPanel extends JPanel {
                 this.color = Color.WHITE;
             }
         } else if ("image".equalsIgnoreCase(type)) {
-            this.icon = ResourceLoader.loadImg(value);
+            this.icon = ResourceLoader.loadImage(value);
         }
     }
 

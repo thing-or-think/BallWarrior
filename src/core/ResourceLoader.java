@@ -45,7 +45,7 @@ public class ResourceLoader {
         }
     }
 
-    public static BufferedImage loadImg (String path) {
+    public static BufferedImage loadImage(String path) {
         BufferedImage img;
         try {
             img = ImageIO.read(new File(path));

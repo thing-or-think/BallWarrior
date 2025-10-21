@@ -18,7 +18,7 @@ public class Brick extends Entity {
         this.initialHealth = this.health;
         this.color = color;
         this.velocity = new Vector2D(0, 0); // gạch đứng yên
-        this.img = ResourceLoader.loadImg("assets/images/red.png");
+        this.img = ResourceLoader.loadImage("assets/images/red.png");
     }
 
     @Override

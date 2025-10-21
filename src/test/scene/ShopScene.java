@@ -2,7 +2,6 @@ package test.scene;
 
 import core.InputHandler;
 import core.ResourceLoader;
-import core.ResourceSaver;
 import data.PlayerData;
 import test.panel.GachaPanel;
 import test.panel.GridPanel;
@@ -32,10 +31,10 @@ public class ShopScene extends Scene {
 
     private Tab currentTab = Tab.BALLS;
 
-    private final static BufferedImage iconBack = ResourceLoader.loadImg("assets/images/Xbutton.png");
-    private final static BufferedImage iconBall = ResourceLoader.loadImg("assets/images/iconBall.png");
-    private final static BufferedImage iconPaddle = ResourceLoader.loadImg("assets/images/iconPaddle.png");
-    private final static BufferedImage iconGacha = ResourceLoader.loadImg("assets/images/Xbutton.png");
+    private final static BufferedImage iconBack = ResourceLoader.loadImage("assets/images/Xbutton.png");
+    private final static BufferedImage iconBall = ResourceLoader.loadImage("assets/images/iconBall.png");
+    private final static BufferedImage iconPaddle = ResourceLoader.loadImage("assets/images/iconPaddle.png");
+    private final static BufferedImage iconGacha = ResourceLoader.loadImage("assets/images/Xbutton.png");
 
     private PlayerData playerData;
 

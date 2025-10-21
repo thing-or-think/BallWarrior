@@ -37,7 +37,7 @@ public class GridPanel extends JPanel {
         setLayout(null);
         setBackground(Color.DARK_GRAY);
         setDoubleBuffered(true);
-        this.background = ResourceLoader.loadImg("assets/images/shopBg.jpg");
+        this.background = ResourceLoader.loadImage("assets/images/shopBg.jpg");
         // Panel hiển thị thông tin skin
         this.infoPanel = new InfoPanel(playerData);
         this.infoPanel.setBounds(400, 50, 400, 500);

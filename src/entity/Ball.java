@@ -32,7 +32,7 @@ public class Ball extends Entity{
                 equippedBallImage = null;
             }
         } else {
-            equippedBallImage = ResourceLoader.loadImg("assets/images/Balls/ball.png");
+            equippedBallImage = ResourceLoader.loadImage("assets/images/Balls/ball.png");
             equippedBallColor = Color.RED;
         }
         System.out.println("✅ Assets Ball Equipped Loaded to static field.");
@@ -58,7 +58,7 @@ public class Ball extends Entity{
                 equippedBallImage = null;
             }
         } else {
-            equippedBallImage = ResourceLoader.loadImg("assets/images/Balls/ball.png");
+            equippedBallImage = ResourceLoader.loadImage("assets/images/Balls/ball.png");
             equippedBallColor = Color.RED;
         }
         System.out.println("✅ Assets Ball Equipped Loaded to static field.");

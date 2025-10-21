@@ -33,7 +33,7 @@ public class GachaPanel extends JPanel {
         this.input = input;
         setLayout(null);
         setBackground(Color.DARK_GRAY);
-        this.background = ResourceLoader.loadImg("assets/images/shopBg.jpg");
+        this.background = ResourceLoader.loadImage("assets/images/shopBg.jpg");
         this.playerData = playerData;
         initUI();
         initMouse();

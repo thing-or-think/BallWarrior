@@ -23,7 +23,7 @@ public class GridPanel extends JPanel {
     public GridPanel(InputHandler input,
                      InfoPanel infoPanel) {
         this.input = input;
-        this.background = ResourceLoader.loadImg("assets/images/shopBg.jpg");
+        this.background = ResourceLoader.loadImage("assets/images/shopBg.jpg");
         this.infoPanel = infoPanel;
     }
 

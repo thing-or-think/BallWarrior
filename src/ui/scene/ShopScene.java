@@ -26,10 +26,10 @@ public class ShopScene extends Scene implements DataChangeListener {
     private Runnable onBack;
 
     private String currentTab = "BALLS";
-    private static BufferedImage iconBack = ResourceLoader.loadImg("assets/images/Xbutton.png");
-    private static BufferedImage iconBall = ResourceLoader.loadImg("assets/images/iconBall.png");
-    private static BufferedImage iconPaddle = ResourceLoader.loadImg("assets/images/iconPaddle.png");
-    private static BufferedImage iconGacha = ResourceLoader.loadImg("assets/images/Xbutton.png");
+    private static BufferedImage iconBack = ResourceLoader.loadImage("assets/images/Xbutton.png");
+    private static BufferedImage iconBall = ResourceLoader.loadImage("assets/images/iconBall.png");
+    private static BufferedImage iconPaddle = ResourceLoader.loadImage("assets/images/iconPaddle.png");
+    private static BufferedImage iconGacha = ResourceLoader.loadImage("assets/images/Xbutton.png");
 
     private final GridPanel gridPanel;
     private final GachaPanel gachaPanel;
@@ -57,7 +57,7 @@ public class ShopScene extends Scene implements DataChangeListener {
         this.gachaPanel.setDataChangeListener(this);
         this.gachaPanel.setBounds(0, 55, Constants.WIDTH, Constants.HEIGHT - 60);
         this.gachaPanel.setVisible(false);
-        this.background = new ImageIcon(ResourceLoader.loadImg("assets/images/topBar.png"));
+        this.background = new ImageIcon(ResourceLoader.loadImage("assets/images/topBar.png"));
 
         buttonGroup = new ButtonGroup();
         add(gachaPanel);
@@ -165,7 +165,7 @@ public class ShopScene extends Scene implements DataChangeListener {
     /** Vẽ background */
     @Override
     protected void drawBackground(Graphics2D g2) {
-        BufferedImage bar = ResourceLoader.loadImg("assets/images/topBar.png");
+        BufferedImage bar = ResourceLoader.loadImage("assets/images/topBar.png");
         g2.drawImage(bar,0,0,800,50,null);
     }
 

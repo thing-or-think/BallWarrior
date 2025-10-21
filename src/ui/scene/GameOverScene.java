@@ -9,8 +9,6 @@ import utils.Constants;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameOverScene extends Scene {
     private final Runnable onMainMenu;
@@ -27,7 +25,7 @@ public class GameOverScene extends Scene {
     @Override
     protected void initUI() {
         setBackground(Color.BLACK);
-        backgroundImage = ResourceLoader.loadImg("assets/images/gameover.png");
+        backgroundImage = ResourceLoader.loadImage("assets/images/gameover.png");
 
         Font font = new Font("Serif", Font.PLAIN, 32);
         FontMetrics fm = getFontMetrics(font);
