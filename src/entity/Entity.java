@@ -15,6 +15,7 @@ public abstract class Entity {
     protected int height;
     protected BufferedImage img;
     protected Color color;
+    protected boolean isAlive;
 
     // 2. Constructor
     public Entity(float x, float y, int width, int height) {
@@ -23,6 +24,7 @@ public abstract class Entity {
         this.velocity = new Vector2D(0, 0);
         this.width = width;
         this.height = height;
+        this.isAlive = true;
     }
 
     // 3. Public methods chính
@@ -89,5 +91,13 @@ public abstract class Entity {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public void setAlive(boolean isAlive) {
+        this.isAlive = isAlive;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
     }
 }

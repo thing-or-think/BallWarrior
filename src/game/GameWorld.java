@@ -18,6 +18,7 @@ public class GameWorld {
     private Paddle paddle;
     private List<Ball> balls;
     private List<Brick> bricks;
+    private List<ManaOrb> manaOrbs = new ArrayList<>();
 
     private ScoreSystem scoreSystem;
     private LevelManager levelManager;
@@ -72,8 +73,13 @@ public class GameWorld {
             if (result != null) handleCollision(ball, result);
         }
 
+        for (ManaOrb manaOrb : manaOrbs) {
+            manaOrb.update();
+        }
+
         bricks.removeIf(Brick::isDestroyed);
         balls.removeIf(ball -> ball.getY() > Constants.HEIGHT);
+        manaOrbs.removeIf(orb -> !orb.isAlive());
 
         if (balls.isEmpty()) {
             scoreSystem.loseLife();
@@ -89,6 +95,9 @@ public class GameWorld {
         if (entity instanceof Brick brick) {
             if (collisionSystem.resolveCollision(ball, result)) {
                 if (brick.isDestroyed()) {
+                    if (Math.random() < 0.3) {
+                        manaOrbs.add(new ManaOrb(brick.getX(), brick.getY(), 10));
+                    }
                     scoreSystem.addScore(brick.getScoreValue());
                     scoreSystem.increaseCombo(0.5f);
                     collisionSystem.unregister(brick);
@@ -106,6 +115,7 @@ public class GameWorld {
         skillEffectManager.draw(g2);
         for (Brick brick : bricks) if (!brick.isDestroyed()) brick.draw(g2);
         for (Ball ball : balls) ball.draw(g2);
+        for (ManaOrb manaOrb : manaOrbs) manaOrb.draw(g2);
     }
 
     private void resetBall() {
