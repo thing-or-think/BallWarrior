@@ -54,6 +54,13 @@ BallWarrior/
 │   │   │   ├── CollisionSystem.java   # Điều phối va chạm (tìm nearest collision)
 │   │   │   └── CollisionUtils.java    # Hàm tiện ích (isBetween, getLineIntersection, circleLineIntersection…)
 │   │   │
+│   │   ├── core/                        # Module lõi điều phối entity và xử lý chính của GameWorld
+│   │   │   ├── GameInitializer.java     # Khởi tạo dữ liệu gameplay (paddle, ball, brick, orb…)
+│   │   │   ├── EntityManager.java       # Quản lý toàn bộ entity trong game (add/remove/update/render)
+│   │   │   ├── CollisionProcessor.java  # Xử lý va chạm giữa các entity (Ball–Brick, Ball–Paddle, v.v.)
+│   │   │   ├── OrbSpawner.java          # Quản lý việc spawn Mana Orb và Power-up khi brick bị phá
+│   │   │   └── AssetRefresher.java      # Tải lại tài nguyên hoặc cập nhật asset trong runtime (ảnh, âm thanh…)
+│   │   │
 │   │   ├── skill/                # Hệ thống ghi và phát lại gameplay (replay system)
 │   │   │   ├── active/
 │   │   │   │   ├── LaserSkill.java
@@ -86,7 +93,7 @@ BallWarrior/
 │   │   │   ├── ReplayData.java       # Cấu trúc dữ liệu lưu trữ thông tin replay (frame list, seed…)
 │   │   │   └── ReplayPlayer.java     # Phát lại replay theo dữ liệu đã ghi
 │   │   │
-│   │   ├── GameWorld.java       # Xử lý logic gameplay: paddle, bóng, gạch, va chạm, kỹ năng
+│   │   ├── GameWorld.java       # Điều phối tổng thể gameplay hiện tại
 │   │   ├── LevelBuilder.java    # Tạo danh sách gạch từ dữ liệu level (LevelData)
 │   │   ├── LevelData.java       # Định nghĩa cấu trúc dữ liệu của một màn chơi (bản đồ gạch, số hàng/cột, màu sắc)
 │   │   ├── LevelManager.java    # Quản lý dữ liệu màn chơi (load/save từ JSON hoặc file)
