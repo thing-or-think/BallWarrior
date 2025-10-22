@@ -49,7 +49,15 @@ public class GameInitializer {
 
         // Skills
         skillEffectManager = new SkillEffectManager();
-        skillManager = new SkillManager(input, paddle, entityManager.getBalls(), entityManager.getBricks(), scoreSystem, collisionSystem, skillEffectManager);
+        skillManager = new SkillManager(
+                input,
+                paddle,
+                entityManager.getBalls(),
+                entityManager.getBricks(),
+                scoreSystem,
+                collisionSystem,
+                skillEffectManager
+        );
 
         // Orb spawner (mặc định)
         orbSpawner = new DefaultOrbSpawner(0.3, 10);

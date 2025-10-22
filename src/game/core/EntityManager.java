@@ -83,9 +83,12 @@ public class EntityManager {
                 ball.reset(paddle.getX() + Constants.PADDLE_WIDTH / 2 - Constants.BALL_SIZE / 2,
                         paddle.getY() - Constants.BALL_SIZE);
                 if (paddle.getInput().isKeyJustPressed(KeyEvent.VK_SPACE)) { ball.launch(); }
-                // launching behaviour should be triggered externally (input)
             } else {
                 ball.update();
+                if (!ball.isAlive()) {
+                    bit.remove();
+                    continue;
+                }
             }
         }
 

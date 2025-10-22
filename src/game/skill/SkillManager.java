@@ -20,6 +20,7 @@ public class SkillManager {
     private InputHandler input;
     private List<Ball> balls;
     private CollisionSystem collisionSystem;
+    private ScoreSystem scoreSystem;
 
     private MultiBallSkill multiBallSkill;
     private ExplosionSkill explosionSkill;
@@ -34,12 +35,13 @@ public class SkillManager {
                         Paddle paddle,
                         List<Ball> balls,
                         List<Brick> bricks,
-                        ScoreSystem score,
+                        ScoreSystem scoreSystem,
                         CollisionSystem collisionSystem,
                         SkillEffectManager skillEffectManager) {
         this.input = input;
         this.balls = balls;
         this.collisionSystem = collisionSystem;
+        this.scoreSystem = scoreSystem;
         this.multiBallSkill = new MultiBallSkill(balls);
         this.explosionSkill = new ExplosionSkill(balls, bricks, skillEffectManager);
         this.shieldSkill = new ShieldSkill(collisionSystem, skillEffectManager);
