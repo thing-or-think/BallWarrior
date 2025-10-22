@@ -40,7 +40,7 @@ public class SkillManager {
         this.input = input;
         this.balls = balls;
         this.collisionSystem = collisionSystem;
-        this.multiBallSkill = new MultiBallSkill(balls);
+        this.multiBallSkill = new MultiBallSkill(balls, skillEffectManager);
         this.explosionSkill = new ExplosionSkill(balls, bricks, skillEffectManager);
         this.shieldSkill = new ShieldSkill(collisionSystem, skillEffectManager);
         this.fireBallSkill = new FireBallSkill(balls, skillEffectManager);
