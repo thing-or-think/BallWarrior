@@ -14,7 +14,6 @@ import java.awt.*;
 
 public class GameWorld {
     private final EntityManager entities;
-    private final CollisionSystem collisionSystem;
     private final CollisionProcessor collisionProcessor;
     private final SkillManager skillManager;
     private final SkillEffectManager skillEffectManager;
@@ -25,7 +24,7 @@ public class GameWorld {
         init.initialize(input);
 
         this.entities = init.getEntityManager();
-        this.collisionSystem = init.getCollisionSystem();
+        CollisionSystem collisionSystem = init.getCollisionSystem();
         this.skillManager = init.getSkillManager();
         this.skillEffectManager = init.getSkillEffectManager();
         this.scoreSystem = init.getScoreSystem();
