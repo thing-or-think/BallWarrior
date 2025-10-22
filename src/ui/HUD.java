@@ -15,6 +15,7 @@ public class HUD {
     private final Label scoreLabel;
     private final Label livesLabel;
     private final ComboLabel comboLabel;
+    private final Label manaLabel;
 
     private final ScoreSystem scoreSystem;
 
@@ -23,6 +24,7 @@ public class HUD {
 
         scoreLabel = new Label("Score: 0", 20, 30, FONT, Color.WHITE);
         livesLabel = new Label("Lives: 0", Constants.WIDTH - 80, 30, FONT, Color.WHITE);
+        manaLabel = new Label("Mana: ", Constants.WIDTH - 80, 50, FONT, Color.WHITE);
 
         // combo ở giữa bên phải màn hình
         comboLabel = new ComboLabel(Constants.WIDTH - 100, Constants.HEIGHT / 2, COMBO_FONT);
@@ -35,11 +37,12 @@ public class HUD {
         // Cập nhật text mỗi frame
         scoreLabel.setText("Score: " + scoreSystem.getScore());
         livesLabel.setText("Lives: " + scoreSystem.getLives());
-        comboLabel.setComboValue(scoreSystem.getCombo());
+        manaLabel.setText("Mana: " + scoreSystem.getMana());
 
         // Vẽ nhãn
         scoreLabel.draw(g);
         livesLabel.draw(g);
         comboLabel.draw(g);
+        manaLabel.draw(g);
     }
 }

@@ -100,4 +100,10 @@ public abstract class Entity {
     public boolean isAlive() {
         return isAlive;
     }
+
+    public boolean intersects(Entity entity) {
+        Rectangle rect1 = new Rectangle((int) this.position.x, (int) this.position.y, this.width, this.height);
+        Rectangle rect2 = new Rectangle((int) entity.position.x, (int) entity.position.y, entity.width, entity.height);
+        return rect1.intersects(rect2);
+    }
 }

@@ -75,6 +75,10 @@ public class GameWorld {
 
         for (ManaOrb manaOrb : manaOrbs) {
             manaOrb.update();
+            if (manaOrb.intersects(paddle)) {
+                manaOrb.setAlive(false);
+                scoreSystem.addMana(manaOrb.getManaAmount());
+            }
         }
 
         bricks.removeIf(Brick::isDestroyed);
