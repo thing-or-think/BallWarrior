@@ -75,6 +75,7 @@ public class GameWorld {
         balls.removeIf(ball -> ball.getY() > Constants.HEIGHT);
 
         if (balls.isEmpty()) {
+            skillManager.deactivateFireBall();
             scoreSystem.loseLife();
             resetBall();
         }
@@ -86,11 +87,40 @@ public class GameWorld {
         Entity entity = result.getEntity();
 
         if (entity instanceof Brick brick) {
-            if (collisionSystem.resolveCollision(ball, result)) {
+            // 1. Xác định gạch có phải là Bedrock không
+            // Dùng getType() == Brick.Type.BEDROCK
+            boolean isBedrock = brick.getType() == Brick.Type.BEDROCK;
+
+            // 2. Fire Ball chỉ xuyên phá nếu nó đang active VÀ gạch KHÔNG phải là Bedrock
+            boolean shouldPierce = ball.isFireBall() && !isBedrock;
+
+            if (shouldPierce) {
+                // --- XỬ LÝ XUYÊN PHÁ (Fire Ball vs Gạch thường) ---
+
+                // Gây sát thương tối đa, đảm bảo gạch phá hủy được sẽ vỡ ngay lập tức.
+                // Hàm hit() trong Brick.java đã tự return nếu là Bedrock, nên an toàn.
+                brick.hit(brick.getMaxHealth());
+
+                // Cập nhật điểm và xóa gạch nếu bị phá hủy
                 if (brick.isDestroyed()) {
                     scoreSystem.addScore(brick.getScoreValue());
                     scoreSystem.increaseCombo(0.25f);
                     collisionSystem.unregister(brick);
+                }
+                // KHÔNG gọi resolveCollision để bóng xuyên qua.
+            } else {
+                // --- XỬ LÝ BẬT NẢY (Bóng thường vs mọi gạch, HOẶC Fire Ball vs Bedrock) ---
+
+                // collisionSystem.resolveCollision:
+                // 1. Nếu là bóng thường: Xử lý bật nảy
+                // 2. Nếu là Fire Ball + Bedrock: Xử lý bật nảy, và brick.hit() sẽ bị Bedrock bỏ qua.
+                if (collisionSystem.resolveCollision(ball, result)) {
+                    // Cập nhật điểm và xóa gạch (chỉ áp dụng nếu gạch vỡ)
+                    if (brick.isDestroyed()) {
+                        scoreSystem.addScore(brick.getScoreValue());
+                        scoreSystem.increaseCombo(0.25f);
+                        collisionSystem.unregister(brick);
+                    }
                 }
             }
         } else if (entity instanceof Shield || entity instanceof Paddle) {

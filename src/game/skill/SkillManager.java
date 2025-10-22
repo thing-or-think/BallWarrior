@@ -10,6 +10,7 @@ import game.skill.effect.SkillEffectManager;
 import game.skill.active.ExplosionSkill;
 import game.skill.active.MultiBallSkill;
 import game.skill.active.ShieldSkill;
+import game.skill.active.FireBallSkill;
 import game.collision.CollisionSystem;
 
 import java.awt.event.KeyEvent;
@@ -24,9 +25,8 @@ public class SkillManager {
     private MultiBallSkill multiBallSkill;
     private ExplosionSkill explosionSkill;
     private ShieldSkill shieldSkill;
+    private FireBallSkill fireBallSkill;
 
-    // Các biến trạng thái của power-up
-    private boolean fireBallActive = false;
 
     private Shield shield;
 
@@ -43,10 +43,12 @@ public class SkillManager {
         this.multiBallSkill = new MultiBallSkill(balls);
         this.explosionSkill = new ExplosionSkill(balls, bricks, skillEffectManager);
         this.shieldSkill = new ShieldSkill(collisionSystem, skillEffectManager);
+        this.fireBallSkill = new FireBallSkill(balls, skillEffectManager);
     }
 
     public void update(float deltaTime) {
         handleInput();
+        fireBallSkill.update(deltaTime);
         if (shield != null) {
             shield.update(deltaTime);
             // Hủy đăng ký shield khi hết thời gian
@@ -76,12 +78,23 @@ public class SkillManager {
         }
         // R - Fire Ball
         if (input.isKeyJustPressed(KeyEvent.VK_R)) {
-            System.out.println("Fire Ball activated!");
+            fireBallSkill.activate();
         }
 
     }
 
     public Shield getShield() {
         return shield;
+    }
+
+    /**
+     * ⭐ THÊM PHƯƠNG THỨC NÀY
+     * GameWorld gọi phương thức này khi tất cả bóng bị mất
+     * để hủy kích hoạt skill ngay lập tức.
+     */
+    public void deactivateFireBall() {
+        if (fireBallSkill != null) {
+            fireBallSkill.forceDeactivate();
+        }
     }
 }
