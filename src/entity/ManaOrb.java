@@ -20,7 +20,7 @@ public class ManaOrb extends Entity {
 
     @Override
     public void update() {
-        position.y += 1;
+        position.y += 2;
 
         // animation
         frameTimer++;

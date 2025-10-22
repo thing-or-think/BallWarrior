@@ -14,6 +14,7 @@ public class InputHandler extends KeyAdapter {
     private int mouseX = 0;
     private int mouseY = 0;
     private boolean mousePressed = false;
+    private boolean prevMousePressed = false;
     private boolean mouseClickedOnce = false;
     private int scrollAmount = 0;
 
@@ -99,6 +100,7 @@ public class InputHandler extends KeyAdapter {
 
     public void update() {
         System.arraycopy(keys, 0, prevKeys, 0, keys.length);
+        prevMousePressed = mousePressed;
     }
 
     public int consumeScroll() {
@@ -117,13 +119,19 @@ public class InputHandler extends KeyAdapter {
         mouseClickedOnce = false;
     }
 
+    public boolean isMouseJustPressed() {
+        return mousePressed && !prevMousePressed;
+    }
+
+    public boolean isMouseJustReleased() {
+        return !mousePressed && prevMousePressed;
+    }
+
     public boolean consumeClick() {
-        if (mouseClickedOnce) {
-            mouseClickedOnce = false;
+        if (isMouseJustPressed()) {
+            // chỉ trả về true 1 lần tại frame đầu tiên click
             return true;
         }
         return false;
     }
-
-
 }
