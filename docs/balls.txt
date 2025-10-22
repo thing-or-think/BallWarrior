@@ -1,5 +1,5 @@
-#27550
-#EQUIPPED_BALL_ID:11
+#25050
+#EQUIPPED_BALL_ID:12
 # id, name, hasImg, rarity, price, isBought, colorOrPath
 0,Basic Red,false,COMMON,0,true,RED
 1, Basic Blue, false, COMMON, 0, true, BLUE
