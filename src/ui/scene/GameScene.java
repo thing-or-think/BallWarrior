@@ -13,7 +13,7 @@ import ui.base.Scene;
 import ui.panel.GamePanel;
 import utils.Constants;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 
 public class GameScene extends Scene {
     private final GameWorld world;
@@ -31,6 +31,7 @@ public class GameScene extends Scene {
         this.playerData = playerData;
         skillPanel = new SkillPanel(world.getSkillManager(), 20,  100);
         gamePanel = new GamePanel(world);
+        setBackground(Color.decode("#212121"));
         initUI();
     }
 

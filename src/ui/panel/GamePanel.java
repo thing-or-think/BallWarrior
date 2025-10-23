@@ -10,8 +10,7 @@ public class GamePanel extends JPanel {
 
     public GamePanel(GameWorld world) {
         this.world = world;
-        setOpaque(false);
-        setBackground(Color.decode("#6b7a30"));
+        setBackground(Color.decode("#212121"));
     }
 
     @Override
