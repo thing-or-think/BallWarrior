@@ -29,7 +29,7 @@ public class GameScene extends Scene {
         world = new GameWorld(input);
         hud = new HUD(world.getScoreSystem());
         this.playerData = playerData;
-        skillPanel = new SkillPanel(world.getSkillManager(), 20, Constants.WINDOW_HEIGHT - 50);
+        skillPanel = new SkillPanel(world.getSkillManager(), 20,  100);
         gamePanel = new GamePanel(world);
         initUI();
     }
@@ -37,7 +37,7 @@ public class GameScene extends Scene {
     @Override
     protected void initUI() {
         setLayout(null);
-        gamePanel.setBounds(175, 50, 800, 600);
+        gamePanel.setBounds(190, 50, Constants.GAME_PANEL_WIDTH, Constants.GAME_PANEL_HEIGHT);
         add(gamePanel);
     }
 
