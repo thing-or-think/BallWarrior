@@ -24,7 +24,8 @@ public class ExplosionSkill extends ActiveSkill {
         super("Explosion",
                 ResourceLoader.loadImage(path),
                 3.5f,
-                KeyEvent.VK_E);
+                KeyEvent.VK_E,
+                10);
         this.balls = balls;
         this.bricks = bricks;
         this.skillEffectManager = skillEffectManager;

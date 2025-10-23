@@ -3,6 +3,7 @@ package game.core;
 import core.InputHandler;
 import entity.*;
 import game.collision.CollisionSystem;
+import game.skill.base.ActiveSkill;
 import game.skill.effect.SkillEffectManager;
 import game.skill.SkillManager;
 import game.ScoreSystem;
@@ -28,6 +29,7 @@ public class GameInitializer {
     public void initialize(InputHandler input) {
         // Score
         scoreSystem = new ScoreSystem();
+        ActiveSkill.setScoreSystem(scoreSystem);
 
         // Entity manager & paddle
         entityManager = new EntityManager();

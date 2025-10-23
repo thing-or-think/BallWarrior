@@ -47,14 +47,11 @@ public class SkillIcon {
             g.drawString(timeText, x + (size - tw) / 2, y + size / 2 + 5);
         }
 
-//        if (skill.isActive()) {
-//            g.setColor(Color.CYAN);
-//            g.setStroke(new BasicStroke(3));
-//            g.drawRoundRect(x - 2, y - 2, size + 4, size + 4, 10, 10);
-//        } else {
-//            g.setColor(Color.BLACK);
-//            g.drawRoundRect(x, y, size, size, 8, 8);
-//        }
+        g.setColor(Color.CYAN);
+        String manaText = String.valueOf(skill.getManaCost());
+        FontMetrics fm = g.getFontMetrics();
+        int tw = fm.stringWidth(manaText);
+        g.drawString(manaText, x + size - tw - 4, y + size - 4);
     }
 
 }

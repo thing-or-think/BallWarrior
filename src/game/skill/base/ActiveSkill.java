@@ -1,5 +1,6 @@
 package game.skill.base;
 
+import game.ScoreSystem;
 import utils.Constants;
 
 import java.awt.image.BufferedImage;
@@ -9,16 +10,19 @@ public abstract class ActiveSkill extends Skill {
     protected float cooldownTimer;
     protected int manaCost;
     protected int key;
+    protected static ScoreSystem scoreSystem;
 
     public ActiveSkill(String name,
                        BufferedImage icon,
                        float cooldown,
-                       int key) {
+                       int key,
+                       int manaCost) {
         super(name, icon);
         this.cooldownTime = cooldown;
         this.cooldownTimer = cooldown;
         this.isReady = true;
         this.key = key;
+        this.manaCost = manaCost;
     }
 
     @Override
@@ -33,7 +37,7 @@ public abstract class ActiveSkill extends Skill {
     }
 
     public void tryActivate(int pressedKey) {
-        if (pressedKey == key) {
+        if (pressedKey == key && scoreSystem.getMana() >= manaCost) {
             activate();
         }
     }
@@ -45,6 +49,7 @@ public abstract class ActiveSkill extends Skill {
             if (success) {
                 isReady = false;
                 cooldownTimer = cooldownTime;
+                scoreSystem.addMana(-manaCost);
             }
         }
     }
@@ -60,5 +65,13 @@ public abstract class ActiveSkill extends Skill {
             return 0;
         }
         return cooldownTimer / cooldownTime;
+    }
+
+    public static void setScoreSystem(ScoreSystem scoreSystem) {
+        ActiveSkill.scoreSystem = scoreSystem;
+    }
+
+    public int getManaCost() {
+        return manaCost;
     }
 }

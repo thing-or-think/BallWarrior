@@ -22,7 +22,8 @@ public class ShieldSkill extends ActiveSkill {
         super("SHIELD",
                 ResourceLoader.loadImage(path),
                 4.5f,
-                KeyEvent.VK_Q);
+                KeyEvent.VK_Q,
+                10);
         this.collisionSystem = collisionSystem;
         this.skillEffectManager = skillEffectManager;
         this.shield = shield;
