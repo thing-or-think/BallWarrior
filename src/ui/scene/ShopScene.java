@@ -61,11 +61,11 @@ public class ShopScene extends Scene {
 
         setLayout(null);
 
-        this.infoPanel.setBounds(Constants.WIDTH / 2, 55, 400, Constants.HEIGHT - 60);
+        this.infoPanel.setBounds(Constants.WINDOW_WIDTH / 2, 55, 400, Constants.WINDOW_HEIGHT - 60);
         add(infoPanel);
-        this.gridPanel.setBounds(0,55,Constants.WIDTH,Constants.HEIGHT -60);
+        this.gridPanel.setBounds(0,55,Constants.WINDOW_WIDTH,Constants.WINDOW_HEIGHT -60);
         add(gridPanel);
-        this.gachaPanel.setBounds(0, 55, Constants.WIDTH, Constants.WIDTH - 60);
+        this.gachaPanel.setBounds(0, 55, Constants.WINDOW_WIDTH, Constants.WINDOW_WIDTH - 60);
         add(gachaPanel);
 
         initUI();

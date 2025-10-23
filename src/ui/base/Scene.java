@@ -17,7 +17,7 @@ public abstract class Scene extends JPanel {
     public Scene(String name, InputHandler input) {
         this.name = name;
         this.input = input;
-        setPreferredSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
+        setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
         setDoubleBuffered(true);
         setFocusable(true);
         setBackground(Color.BLACK);
@@ -65,7 +65,7 @@ public abstract class Scene extends JPanel {
 
     protected void drawBackground(Graphics2D g2) {
         if (background != null) {
-            g2.drawImage(background.getImage(), 0, 0, Constants.WIDTH, Constants.HEIGHT, this);
+            g2.drawImage(background.getImage(), 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, this);
         } else {
             g2.setColor(getBackground());
             g2.fillRect(0, 0, getWidth(), getHeight());

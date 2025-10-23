@@ -31,8 +31,8 @@ public class GameInitializer {
 
         // Entity manager & paddle
         entityManager = new EntityManager();
-        Paddle paddle = new Paddle(Constants.WIDTH / 2 - Constants.PADDLE_WIDTH / 2,
-                Constants.HEIGHT - Constants.PADDLE_HEIGHT - 30, input);
+        Paddle paddle = new Paddle(Constants.GAME_PANEL_WIDTH / 2 - Constants.PADDLE_WIDTH / 2,
+                Constants.GAME_PANEL_HEIGHT - Constants.PADDLE_HEIGHT - 30, input);
         entityManager.setPaddle(paddle);
 
         // Level

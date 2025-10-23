@@ -58,7 +58,7 @@ public class Ball extends Entity {
         if (stuck) return;
         previousPosition.set(position.x, position.y);
         position.add(velocity);
-        if (position.y + width > Constants.HEIGHT) {
+        if (position.y + width > Constants.GAME_PANEL_HEIGHT) {
             this.setAlive(false);
         }
         clampPosition();
@@ -69,8 +69,8 @@ public class Ball extends Entity {
         if (position.x <= 0) {
             position.x = 0;
             velocity.x = Math.abs(velocity.x);
-        } else if (position.x + width >= Constants.WIDTH) {
-            position.x = Constants.WIDTH - width;
+        } else if (position.x + width >= Constants.GAME_PANEL_WIDTH) {
+            position.x = Constants.GAME_PANEL_WIDTH - width;
             velocity.x = -Math.abs(velocity.x);
         }
         if (position.y <= 0) {

@@ -53,7 +53,7 @@ public class Paddle extends Entity {
     @Override
     public void clampPosition() {
         if (position.x < 0) position.x = 0;
-        if (position.x + width > Constants.WIDTH) position.x = Constants.WIDTH - width;
+        if (position.x + width > Constants.GAME_PANEL_WIDTH) position.x = Constants.GAME_PANEL_WIDTH - width;
     }
 
 

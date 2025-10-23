@@ -23,11 +23,11 @@ public class HUD {
         this.scoreSystem = scoreSystem;
 
         scoreLabel = new Label("Score: 0", 20, 30, FONT, Color.WHITE);
-        livesLabel = new Label("Lives: 0", Constants.WIDTH - 80, 30, FONT, Color.WHITE);
-        manaLabel = new Label("Mana: ", Constants.WIDTH - 80, 50, FONT, Color.WHITE);
+        livesLabel = new Label("Lives: 0", Constants.WINDOW_WIDTH - 80, 30, FONT, Color.WHITE);
+        manaLabel = new Label("Mana: ", Constants.WINDOW_WIDTH - 80, 50, FONT, Color.WHITE);
 
         // combo ở giữa bên phải màn hình
-        comboLabel = new ComboLabel(Constants.WIDTH - 100, Constants.HEIGHT / 2, COMBO_FONT);
+        comboLabel = new ComboLabel(Constants.WINDOW_WIDTH - 100, Constants.WINDOW_HEIGHT / 2, COMBO_FONT);
     }
 
     /**

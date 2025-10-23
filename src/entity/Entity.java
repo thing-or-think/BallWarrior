@@ -63,9 +63,9 @@ public abstract class Entity {
     // 4. Protected/private helper methods
     protected void clampPosition() {
         if (position.x < 0) position.x = 0;
-        if (position.x + width > Constants.WIDTH) position.x = Constants.WIDTH - width;
+        if (position.x + width > Constants.GAME_PANEL_WIDTH) position.x = Constants.GAME_PANEL_WIDTH - width;
         if (position.y < 0) position.y = 0;
-        if (position.y + height > Constants.HEIGHT) position.y = Constants.HEIGHT - height;
+        if (position.y + height > Constants.GAME_PANEL_HEIGHT) position.y = Constants.GAME_PANEL_HEIGHT - height;
     }
 
     // 5. Getters

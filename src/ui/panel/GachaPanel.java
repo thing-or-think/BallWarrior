@@ -33,7 +33,7 @@ public class GachaPanel extends JPanel {
 
     private void initUI() {
         Font font = new Font("Serif", Font.PLAIN, 32);
-        spinButton = new BuyButton("SPIN", Constants.WIDTH/2-50,400,100,50,font,() -> handleGachaSpin());
+        spinButton = new BuyButton("SPIN", Constants.WINDOW_WIDTH / 2-50,400,100,50,font,() -> handleGachaSpin());
     }
 
     private SkinData openGacha() {

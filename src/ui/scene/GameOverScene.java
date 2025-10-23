@@ -32,8 +32,8 @@ public class GameOverScene extends Scene {
 
         // Nút "MAIN MENU"
         button = new MenuButton("MAIN MENU",
-                Constants.WIDTH / 2,
-                Constants.HEIGHT / 2 + 100,
+                Constants.WINDOW_WIDTH / 2,
+                Constants.WINDOW_HEIGHT / 2 + 100,
                 fm);
 
         button.setActivity(onMainMenu);
@@ -54,15 +54,15 @@ public class GameOverScene extends Scene {
     protected void render(Graphics2D g2) {
         // Nếu có background ảnh riêng, vẽ đè lên
         if (backgroundImage != null) {
-            g2.drawImage(backgroundImage, 0, 0, Constants.WIDTH, Constants.HEIGHT, this);
+            g2.drawImage(backgroundImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, this);
         } else {
             g2.setColor(Color.RED);
-            g2.fillRect(0, 0, Constants.WIDTH, Constants.HEIGHT);
+            g2.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
             g2.setColor(Color.WHITE);
             g2.setFont(new Font("Serif", Font.BOLD, 50));
             String gameOverText = "GAME OVER";
             int textWidth = g2.getFontMetrics().stringWidth(gameOverText);
-            g2.drawString(gameOverText, (Constants.WIDTH - textWidth) / 2, Constants.HEIGHT / 2 - 50);
+            g2.drawString(gameOverText, (Constants.WINDOW_WIDTH - textWidth) / 2, Constants.WINDOW_HEIGHT / 2 - 50);
         }
 
         // Vẽ các nút

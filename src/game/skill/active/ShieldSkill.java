@@ -28,10 +28,10 @@ public class ShieldSkill extends ActiveSkill {
             return; // Nếu đang có shield hoạt động, không tạo thêm
         }
 
-        float shieldWidth = Constants.WIDTH;
+        float shieldWidth = Constants.GAME_PANEL_WIDTH;
         float shieldHeight = 10;
         float x = 0;
-        float y = Constants.HEIGHT - 40;
+        float y = Constants.GAME_PANEL_HEIGHT - 40;
         float duration = 5f; // giây
 
         shield = new Shield(x, y, (int) shieldWidth, (int) shieldHeight, duration);

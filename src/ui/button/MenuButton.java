@@ -31,7 +31,7 @@ public class MenuButton extends Button {
             String decoratedText = "> " + text + " <";
 
             int textWidth = g.getFontMetrics().stringWidth(decoratedText);
-            int drawX = (Constants.WIDTH - textWidth) / 2;
+            int drawX = (Constants.WINDOW_WIDTH - textWidth) / 2;
             int drawY = bound.y + bound.height;
 
             g.drawString(decoratedText, drawX, drawY);
@@ -39,7 +39,7 @@ public class MenuButton extends Button {
             g.setColor(DEFAULT_COLOR);
 
             int textWidth = g.getFontMetrics().stringWidth(text);
-            int drawX = (Constants.WIDTH - textWidth) / 2;
+            int drawX = (Constants.WINDOW_WIDTH - textWidth) / 2;
             int drawY = bound.y + bound.height;
 
             g.drawString(text, drawX, drawY);

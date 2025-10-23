@@ -27,7 +27,7 @@ public class MenuScene extends Scene {
         int spacing = 50;
 
         for (int i = 0; i < texts.length; i++) {
-            buttons.add(new MenuButton(texts[i], Constants.WIDTH / 2, startY + i * spacing, fm, runnables[i]));
+            buttons.add(new MenuButton(texts[i], Constants.WINDOW_WIDTH / 2, startY + i * spacing, fm, runnables[i]));
         }
 
         initUI();

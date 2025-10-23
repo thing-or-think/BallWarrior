@@ -29,7 +29,7 @@ public class ManaOrb extends Entity {
             currentFrame = (currentFrame + 1) % frameCount;
         }
 
-        if (position.y > Constants.HEIGHT) {
+        if (position.y > Constants.WINDOW_HEIGHT) {
             this.setAlive(false);
         }
     }
