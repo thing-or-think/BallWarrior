@@ -17,7 +17,7 @@ public class ShieldSkill extends ActiveSkill {
     public ShieldSkill(CollisionSystem collisionSystem, SkillEffectManager skillEffectManager) {
         super("SHIELD",
                 ResourceLoader.loadImage(path),
-                0f);
+                4.5f);
         this.collisionSystem = collisionSystem;
         this.skillEffectManager = skillEffectManager;
     }

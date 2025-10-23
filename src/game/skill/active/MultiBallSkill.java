@@ -15,7 +15,7 @@ public class MultiBallSkill extends ActiveSkill {
     public MultiBallSkill(List<Ball> balls) {
         super("MULTI_BALL",
                 ResourceLoader.loadImage(path),
-                0f);
+                5f);
         this.balls = balls;
     }
 

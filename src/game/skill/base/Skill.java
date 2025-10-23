@@ -23,4 +23,8 @@ public abstract class Skill {
     public String getName() {
         return name;
     }
+
+    public BufferedImage getIcon() {
+        return icon;
+    }
 }

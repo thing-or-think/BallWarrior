@@ -22,7 +22,7 @@ public class ExplosionSkill extends ActiveSkill {
                           SkillEffectManager skillEffectManager) {
         super("Explosion",
                 ResourceLoader.loadImage(path),
-                0f);
+                3.5f);
         this.balls = balls;
         this.bricks = bricks;
         this.skillEffectManager = skillEffectManager;

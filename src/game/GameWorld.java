@@ -84,4 +84,8 @@ public class GameWorld {
     public ScoreSystem getScoreSystem() {
         return scoreSystem;
     }
+
+    public SkillManager getSkillManager() {
+        return skillManager;
+    }
 }

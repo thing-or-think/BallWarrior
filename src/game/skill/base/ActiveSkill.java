@@ -1,16 +1,18 @@
 package game.skill.base;
 
+import utils.Constants;
+
 import java.awt.image.BufferedImage;
 
 public abstract class ActiveSkill extends Skill {
-    protected float cooldown;
+    protected float cooldownTime;
     protected float cooldownTimer;
 
     public ActiveSkill(String name,
                        BufferedImage icon,
                        float cooldown) {
         super(name, icon);
-        this.cooldown = cooldown;
+        this.cooldownTime = cooldown;
         this.cooldownTimer = cooldown;
         this.isReady = true;
     }
@@ -30,10 +32,21 @@ public abstract class ActiveSkill extends Skill {
     public void activate() {
         if (isReady) {
             performAction();
-//            isReady = false;
-            cooldownTimer = cooldown;
+            isReady = false;
+            cooldownTimer = cooldownTime;
         }
     }
 
     protected abstract void performAction();
+
+    public float getCooldownTimer() {
+        return cooldownTimer;
+    }
+
+    public float getCooldownProgress() {
+        if (cooldownTime <= Constants.COLLISION_EPSILON) {
+            return 0;
+        }
+        return cooldownTimer / cooldownTime;
+    }
 }

@@ -6,6 +6,7 @@ import entity.Brick;
 import entity.Paddle;
 import entity.Shield;
 import game.ScoreSystem;
+import game.skill.base.ActiveSkill;
 import game.skill.effect.SkillEffectManager;
 import game.skill.active.ExplosionSkill;
 import game.skill.active.MultiBallSkill;
@@ -13,6 +14,7 @@ import game.skill.active.ShieldSkill;
 import game.collision.CollisionSystem;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SkillManager {
@@ -25,6 +27,8 @@ public class SkillManager {
     private MultiBallSkill multiBallSkill;
     private ExplosionSkill explosionSkill;
     private ShieldSkill shieldSkill;
+
+    private List<ActiveSkill> activeSkills;
 
     // Các biến trạng thái của power-up
     private boolean fireBallActive = false;
@@ -45,6 +49,10 @@ public class SkillManager {
         this.multiBallSkill = new MultiBallSkill(balls);
         this.explosionSkill = new ExplosionSkill(balls, bricks, skillEffectManager);
         this.shieldSkill = new ShieldSkill(collisionSystem, skillEffectManager);
+        activeSkills = new ArrayList<>();
+        activeSkills.add(multiBallSkill);
+        activeSkills.add(explosionSkill);
+        activeSkills.add(shieldSkill);
     }
 
     public void update(float deltaTime) {
@@ -57,6 +65,9 @@ public class SkillManager {
                 shield = null; // Xóa tham chiếu
                 System.out.println("Shield deactivated!");
             }
+        }
+        for (ActiveSkill skill : activeSkills) {
+            skill.update(deltaTime);
         }
     }
 
@@ -85,5 +96,9 @@ public class SkillManager {
 
     public Shield getShield() {
         return shield;
+    }
+
+    public List<ActiveSkill> getActiveSkills() {
+        return activeSkills;
     }
 }

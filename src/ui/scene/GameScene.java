@@ -7,8 +7,11 @@ import data.PlayerData;
 import entity.Ball;
 import entity.Paddle;
 import game.GameWorld;
+import game.skill.ui.SkillPanel;
 import ui.HUD;
 import ui.base.Scene;
+import utils.Constants;
+
 import java.awt.Graphics2D;
 
 public class GameScene extends Scene {
@@ -16,6 +19,7 @@ public class GameScene extends Scene {
     private HUD hud;
     private SceneManager sceneManager;
     private final PlayerData playerData;
+    private final SkillPanel skillPanel;
 
     public GameScene(InputHandler input, SceneManager sceneManager, PlayerData playerData) {
         super("Game", input);
@@ -23,6 +27,7 @@ public class GameScene extends Scene {
         world = new GameWorld(input);
         hud = new HUD(world.getScoreSystem());
         this.playerData = playerData;
+        skillPanel = new SkillPanel(world.getSkillManager(), 20, Constants.HEIGHT - 50);
     }
 
     @Override
@@ -48,6 +53,7 @@ public class GameScene extends Scene {
     protected void render(Graphics2D g2) {
         world.render(g2);
         hud.render(g2);
+        skillPanel.draw(g2);
     }
 
     public void forceUpdateGameAssets() {
