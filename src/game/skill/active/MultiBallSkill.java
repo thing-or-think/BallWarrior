@@ -25,7 +25,7 @@ public class MultiBallSkill extends ActiveSkill {
 
     @Override
     protected boolean performAction() {
-        if (balls == null || balls.isEmpty()) return true;
+        if (balls == null || balls.isEmpty()) return false;
 
         List<Ball> newBalls = new ArrayList<>();
         float angle30Deg = (float) Math.toRadians(30); // lệch 30 độ
@@ -61,6 +61,6 @@ public class MultiBallSkill extends ActiveSkill {
 
         balls.addAll(newBalls);
         System.out.println("Multi Ball activated! Total balls: " + balls.size());
-        return false;
+        return true;
     }
 }

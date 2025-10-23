@@ -30,6 +30,9 @@ public class ExplosionSkill extends ActiveSkill {
 
     @Override
     protected boolean performAction() {
+        if (balls.isEmpty()) {
+            return false;
+        }
         for (Ball ball : balls) {
             Vector2D ballPos = ball.getCenter();
             for (Brick brick : bricks) {
@@ -43,6 +46,6 @@ public class ExplosionSkill extends ActiveSkill {
             skillEffectManager.spawnExplosion(ballPos.x, ballPos.y, explosionRadius);
         }
         System.out.println("💥 ExplosionSkill activated! All nearby bricks destroyed.");
-        return false;
+        return true;
     }
 }

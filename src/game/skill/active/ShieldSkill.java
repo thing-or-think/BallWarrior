@@ -28,7 +28,7 @@ public class ShieldSkill extends ActiveSkill {
     @Override
     protected boolean performAction() {
         if (shield != null && shield.isAlive()) {
-            return true; // Nếu đang có shield hoạt động, không tạo thêm
+            return false; // Nếu đang có shield hoạt động, không tạo thêm
         }
 
         shield.setAlive(true);
@@ -36,6 +36,6 @@ public class ShieldSkill extends ActiveSkill {
         skillEffectManager.setShield(shield);
 
         System.out.println("Shield activated!");
-        return false;
+        return true;
     }
 }

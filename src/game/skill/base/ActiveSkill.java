@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 public abstract class ActiveSkill extends Skill {
     protected float cooldownTime;
     protected float cooldownTimer;
+    protected int manaCost;
 
     public ActiveSkill(String name,
                        BufferedImage icon,
@@ -31,7 +32,7 @@ public abstract class ActiveSkill extends Skill {
     @Override
     public void activate() {
         if (isReady) {
-            isReady = performAction();
+            isReady = !performAction();
             cooldownTimer = cooldownTime;
         }
     }
