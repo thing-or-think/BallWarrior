@@ -25,10 +25,6 @@ public class SkillManager {
     private ScoreSystem scoreSystem;
     private final EntityManager entityManager;
 
-    private MultiBallSkill multiBallSkill;
-    private ExplosionSkill explosionSkill;
-    private ShieldSkill shieldSkill;
-
     private List<ActiveSkill> activeSkills;
 
     // Các biến trạng thái của power-up
@@ -45,42 +41,17 @@ public class SkillManager {
         this.collisionSystem = collisionSystem;
         this.entityManager = entityManager;
         this.scoreSystem = scoreSystem;
-        this.multiBallSkill = new MultiBallSkill(entityManager.getBalls());
-        this.explosionSkill = new ExplosionSkill(entityManager.getBalls(), entityManager.getBricks(), skillEffectManager);
-        this.shieldSkill = new ShieldSkill(collisionSystem, skillEffectManager, entityManager.getShield());
         activeSkills = new ArrayList<>();
-        activeSkills.add(multiBallSkill);
-        activeSkills.add(explosionSkill);
-        activeSkills.add(shieldSkill);
+        activeSkills.add(new MultiBallSkill(entityManager.getBalls()));
+        activeSkills.add(new ExplosionSkill(entityManager.getBalls(), entityManager.getBricks(), skillEffectManager));
+        activeSkills.add(new ShieldSkill(collisionSystem, skillEffectManager, entityManager.getShield()));
     }
 
     public void update(float deltaTime) {
-        handleInput();
         for (ActiveSkill skill : activeSkills) {
+            skill.tryActivate(input.getLastKeyPressed());
             skill.update(deltaTime);
         }
-    }
-
-    private void handleInput() {
-        // Q - Shield
-        if (input.isKeyJustPressed(KeyEvent.VK_Q)) {
-            shieldSkill.activate();
-        }
-
-        // W - Multi Ball
-        if (input.isKeyJustPressed(KeyEvent.VK_W)) {
-            multiBallSkill.activate();
-        }
-
-        // E - Explosion
-        if (input.isKeyJustPressed(KeyEvent.VK_E)) {
-            explosionSkill.activate();
-        }
-        // R - Fire Ball
-        if (input.isKeyJustPressed(KeyEvent.VK_R)) {
-            System.out.println("Fire Ball activated!");
-        }
-
     }
 
     public List<ActiveSkill> getActiveSkills() {

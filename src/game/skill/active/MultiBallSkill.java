@@ -5,6 +5,7 @@ import entity.Ball;
 import game.skill.base.ActiveSkill;
 import utils.Vector2D;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,8 @@ public class MultiBallSkill extends ActiveSkill {
     public MultiBallSkill(List<Ball> balls) {
         super("MULTI_BALL",
                 ResourceLoader.loadImage(path),
-                5f);
+                5f,
+                KeyEvent.VK_W);
         this.balls = balls;
     }
 

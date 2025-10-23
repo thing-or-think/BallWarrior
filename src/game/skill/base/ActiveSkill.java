@@ -8,14 +8,17 @@ public abstract class ActiveSkill extends Skill {
     protected float cooldownTime;
     protected float cooldownTimer;
     protected int manaCost;
+    protected int key;
 
     public ActiveSkill(String name,
                        BufferedImage icon,
-                       float cooldown) {
+                       float cooldown,
+                       int key) {
         super(name, icon);
         this.cooldownTime = cooldown;
         this.cooldownTimer = cooldown;
         this.isReady = true;
+        this.key = key;
     }
 
     @Override
@@ -29,11 +32,20 @@ public abstract class ActiveSkill extends Skill {
         }
     }
 
+    public void tryActivate(int pressedKey) {
+        if (pressedKey == key) {
+            activate();
+        }
+    }
+
     @Override
-    public void activate() {
+    protected void activate() {
         if (isReady) {
-            isReady = !performAction();
-            cooldownTimer = cooldownTime;
+            boolean success = performAction();
+            if (success) {
+                isReady = false;
+                cooldownTimer = cooldownTime;
+            }
         }
     }
 

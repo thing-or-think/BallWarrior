@@ -12,7 +12,7 @@ public abstract class Skill {
         this.icon = icon;
     }
 
-    public abstract void activate();
+    protected abstract void activate();
 
     public abstract void update(float deltaTime);
 

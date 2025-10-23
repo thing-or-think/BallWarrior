@@ -21,10 +21,15 @@ public class InputHandler extends KeyAdapter {
     private final boolean[] keys = new boolean[256];
     private final boolean[] prevKeys = new boolean[256];
 
+    private int lastKeyPressed = -1;
+
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (key >= 0 && key < keys.length) keys[key] = true;
+        if (key >= 0 && key < keys.length) {
+            keys[key] = true;
+            lastKeyPressed = key;
+        }
 
         if (key == KeyEvent.VK_LEFT) {
             leftPressed = true;
@@ -101,6 +106,7 @@ public class InputHandler extends KeyAdapter {
     public void update() {
         System.arraycopy(keys, 0, prevKeys, 0, keys.length);
         prevMousePressed = mousePressed;
+        lastKeyPressed = -1;
     }
 
     public int consumeScroll() {
@@ -129,9 +135,12 @@ public class InputHandler extends KeyAdapter {
 
     public boolean consumeClick() {
         if (isMouseJustPressed()) {
-            // chỉ trả về true 1 lần tại frame đầu tiên click
             return true;
         }
         return false;
+    }
+
+    public int getLastKeyPressed() {
+        return lastKeyPressed;
     }
 }

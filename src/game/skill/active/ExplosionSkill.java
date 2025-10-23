@@ -7,6 +7,7 @@ import entity.Ball;
 import entity.Brick;
 import utils.Vector2D;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class ExplosionSkill extends ActiveSkill {
@@ -22,7 +23,8 @@ public class ExplosionSkill extends ActiveSkill {
                           SkillEffectManager skillEffectManager) {
         super("Explosion",
                 ResourceLoader.loadImage(path),
-                3.5f);
+                3.5f,
+                KeyEvent.VK_E);
         this.balls = balls;
         this.bricks = bricks;
         this.skillEffectManager = skillEffectManager;

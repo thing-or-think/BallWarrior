@@ -7,6 +7,8 @@ import game.skill.effect.SkillEffectManager;
 import game.skill.base.ActiveSkill;
 import utils.Constants;
 
+import java.awt.event.KeyEvent;
+
 public class ShieldSkill extends ActiveSkill {
     private static final String path = "assets/images/skills/Shield_ball.png";
 
@@ -19,7 +21,8 @@ public class ShieldSkill extends ActiveSkill {
                        Shield shield) {
         super("SHIELD",
                 ResourceLoader.loadImage(path),
-                4.5f);
+                4.5f,
+                KeyEvent.VK_Q);
         this.collisionSystem = collisionSystem;
         this.skillEffectManager = skillEffectManager;
         this.shield = shield;
