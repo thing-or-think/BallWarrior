@@ -23,9 +23,9 @@ public class ShieldSkill extends ActiveSkill {
     }
 
     @Override
-    protected void performAction() {
+    protected boolean performAction() {
         if (shield != null && shield.isActive()) {
-            return; // Nếu đang có shield hoạt động, không tạo thêm
+            return true; // Nếu đang có shield hoạt động, không tạo thêm
         }
 
         float shieldWidth = Constants.GAME_PANEL_WIDTH;
@@ -40,6 +40,7 @@ public class ShieldSkill extends ActiveSkill {
         skillEffectManager.setShield(shield);
 
         System.out.println("Shield activated!");
+        return false;
     }
 
     public Shield getShield() {

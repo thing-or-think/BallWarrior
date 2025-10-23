@@ -31,13 +31,12 @@ public abstract class ActiveSkill extends Skill {
     @Override
     public void activate() {
         if (isReady) {
-            performAction();
-            isReady = false;
+            isReady = performAction();
             cooldownTimer = cooldownTime;
         }
     }
 
-    protected abstract void performAction();
+    protected abstract boolean performAction();
 
     public float getCooldownTimer() {
         return cooldownTimer;
