@@ -20,14 +20,13 @@ public class ScoreSystem {
 
     // Score
     public void addScore(int points) {
-        score += points * combo;
+        score += points * (int) combo;
     }
 
     public int getScore() {
         return score;
     }
 
-    // Combo
     public void increaseCombo(float amount) {
         combo = Math.min(combo + amount, 3f);
     }
@@ -36,11 +35,6 @@ public class ScoreSystem {
         combo = 1f;
     }
 
-    public float getCombo() {
-        return combo;
-    }
-
-    // Mana
     public void addMana(int amount) {
         this.mana += amount;
     }
@@ -49,22 +43,16 @@ public class ScoreSystem {
         return mana;
     }
 
-    // Lives
     public void loseLife() {
         if (lives > 0) {
             lives--;
         }
     }
 
-    public void addLife() {
-        lives++;
-    }
-
     public int getLives() {
         return lives;
     }
 
-    // State
     public boolean isGameOver() {
         return lives <= 0;
     }

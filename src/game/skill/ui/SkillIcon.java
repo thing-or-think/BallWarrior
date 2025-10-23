@@ -53,5 +53,4 @@ public class SkillIcon {
         int tw = fm.stringWidth(manaText);
         g.drawString(manaText, x + size - tw - 4, y + size - 4);
     }
-
 }
