@@ -37,6 +37,7 @@ public class CollisionSystem {
     /** Hủy đăng ký entity */
     public void unregister(Entity e) {
         colliders.remove(e);
+        colliders.removeIf(entity -> !entity.isAlive());
     }
 
     /** Tìm va chạm gần nhất giữa Ball và toàn bộ colliders */

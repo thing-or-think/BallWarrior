@@ -6,6 +6,7 @@ import entity.Brick;
 import entity.Paddle;
 import entity.Shield;
 import game.ScoreSystem;
+import game.core.EntityManager;
 import game.skill.base.ActiveSkill;
 import game.skill.effect.SkillEffectManager;
 import game.skill.active.ExplosionSkill;
@@ -20,9 +21,9 @@ import java.util.List;
 public class SkillManager {
 
     private InputHandler input;
-    private List<Ball> balls;
     private CollisionSystem collisionSystem;
     private ScoreSystem scoreSystem;
+    private final EntityManager entityManager;
 
     private MultiBallSkill multiBallSkill;
     private ExplosionSkill explosionSkill;
@@ -36,19 +37,17 @@ public class SkillManager {
     private Shield shield;
 
     public SkillManager(InputHandler input,
-                        Paddle paddle,
-                        List<Ball> balls,
-                        List<Brick> bricks,
                         ScoreSystem scoreSystem,
                         CollisionSystem collisionSystem,
-                        SkillEffectManager skillEffectManager) {
+                        SkillEffectManager skillEffectManager,
+                        EntityManager entityManager) {
         this.input = input;
-        this.balls = balls;
         this.collisionSystem = collisionSystem;
+        this.entityManager = entityManager;
         this.scoreSystem = scoreSystem;
-        this.multiBallSkill = new MultiBallSkill(balls);
-        this.explosionSkill = new ExplosionSkill(balls, bricks, skillEffectManager);
-        this.shieldSkill = new ShieldSkill(collisionSystem, skillEffectManager);
+        this.multiBallSkill = new MultiBallSkill(entityManager.getBalls());
+        this.explosionSkill = new ExplosionSkill(entityManager.getBalls(), entityManager.getBricks(), skillEffectManager);
+        this.shieldSkill = new ShieldSkill(collisionSystem, skillEffectManager, entityManager.getShield());
         activeSkills = new ArrayList<>();
         activeSkills.add(multiBallSkill);
         activeSkills.add(explosionSkill);
@@ -57,15 +56,6 @@ public class SkillManager {
 
     public void update(float deltaTime) {
         handleInput();
-        if (shield != null) {
-            shield.update(deltaTime);
-            // Hủy đăng ký shield khi hết thời gian
-            if (!shield.isActive()) {
-                collisionSystem.unregister(shield);
-                shield = null; // Xóa tham chiếu
-                System.out.println("Shield deactivated!");
-            }
-        }
         for (ActiveSkill skill : activeSkills) {
             skill.update(deltaTime);
         }
@@ -75,7 +65,6 @@ public class SkillManager {
         // Q - Shield
         if (input.isKeyJustPressed(KeyEvent.VK_Q)) {
             shieldSkill.activate();
-            shield = shieldSkill.getShield();
         }
 
         // W - Multi Ball
@@ -92,10 +81,6 @@ public class SkillManager {
             System.out.println("Fire Ball activated!");
         }
 
-    }
-
-    public Shield getShield() {
-        return shield;
     }
 
     public List<ActiveSkill> getActiveSkills() {

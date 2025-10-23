@@ -18,8 +18,15 @@ public class EntityManager {
     private final List<Ball> balls = new ArrayList<>();
     private final List<Brick> bricks = new ArrayList<>();
     private final List<ManaOrb> manaOrbs = new ArrayList<>();
+    private final Shield shield;
 
-    public EntityManager() {}
+    public EntityManager() {
+        shield = new Shield(0,
+                Constants.GAME_PANEL_HEIGHT - 40,
+                Constants.GAME_PANEL_WIDTH,
+                10,
+                3f);
+    }
 
     /* ---------- Init / inject ---------- */
     public void setPaddle(Paddle paddle) {
@@ -45,6 +52,10 @@ public class EntityManager {
 
     public List<ManaOrb> getManaOrbs() {
         return manaOrbs;
+    }
+
+    public Shield getShield() {
+        return shield;
     }
 
     /* ---------- Ball helpers ---------- */
@@ -106,6 +117,7 @@ public class EntityManager {
                 orb.setAlive(false);
             }
         }
+        shield.update(deltaTime);
     }
 
     public void cleanupDestroyed() {

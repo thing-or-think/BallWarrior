@@ -14,36 +14,28 @@ public class ShieldSkill extends ActiveSkill {
     private Shield shield;
     private SkillEffectManager skillEffectManager;
 
-    public ShieldSkill(CollisionSystem collisionSystem, SkillEffectManager skillEffectManager) {
+    public ShieldSkill(CollisionSystem collisionSystem,
+                       SkillEffectManager skillEffectManager,
+                       Shield shield) {
         super("SHIELD",
                 ResourceLoader.loadImage(path),
                 4.5f);
         this.collisionSystem = collisionSystem;
         this.skillEffectManager = skillEffectManager;
+        this.shield = shield;
     }
 
     @Override
     protected boolean performAction() {
-        if (shield != null && shield.isActive()) {
+        if (shield != null && shield.isAlive()) {
             return true; // Nếu đang có shield hoạt động, không tạo thêm
         }
 
-        float shieldWidth = Constants.GAME_PANEL_WIDTH;
-        float shieldHeight = 10;
-        float x = 0;
-        float y = Constants.GAME_PANEL_HEIGHT - 40;
-        float duration = 5f; // giây
-
-        shield = new Shield(x, y, (int) shieldWidth, (int) shieldHeight, duration);
-        shield.activate();
+        shield.setAlive(true);
         collisionSystem.register(shield);
         skillEffectManager.setShield(shield);
 
         System.out.println("Shield activated!");
         return false;
-    }
-
-    public Shield getShield() {
-        return shield;
     }
 }

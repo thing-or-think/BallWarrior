@@ -37,7 +37,7 @@ public class SkillEffectManager {
         for (ExplosionEffect e : explosions) {
             e.draw(g);
         }
-        if (shield != null) {
+        if (shield != null && shield.isAlive()) {
             shield.draw(g);
         }
     }
