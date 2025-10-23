@@ -85,6 +85,9 @@ BallWarrior/
 │   │   │   │   ├── FireBallEffect.java       # kế thừa SkillEffect, hiệu ứng bóng lửa
 │   │   │   │   ├── ShieldEffect.java         # kế thừa SkillEffect, hiệu ứng shield
 │   │   │   │   └── SkillEffectManager.java   # quản lý tất cả SkillEffect đang hoạt động
+│   │   │   ├── ui/                            # Giao diện hiển thị kỹ năng
+│   │   │   │   ├── SkillPanel.java            # Panel chính hiển thị các skill (HUD)
+│   │   │   │   └── SkillIcon.java             # Đại diện 1 ô skill riêng (icon, cooldown overlay)
 │   │   │   │
 │   │   │   └── SkillManager.java       # Quản lý tất cả skill trong game
 │   │   │

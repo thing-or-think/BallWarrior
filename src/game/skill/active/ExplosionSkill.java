@@ -1,5 +1,6 @@
 package game.skill.active;
 
+import core.ResourceLoader;
 import game.skill.effect.SkillEffectManager;
 import game.skill.base.ActiveSkill;
 import entity.Ball;
@@ -9,6 +10,8 @@ import utils.Vector2D;
 import java.util.List;
 
 public class ExplosionSkill extends ActiveSkill {
+    private static final String path = "assets/images/skills/explosion_ball.png";
+
     private final List<Ball> balls;
     private final List<Brick> bricks;
     private final float explosionRadius = 60f;
@@ -17,7 +20,9 @@ public class ExplosionSkill extends ActiveSkill {
     public ExplosionSkill(List<Ball> balls,
                           List<Brick> bricks,
                           SkillEffectManager skillEffectManager) {
-        super("Explosion", 0f);
+        super("Explosion",
+                ResourceLoader.loadImage(path),
+                0f);
         this.balls = balls;
         this.bricks = bricks;
         this.skillEffectManager = skillEffectManager;

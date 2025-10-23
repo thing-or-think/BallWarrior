@@ -1,11 +1,15 @@
 package game.skill.base;
 
+import java.awt.image.BufferedImage;
+
 public abstract class ActiveSkill extends Skill {
     protected float cooldown;
     protected float cooldownTimer;
 
-    public ActiveSkill(String name, float cooldown) {
-        super(name);
+    public ActiveSkill(String name,
+                       BufferedImage icon,
+                       float cooldown) {
+        super(name, icon);
         this.cooldown = cooldown;
         this.cooldownTimer = cooldown;
         this.isReady = true;

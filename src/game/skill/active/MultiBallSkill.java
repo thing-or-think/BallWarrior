@@ -1,5 +1,6 @@
 package game.skill.active;
 
+import core.ResourceLoader;
 import entity.Ball;
 import game.skill.base.ActiveSkill;
 import utils.Vector2D;
@@ -8,10 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MultiBallSkill extends ActiveSkill {
+    private static final String path = "assets/images/skills/multiple_ball.png";
     private List<Ball> balls;
 
     public MultiBallSkill(List<Ball> balls) {
-        super("MULTI_BALL", 0f);
+        super("MULTI_BALL",
+                ResourceLoader.loadImage(path),
+                0f);
         this.balls = balls;
     }
 
