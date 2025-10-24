@@ -117,7 +117,6 @@ public class EntityManager {
                 orb.setAlive(false);
             }
         }
-        shield.update(deltaTime);
     }
 
     public void cleanupDestroyed() {
@@ -131,6 +130,6 @@ public class EntityManager {
         for (Brick b : bricks) if (!b.isDestroyed()) b.draw(g2);
         for (Ball ball : balls) ball.draw(g2);
         for (ManaOrb orb : manaOrbs) orb.draw(g2);
-        if (shield.isAlive()) shield.draw(g2);
+        shield.draw(g2);
     }
 }

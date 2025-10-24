@@ -4,31 +4,9 @@ import java.awt.*;
 import utils.Constants;
 
 public class Shield extends Entity {
-    private float timer;
-    private float duration;
-
     public Shield(float x, float y, int width, int height, float duration) {
         super(x, y, width, height);
         setAlive(false);
-        this.duration = duration;
-        this.timer = 0f;
-    }
-
-    @Override
-    public void setAlive(boolean isAlive) {
-        super.setAlive(isAlive);
-        if (isAlive) {
-            this.timer = duration;
-        }
-    }
-
-    public void update(float deltaTime) {
-        if (isAlive()) {
-            timer -= deltaTime;
-            if (timer <= 0f) {
-                setAlive(false);
-            }
-        }
     }
 
     @Override

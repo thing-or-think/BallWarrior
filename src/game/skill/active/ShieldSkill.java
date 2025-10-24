@@ -41,12 +41,8 @@ public class ShieldSkill extends ActiveSkill {
     }
 
     @Override
-    protected void onActivate() {
-        super.onActivate();
-    }
-
-    @Override
     protected void onDeactivate() {
-        super.onDeactivate();
+        shield.setAlive(false);
+        collisionSystem.unregister(shield);
     }
 }
