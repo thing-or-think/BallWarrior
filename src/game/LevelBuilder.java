@@ -9,16 +9,31 @@ import java.util.List;
 public class LevelBuilder {
     public static List<Brick> buildBricks(LevelData level) {
         List<Brick> bricks = new ArrayList<>();
-        int brickWidth = Constants.GAME_PANEL_WIDTH / level.cols;
-        int brickHeight = 25;
+        int brickSize = 50;
+        // Tổng chiều rộng của dãy gạch
+        int totalWidth = level.cols * brickSize;
+
+        // Tính điểm bắt đầu để căn giữa + cách trục X 50
+        int startX = (Constants.GAME_PANEL_WIDTH - totalWidth) / 2;
+        int startY = 50;
 
         for (int r = 0; r < level.rows; r++) {
             for (int c = 0; c < level.cols; c++) {
-                if (level.brickMap[r][c] == 1) {
-                    int x = c * brickWidth;
-                    int y = 50 + r * brickHeight;
-                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 1, Color.RED));
+                Brick.Type type;
+                switch (level.brickMap[r][c]) {
+                    case 0: type = Brick.Type.BEDROCK; break;
+                    case 1: type = Brick.Type.COBBLESTONE; break;
+                    case 2: type = Brick.Type.GOLD; break;
+                    default: type = Brick.Type.DIAMOND; break;
                 }
+                bricks.add(new Brick(
+                        startX + c * (brickSize),
+                        startY + r * (brickSize),
+                        brickSize,
+                        brickSize,
+                        type
+                ));
+
             }
         }
         return bricks;

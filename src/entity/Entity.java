@@ -86,6 +86,7 @@ public abstract class Entity {
     public Vector2D getCenter() {
         return new Vector2D(position.x + width / 2f, position.y + height / 2f);
     }
+
     //6. Setters
     public void setImg (BufferedImage i) {this.img = i; }
 

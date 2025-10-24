@@ -15,6 +15,7 @@ public class Ball extends Entity {
     private int radius;
     private boolean stuck = true;
     private static SkinData skinData;
+    private boolean isFireBall = false; //mặc định bóng thường
 
     public Ball(float x, float y) {
         super(x, y, Constants.BALL_SIZE, Constants.BALL_SIZE);
@@ -119,5 +120,16 @@ public class Ball extends Entity {
 
     public int getRadius() {
         return radius;
+    }
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setFireBall(boolean isfireBall) {
+        this.isFireBall = isfireBall;
+    }
+
+    public boolean isFireBall() {
+        return isFireBall;
     }
 }
