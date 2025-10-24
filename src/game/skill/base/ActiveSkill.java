@@ -12,6 +12,7 @@ public abstract class ActiveSkill extends Skill {
     protected float durationTimer;
     protected int manaCost;
     protected int key;
+    protected boolean isActive;
     protected static ScoreSystem scoreSystem;
 
     public ActiveSkill(String name,
@@ -36,7 +37,7 @@ public abstract class ActiveSkill extends Skill {
                        float duration) {
         super(name, icon);
         this.cooldownTime = cooldown;
-        this.cooldownTimer = cooldown;
+        this.cooldownTimer = 0;
         this.durationTime = duration;
         this.durationTimer = 0;
         this.isReady = true;
@@ -46,6 +47,15 @@ public abstract class ActiveSkill extends Skill {
 
     @Override
     public void update(float deltaTime) {
+        if (isActive) {
+            durationTimer -= deltaTime;
+            if (durationTimer <= 0) {
+                durationTimer = 0;
+                isActive = false;
+                onDeactivate();
+            }
+        }
+
         if (!isReady) {
             cooldownTimer -= deltaTime;
             if (cooldownTimer <= 0) {
@@ -63,15 +73,27 @@ public abstract class ActiveSkill extends Skill {
 
     @Override
     protected void activate() {
-        if (isReady) {
-            boolean success = performAction();
-            if (success) {
-                isReady = false;
-                cooldownTimer = cooldownTime;
-                scoreSystem.addMana(-manaCost);
+        if (!isReady || scoreSystem == null) {
+            return;
+        }
+
+        boolean success = performAction();
+        if (success) {
+            scoreSystem.addMana(-manaCost);
+            isReady = false;
+            cooldownTimer = cooldownTime;
+
+            if (durationTime > 0) {
+                isActive = true;
+                durationTimer = durationTime;
+                onActivate();
             }
         }
     }
+
+    protected void onActivate() {}
+
+    protected void onDeactivate() {}
 
     protected abstract boolean performAction();
 
