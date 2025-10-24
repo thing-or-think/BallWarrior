@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 public abstract class ActiveSkill extends Skill {
     protected float cooldownTime;
     protected float cooldownTimer;
+    protected float durationTime;
+    protected float durationTimer;
     protected int manaCost;
     protected int key;
     protected static ScoreSystem scoreSystem;
@@ -20,6 +22,23 @@ public abstract class ActiveSkill extends Skill {
         super(name, icon);
         this.cooldownTime = cooldown;
         this.cooldownTimer = cooldown;
+        this.isReady = true;
+        this.key = key;
+        this.manaCost = manaCost;
+    }
+
+
+    public ActiveSkill(String name,
+                       BufferedImage icon,
+                       float cooldown,
+                       int key,
+                       int manaCost,
+                       float duration) {
+        super(name, icon);
+        this.cooldownTime = cooldown;
+        this.cooldownTimer = cooldown;
+        this.durationTime = duration;
+        this.durationTimer = 0;
         this.isReady = true;
         this.key = key;
         this.manaCost = manaCost;

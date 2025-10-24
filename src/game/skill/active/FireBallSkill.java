@@ -1,15 +1,18 @@
 package game.skill.active;
 
+import core.ResourceLoader;
 import entity.Ball;
 import game.skill.base.ActiveSkill;
 import game.skill.effect.FireBallVisualEffect;
 import game.skill.effect.SkillEffectManager;
+
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class FireBallSkill extends ActiveSkill {
     private final List<Ball> balls;
     private final SkillEffectManager skillEffectManager;
-
+    private static final String path = "assets/images/skills/fire_ball.png";
     // --- Logic Power-Up thủ công (Tích hợp) ---
     protected float duration;
     protected float timer;
@@ -20,7 +23,12 @@ public class FireBallSkill extends ActiveSkill {
     private static final float FIREBALL_COOLDOWN = 0.0f;
 
     public FireBallSkill(List<Ball> balls, SkillEffectManager skillEffectManager) {
-        super("FIRE_BALL", FIREBALL_COOLDOWN);
+        super("FIRE_BALL",
+                ResourceLoader.loadImage(path),
+                FIREBALL_COOLDOWN,
+                KeyEvent.VK_R,
+                10,
+                FIREBALL_DURATION);
         this.balls = balls;
         this.skillEffectManager = skillEffectManager;
         this.duration = FIREBALL_DURATION;
@@ -44,24 +52,20 @@ public class FireBallSkill extends ActiveSkill {
     }
 
     @Override
-    protected void performAction() {
+    protected boolean performAction() {
         // Hành động khi kích hoạt
-        this.active = true;
-        this.timer = 0;
-        onActivate();
-    }
-
-
-    private void onActivate() {
-        if (balls == null || balls.isEmpty()) return;
+        if (balls == null || balls.isEmpty()) {
+            return false;
+        }
 
         for (Ball ball : balls) {
             ball.setFireBall(true);
             skillEffectManager.addFireBallVisualEffect(new FireBallVisualEffect(ball));
         }
         System.out.println("Fire Ball activated! Balls gain penetration ability for " + duration + "s.");
-    }
+        return true;
 
+    }
 
     protected void onDeactivate() {
         if (balls == null) return;

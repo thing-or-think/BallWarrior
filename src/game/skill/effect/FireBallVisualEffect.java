@@ -30,7 +30,7 @@ public class FireBallVisualEffect {
     public void update(float deltaTime) {
         // Tự hủy nếu bóng không còn là Fire Ball (dựa trên ball.isFireBall())
         // hoặc bóng đã bị xóa khỏi màn hình (ball.getY() > Constants.HEIGHT)
-        if (ball == null || !ball.isFireBall() || ball.getY() > Constants.HEIGHT) {
+        if (ball == null || !ball.isFireBall() || !ball.isAlive()) {
             isActive = false;
             return;
         }

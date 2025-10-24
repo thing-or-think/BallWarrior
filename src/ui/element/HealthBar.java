@@ -42,7 +42,7 @@ public class HealthBar {
         BufferedImage[] loadedFrames = new BufferedImage[6];
         int loadedCount = 0;
         for (int i = 0; i < 6; i++) {
-            BufferedImage img = ResourceLoader.loadImg(FRAME_PATHS[i]);
+            BufferedImage img = ResourceLoader.loadImage(FRAME_PATHS[i]);
             if (img != null) {
                 loadedFrames[i] = img;
                 loadedCount++;

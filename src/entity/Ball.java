@@ -121,9 +121,6 @@ public class Ball extends Entity {
     public int getRadius() {
         return radius;
     }
-    public int getRadius() {
-        return radius;
-    }
 
     public void setFireBall(boolean isfireBall) {
         this.isFireBall = isfireBall;
