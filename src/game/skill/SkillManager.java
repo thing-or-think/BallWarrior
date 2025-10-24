@@ -3,6 +3,7 @@ package game.skill;
 import core.InputHandler;
 import game.ScoreSystem;
 import game.core.EntityManager;
+import game.skill.active.FireBallSkill;
 import game.skill.base.ActiveSkill;
 import game.skill.effect.SkillEffectManager;
 import game.skill.active.ExplosionSkill;
@@ -28,6 +29,7 @@ public class SkillManager {
         activeSkills.add(new MultiBallSkill(entityManager.getBalls(), skillEffectManager));
         activeSkills.add(new ExplosionSkill(entityManager.getBalls(), entityManager.getBricks(), skillEffectManager));
         activeSkills.add(new ShieldSkill(collisionSystem, entityManager.getShield()));
+        activeSkills.add(new FireBallSkill(entityManager.getBalls(), skillEffectManager));
     }
 
     public void update(float deltaTime) {

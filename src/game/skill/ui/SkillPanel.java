@@ -29,11 +29,25 @@ public class SkillPanel {
     public void rebuildIcons() {
         icons.clear();
         int x = startX;
+        int y = startY;
+        int count = 0;
+        int iconsPerRow = 3;
+
         for (ActiveSkill skill : skillManager.getActiveSkills()) {
-            icons.add(new SkillIcon(skill, x, startY, iconSize));
-            x += iconSize + spacing;
+            icons.add(new SkillIcon(skill, x, y, iconSize));
+
+            count++;
+            if (count % iconsPerRow == 0) {
+                // xuống dòng mới
+                x = startX;
+                y += iconSize + spacing;
+            } else {
+                // sang icon kế tiếp cùng hàng
+                x += iconSize + spacing;
+            }
         }
     }
+
 
     public void draw(Graphics2D g) {
         for (SkillIcon icon : icons) {
