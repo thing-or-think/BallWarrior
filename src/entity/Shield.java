@@ -9,6 +9,7 @@ public class Shield extends Entity {
 
     public Shield(float x, float y, int width, int height, float duration) {
         super(x, y, width, height);
+        setAlive(false);
         this.duration = duration;
         this.timer = 0f;
     }

@@ -14,18 +14,16 @@ public class ShieldSkill extends ActiveSkill {
 
     private CollisionSystem collisionSystem;
     private Shield shield;
-    private SkillEffectManager skillEffectManager;
 
     public ShieldSkill(CollisionSystem collisionSystem,
-                       SkillEffectManager skillEffectManager,
                        Shield shield) {
         super("SHIELD",
                 ResourceLoader.loadImage(path),
                 4.5f,
                 KeyEvent.VK_Q,
-                10);
+                10,
+                3f);
         this.collisionSystem = collisionSystem;
-        this.skillEffectManager = skillEffectManager;
         this.shield = shield;
     }
 
@@ -37,9 +35,18 @@ public class ShieldSkill extends ActiveSkill {
 
         shield.setAlive(true);
         collisionSystem.register(shield);
-        skillEffectManager.setShield(shield);
 
         System.out.println("Shield activated!");
         return true;
+    }
+
+    @Override
+    protected void onActivate() {
+        super.onActivate();
+    }
+
+    @Override
+    protected void onDeactivate() {
+        super.onDeactivate();
     }
 }

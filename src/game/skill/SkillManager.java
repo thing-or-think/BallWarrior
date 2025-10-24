@@ -27,7 +27,7 @@ public class SkillManager {
         activeSkills = new ArrayList<>();
         activeSkills.add(new MultiBallSkill(entityManager.getBalls(), skillEffectManager));
         activeSkills.add(new ExplosionSkill(entityManager.getBalls(), entityManager.getBricks(), skillEffectManager));
-        activeSkills.add(new ShieldSkill(collisionSystem, skillEffectManager, entityManager.getShield()));
+        activeSkills.add(new ShieldSkill(collisionSystem, entityManager.getShield()));
     }
 
     public void update(float deltaTime) {
