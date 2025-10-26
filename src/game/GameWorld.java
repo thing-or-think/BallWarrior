@@ -3,12 +3,11 @@ package game;
 import core.InputHandler;
 import data.SkinData;
 import entity.*;
+import entity.ball.Ball;
 import game.core.*;
 import game.collision.CollisionSystem;
 import game.skill.effect.SkillEffectManager;
 import game.skill.SkillManager;
-import game.ScoreSystem;
-import utils.Constants;
 
 import java.awt.*;
 

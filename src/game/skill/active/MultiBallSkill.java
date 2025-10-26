@@ -1,7 +1,7 @@
 package game.skill.active;
 
 import core.ResourceLoader;
-import entity.Ball;
+import entity.ball.Ball;
 import game.skill.base.ActiveSkill;
 import game.skill.effect.SkillEffectManager;
 import game.skill.effect.FireBallVisualEffect;

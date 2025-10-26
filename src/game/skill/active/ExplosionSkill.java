@@ -3,7 +3,7 @@ package game.skill.active;
 import core.ResourceLoader;
 import game.skill.effect.SkillEffectManager;
 import game.skill.base.ActiveSkill;
-import entity.Ball;
+import entity.ball.Ball;
 import entity.Brick;
 import utils.Vector2D;
 

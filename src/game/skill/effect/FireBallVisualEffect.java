@@ -1,11 +1,10 @@
 package game.skill.effect;
 
-import entity.Ball;
+import entity.ball.Ball;
 import utils.Vector2D;
 
 import java.awt.*;
 import java.util.LinkedList;
-import utils.Constants; // Giả định Constants có sẵn
 
 public class FireBallVisualEffect {
 

@@ -1,11 +1,8 @@
 package ui.scene;
 
 import core.InputHandler;
-import core.ResourceLoader;
 import core.SceneManager;
 import data.PlayerData;
-import entity.Ball;
-import entity.Paddle;
 import game.GameWorld;
 import game.skill.ui.SkillPanel;
 import ui.HUD;

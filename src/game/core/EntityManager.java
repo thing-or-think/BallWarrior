@@ -1,6 +1,7 @@
 package game.core;
 
 import entity.*;
+import entity.ball.Ball;
 import utils.Constants;
 
 import java.awt.*;

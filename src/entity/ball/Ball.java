@@ -1,13 +1,13 @@
-package entity;
+package entity.ball;
 
 import data.SkinData;
+import entity.Entity;
 import utils.Constants;
 import core.ResourceLoader;
 import utils.Vector2D;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 public class Ball extends Entity {
     public static BufferedImage equippedBallImage = null;

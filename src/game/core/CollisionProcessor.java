@@ -1,5 +1,6 @@
 package game.core;
 
+import entity.ball.Ball;
 import game.collision.CollisionResult;
 import game.collision.CollisionSystem;
 import entity.*;
