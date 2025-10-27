@@ -1,6 +1,6 @@
 package game.skill.effect;
 
-import entity.ball.Ball;
+import entity.Ball;
 import utils.Vector2D;
 
 import java.awt.*;

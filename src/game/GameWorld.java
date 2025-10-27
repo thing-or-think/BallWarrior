@@ -3,7 +3,7 @@ package game;
 import core.InputHandler;
 import data.SkinData;
 import entity.*;
-import entity.ball.Ball;
+import entity.Ball;
 import game.core.*;
 import game.collision.CollisionSystem;
 import game.skill.effect.SkillEffectManager;

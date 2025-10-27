@@ -1,7 +1,6 @@
-package entity.ball;
+package entity;
 
 import data.SkinData;
-import entity.Entity;
 import utils.Constants;
 import core.ResourceLoader;
 import utils.Vector2D;
