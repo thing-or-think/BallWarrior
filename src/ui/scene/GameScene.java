@@ -35,7 +35,12 @@ public class GameScene extends Scene {
     @Override
     protected void initUI() {
         setLayout(null);
-        gamePanel.setBounds(190, 50, Constants.GAME_PANEL_WIDTH, Constants.GAME_PANEL_HEIGHT);
+        gamePanel.setBounds(
+                (Constants.WINDOW_WIDTH - Constants.GAME_PANEL_WIDTH) / 2,
+                (Constants.WINDOW_HEIGHT - Constants.GAME_PANEL_HEIGHT) / 2,
+                Constants.GAME_PANEL_WIDTH,
+                Constants.GAME_PANEL_HEIGHT
+        );
         add(gamePanel);
     }
 

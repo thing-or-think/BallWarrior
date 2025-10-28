@@ -41,7 +41,7 @@ public class ShopScene extends Scene {
     public ShopScene(InputHandler input, PlayerData playerData) {
         super("ShopScene", input);
         this.playerData = playerData;
-        this.moneyLabel = new Label(null, 690, 10, new Font("Monospaced", Font.BOLD, 22), Color.YELLOW);
+        this.moneyLabel = new Label(null, Constants.WINDOW_WIDTH - 110, 10, new Font("Monospaced", Font.BOLD, 22), Color.YELLOW);
 
         this.buttonGroup = new ButtonGroup();
         AtomicInteger equippedSkinId = playerData.getEquipped().getBallIdRef();
@@ -79,19 +79,31 @@ public class ShopScene extends Scene {
     }
 
     private void initButtons() {
-        buttons.add(new IconButton("BACK",iconBack,20,0,50,50,() -> onBack.run()));
-        buttons.add(new IconButton("BALLS",iconBall,250,0,50,50,() -> handleBalls()));
-        buttons.add(new IconButton("PADDLES",iconPaddle,350,0,50,50,() -> handlePaddles()));
-        buttons.add(new IconButton("GACHA",iconGacha,450,0,50,50,() -> handleGacha()));
+        int buttonSize = 50;
+        int spacing = 100; // khoảng cách giữa các nút
+        int numButtons = 4;
+
+        // Tính toạ độ X bắt đầu sao cho dãy nút nằm giữa cửa sổ
+        int totalWidth = numButtons * buttonSize + (numButtons - 1) * spacing;
+        int startX = (Constants.WINDOW_WIDTH - totalWidth) / 2 + 50;
+        int y = 0;
+
+        buttons.add(new IconButton("BACK", iconBack, 20, y, buttonSize, buttonSize, () -> onBack.run()));
+        buttons.add(new IconButton("BALLS", iconBall, startX, y, buttonSize, buttonSize, this::handleBalls));
+        buttons.add(new IconButton("PADDLES", iconPaddle, startX + spacing + buttonSize, y, buttonSize, buttonSize, this::handlePaddles));
+        buttons.add(new IconButton("GACHA", iconGacha, startX + 2 * (spacing + buttonSize), y, buttonSize, buttonSize, this::handleGacha));
+
         for (Button button : buttons) {
             if (button.getText().equals("BACK")) {
-                button.setColor(new Color(0,0,0,0));
+                button.setColor(new Color(0, 0, 0, 0));
                 continue;
             }
             button.setColor(new Color(255, 255, 0, 100));
             buttonGroup.add(button);
             ((IconButton) button).setButtonGroup(buttonGroup);
         }
+
+        // Mặc định chọn "BALLS"
         buttons.get(1).setClicked(true);
     }
 
