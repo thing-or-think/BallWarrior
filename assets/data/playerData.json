@@ -1,8 +1,8 @@
 {
-  "coins": 17650,
+  "coins": 6650,
   "equipped": {
     "ballId": 8,
-    "paddleId": 23
+    "paddleId": 24
   },
   "inventory": {
     "items": [
@@ -192,7 +192,7 @@
         "name": "Basic Green",
         "rarity": "COMMON",
         "price": 150,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#008000"

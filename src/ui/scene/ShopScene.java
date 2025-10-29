@@ -34,7 +34,7 @@ public class ShopScene extends Scene {
     private final static BufferedImage iconBack = ResourceLoader.loadImage("assets/images/Xbutton.png");
     private final static BufferedImage iconBall = ResourceLoader.loadImage("assets/images/iconBall.png");
     private final static BufferedImage iconPaddle = ResourceLoader.loadImage("assets/images/iconPaddle.png");
-    private final static BufferedImage iconGacha = ResourceLoader.loadImage("assets/images/Xbutton.png");
+    private final static BufferedImage iconGacha = ResourceLoader.loadImage("assets/images/iconChest.png");
 
     private PlayerData playerData;
 
@@ -65,7 +65,7 @@ public class ShopScene extends Scene {
         add(infoPanel);
         this.gridPanel.setBounds(0,55,Constants.WIDTH,Constants.HEIGHT -60);
         add(gridPanel);
-        this.gachaPanel.setBounds(0, 55, Constants.WIDTH, Constants.WIDTH - 60);
+        this.gachaPanel.setBounds(0, 55, Constants.WIDTH, Constants.HEIGHT - 60);
         add(gachaPanel);
 
         initUI();
@@ -123,9 +123,17 @@ public class ShopScene extends Scene {
                 break;
         }
     }
+    private void drawTitle(Graphics2D g2) {
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Serif", Font.BOLD, 36));
+        g2.drawString(convert(), 20, 110);
+    }
 
     @Override
     public void render(Graphics2D g2) {
+        BufferedImage bar = ResourceLoader.loadImage("assets/images/Bg.png");
+        g2.drawImage(bar,0,0,getWidth(),getHeight(),null);
+        drawTitle(g2);
         for (Button button : buttons) {
             button.draw(g2);
         }
@@ -169,5 +177,11 @@ public class ShopScene extends Scene {
 
     public void setOnBack(Runnable onBack) {
         this.onBack = onBack;
+    }
+
+    private String convert() {
+        if(currentTab == Tab.BALLS) return "BALLS";
+        else if (currentTab == Tab.PADDLES) return "PADDLES";
+        return "GACHA";
     }
 }

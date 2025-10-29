@@ -81,15 +81,15 @@ public class SkinButton extends Button {
         if (!Color.WHITE.equals(color)) {
             g2.setColor(color);
             if (skinData.getType().equals("ball")) {
-                g2.fillOval(x + width / 4, y + height / 4 - 10, width / 2, height / 2);
+                g2.fillOval(x + width / 4, y + height / 4 - height/10, width / 2, height / 2);
             } else {
-                g2.fillRect(x + width/2 - 30, y + height/2 - 10, 60, 20);  // <-- Vẽ paddle (hình chữ nhật)
+                g2.fillRect(x + width/2 - 3*width/8, y + height/2 - height/7, 3*width/4, height/5);  // <-- Vẽ paddle (hình chữ nhật)
             }
         } else if (icon != null) {
             if (skinData.getType().equals("ball")) {
-                g2.drawImage(icon, x + width / 4, y + height / 4 - 10, width / 2, height / 2, null);
+                g2.drawImage(icon, x + width / 4, y + height / 4 - height/10, width / 2, height / 2, null);
             } else {
-                g2.drawImage(icon, x + 10, y + height/2 - 10, width - 20, 20, null);  // <-- Vẽ paddle từ ảnh
+                g2.drawImage(icon, x+width/2-3*width/8, y+height/2-height/10, 3*width/4, height/5, null);  // <-- Vẽ paddle từ ảnh
 
             }
         }
