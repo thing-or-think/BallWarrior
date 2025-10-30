@@ -1,5 +1,5 @@
 {
-  "coins": 6650,
+  "coins": 650,
   "equipped": {
     "ballId": 8,
     "paddleId": 24
@@ -60,7 +60,7 @@
         "name": "Basic Orange",
         "rarity": "RARE",
         "price": 100,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#FFA500"
@@ -96,7 +96,7 @@
         "name": "Basic Pink",
         "rarity": "RARE",
         "price": 500,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#FFC0CB"

@@ -2,9 +2,12 @@ package ui.panel;
 
 import core.InputHandler;
 import core.ResourceLoader;
+import core.SceneManager;
 import data.SkinData;
+import ui.base.Scene;
 import ui.button.BuyButton;
 import ui.button.SkinButton;
+import ui.scene.OwnedScene;
 import utils.Constants;
 
 import javax.swing.*;
@@ -24,10 +27,12 @@ public class GachaPanel extends JPanel {
     private final List<SkinData> items;
     private final InputHandler input;
     private final AtomicInteger coins;
+    private OwnedScene ownedScene;
+    private SceneManager sceneManager;
 
     private SkinData awardedSkin;
     private final Random rand = new Random();
-    private final int COST = 1000;
+    private final int COST = 0; //1000
     private BuyButton spinButton;
 
     // Assets Animation
@@ -48,10 +53,12 @@ public class GachaPanel extends JPanel {
 
     public GachaPanel(InputHandler input,
                       AtomicInteger coins,
-                      List<SkinData> items) {
+                      List<SkinData> items,
+                      SceneManager sceneManager) {
         this.input = input;
         this.items = items;
         this.coins = coins;
+        this.sceneManager = sceneManager;
         setOpaque(false);
         setDoubleBuffered(true);
         initUI();
@@ -136,7 +143,15 @@ public class GachaPanel extends JPanel {
                 reelTimer.stop();
                 currentState = State.IDLE;
                 offset = 0;
-                System.out.println("✅ Quay xong! Skin: " + awardedSkin.getName());
+                ownedScene.setOwnedAwardedSkin(awardedSkin);
+                if (awardedSkin.isBought()) {
+                    System.out.println("Trung Skin ... Phai Chiuuuu");
+                    ownedScene.setResultMessage("Bạn đã sở hữu skin này");
+                } else {
+                    System.out.println("Bạn đã nhận được: " + awardedSkin.getName());
+                    ownedScene.setResultMessage("Chúc mừng bạn đã nhận được: "+awardedSkin.getName());
+                }
+                sceneManager.gotoOwned();
                 repaint();
                 return;
             }
@@ -178,7 +193,7 @@ public class GachaPanel extends JPanel {
 
         switch (currentState) {
             case IDLE:
-                if (true) { // sau thay true = awardedSkin == null
+                if (true) {
                     int chestWidth = 300, chestHeight = 300;
                     int x = getWidth() / 2 - chestWidth / 2;
                     int y = getHeight() / 2 - chestHeight / 2;
@@ -241,5 +256,9 @@ public class GachaPanel extends JPanel {
         g2.setColor(new Color(255, 255, 255, 120));
         g2.setStroke(new BasicStroke(4));
         g2.drawRoundRect(centerX - SKIN_UNIT / 2, drawY - SKIN_SIZE / 2 - 10, SKIN_UNIT, SKIN_SIZE + 20, 15, 15);
+    }
+
+    public void setOwnedScene(OwnedScene ownedScene) {
+        this.ownedScene = ownedScene;
     }
 }

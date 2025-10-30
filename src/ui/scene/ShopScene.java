@@ -2,6 +2,7 @@ package ui.scene;
 
 import core.InputHandler;
 import core.ResourceLoader;
+import core.SceneManager;
 import data.PlayerData;
 import ui.panel.GachaPanel;
 import ui.panel.GridPanel;
@@ -28,6 +29,8 @@ public class ShopScene extends Scene {
     private GridPanel gridPanel;
     private InfoPanel infoPanel;
     private GachaPanel gachaPanel;
+    private OwnedScene ownedScene;
+    private SceneManager sceneManager;
 
     private Tab currentTab = Tab.BALLS;
 
@@ -38,9 +41,14 @@ public class ShopScene extends Scene {
 
     private PlayerData playerData;
 
-    public ShopScene(InputHandler input, PlayerData playerData) {
+    public ShopScene(InputHandler input,
+                     PlayerData playerData,
+                     OwnedScene ownedScene,
+                     SceneManager sceneManager) {
         super("ShopScene", input);
         this.playerData = playerData;
+        this.ownedScene = ownedScene;
+        this.sceneManager = sceneManager;
         this.moneyLabel = new Label(null, 690, 10, new Font("Monospaced", Font.BOLD, 22), Color.YELLOW);
 
         this.buttonGroup = new ButtonGroup();
@@ -57,8 +65,8 @@ public class ShopScene extends Scene {
                 infoPanel
         );
 
-        this.gachaPanel = new GachaPanel(input, playerData.getCoins(), playerData.getInventory().getItems());
-
+        this.gachaPanel = new GachaPanel(input, playerData.getCoins(), playerData.getInventory().getItems(),this.sceneManager);
+        this.gachaPanel.setOwnedScene(ownedScene);
         setLayout(null);
 
         this.infoPanel.setBounds(Constants.WIDTH / 2, 55, 400, Constants.HEIGHT - 60);
