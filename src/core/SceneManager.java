@@ -43,7 +43,7 @@ public class SceneManager {
         shopScene.setOnBack(() -> setScene(menuScene));
         gameOverScene = new GameOverScene(input, this::goToMenu);
 
-        // 3️⃣ Bắt đầu từ menu
+        // Bắt đầu từ menu
         setScene(menuScene);
     }
 
@@ -64,22 +64,16 @@ public class SceneManager {
         return currentScene;
     }
 
-    public void goToMenu() {
-        setScene(menuScene);
-    }
+    public void goToMenu() { setScene(menuScene); }
 
     public void goToGame() {
         gameScene.forceUpdateGameAssets();
         setScene(gameScene);
     }
 
-    public void goToShop() {
-        setScene(shopScene);
-    }
+    public void goToShop() { setScene(shopScene); }
 
-    public void gotoOwned() {
-        setScene(ownedScene);
-    }
+    public void gotoOwned() { setScene(ownedScene); }
 
     public void goToPause() { setScene(pauseScene); }
 

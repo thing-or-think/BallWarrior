@@ -249,7 +249,7 @@ public class GachaPanel extends JPanel {
                     SKIN_SIZE,
                     skinData
             );
-            tempButton.draw(g2);
+            tempButton.simpleDraw(g2);
         }
 
         // Vẽ marker chính giữa

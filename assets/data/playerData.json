@@ -1,7 +1,7 @@
 {
-  "coins": 650,
+  "coins": 65000,
   "equipped": {
-    "ballId": 8,
+    "ballId": 10,
     "paddleId": 24
   },
   "inventory": {
@@ -48,7 +48,7 @@
         "name": "Basic Yellow",
         "rarity": "COMMON",
         "price": 100,
-        "isBought": true,
+        "isBought": false,
         "display": {
           "type": "color",
           "value": "#FFFF00"
@@ -72,7 +72,7 @@
         "name": "Basic Black",
         "rarity": "RARE",
         "price": 100,
-        "isBought": true,
+        "isBought": false,
         "display": {
           "type": "color",
           "value": "#000000"
@@ -96,7 +96,7 @@
         "name": "Basic Pink",
         "rarity": "RARE",
         "price": 500,
-        "isBought": true,
+        "isBought": false,
         "display": {
           "type": "color",
           "value": "#FFC0CB"
@@ -108,7 +108,7 @@
         "name": "Fire Orb",
         "rarity": "EPIC",
         "price": 1000,
-        "isBought": true,
+        "isBought": false,
         "display": {
           "type": "image",
           "value": "assets/images/Balls/ball.png"
@@ -204,7 +204,7 @@
         "name": "Basic Yellow",
         "rarity": "COMMON",
         "price": 150,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#FFFF00"
@@ -312,7 +312,7 @@
         "name": "Ass Paddle",
         "rarity": "LEGENDARY",
         "price": 2500,
-        "isBought": true,
+        "isBought": false,
         "display": {
           "type": "image",
           "value": "assets/images/Paddles/ass.png"

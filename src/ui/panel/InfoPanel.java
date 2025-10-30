@@ -71,7 +71,7 @@ public class InfoPanel extends JPanel {
         label.draw(g2);
         if ("image".equals(skinData.getDisplay().getType())) {
             if ("ball".equals(skinData.getType())) {
-                g2.drawImage(icon, getWidth() / 2 - 100, 120, 200, 200, null);
+                g2.drawImage(icon, getWidth() / 2 - 80, 150, 160, 160, null);
             } else {
                 g2.drawImage(icon, getWidth() / 2 - 100, 200, 200, 50, null);
             }

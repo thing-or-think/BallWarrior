@@ -65,15 +65,16 @@ public class ShopScene extends Scene {
                 infoPanel
         );
 
-        this.gachaPanel = new GachaPanel(input, playerData.getCoins(), playerData.getInventory().getItems(),this.sceneManager);
+        this.gachaPanel = new GachaPanel(input, playerData.getCoins(),
+                playerData.getInventory().getItems(),this.sceneManager);
         this.gachaPanel.setOwnedScene(ownedScene);
         setLayout(null);
 
-        this.infoPanel.setBounds(Constants.WIDTH / 2, 55, 400, Constants.HEIGHT - 60);
+        this.infoPanel.setBounds(Constants.WIDTH / 2, 55, 400, Constants.HEIGHT - 55);
         add(infoPanel);
-        this.gridPanel.setBounds(0,55,Constants.WIDTH,Constants.HEIGHT -60);
+        this.gridPanel.setBounds(0,55,Constants.WIDTH,Constants.HEIGHT -55);
         add(gridPanel);
-        this.gachaPanel.setBounds(0, 55, Constants.WIDTH, Constants.HEIGHT - 60);
+        this.gachaPanel.setBounds(0, 55, Constants.WIDTH, Constants.HEIGHT - 55);
         add(gachaPanel);
 
         initUI();

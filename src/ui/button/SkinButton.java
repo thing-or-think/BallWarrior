@@ -67,13 +67,7 @@ public class SkinButton extends Button {
             case LEGENDARY -> LEGENDARY_BG;
         };
     }
-
-    @Override
-    public void draw(Graphics2D g2) {
-        if (skinData == null) return;
-
-        isEquipped = (equippedSkinId != null && skinData.getId() == equippedSkinId.get());
-
+    public void simpleDraw(Graphics2D g2) {
         // Nền theo độ hiếm
         g2.drawImage(getBackgroundByRarity(), x, y, width, height, null);
 
@@ -93,6 +87,13 @@ public class SkinButton extends Button {
 
             }
         }
+    }
+
+    @Override
+    public void draw(Graphics2D g2) {
+        if (skinData == null) return;
+        isEquipped = (equippedSkinId != null && skinData.getId() == equippedSkinId.get());
+        simpleDraw(g2);
 
         // Nếu chưa mua
         if (!skinData.isBought()) {
