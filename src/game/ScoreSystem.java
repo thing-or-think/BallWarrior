@@ -35,6 +35,10 @@ public class ScoreSystem {
         combo = 1f;
     }
 
+    public float getCombo() {
+        return combo;
+    }
+
     public void addMana(int amount) {
         this.mana += amount;
     }

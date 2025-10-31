@@ -49,7 +49,21 @@ public class CollisionProcessor {
         Entity entity = result.getEntity();
 
         if (entity instanceof Brick brick) {
-            if (collisionSystem.resolveCollision(ball, result)) {
+            // 1. Xác định gạch có phải là Bedrock không
+            // Dùng getType() == Brick.Type.BEDROCK
+            boolean isBedrock = brick.getType() == Brick.Type.BEDROCK;
+
+            // 2. Fire Ball chỉ xuyên phá nếu nó đang active VÀ gạch KHÔNG phải là Bedrock
+            boolean shouldPierce = ball.isFireBall() && !isBedrock;
+
+            if (shouldPierce) {
+                // --- XỬ LÝ XUYÊN PHÁ (Fire Ball vs Gạch thường) ---
+
+                // Gây sát thương tối đa, đảm bảo gạch phá hủy được sẽ vỡ ngay lập tức.
+                // Hàm hit() trong Brick.java đã tự return nếu là Bedrock, nên an toàn.
+                brick.hit(brick.getMaxHealth());
+
+                // Cập nhật điểm và xóa gạch nếu bị phá hủy
                 if (brick.isDestroyed()) {
                     // spawn orb via OrbSpawner
                     ManaOrb orb = orbSpawner.trySpawn(brick);
@@ -58,8 +72,23 @@ public class CollisionProcessor {
                     }
                     // score + combo
                     scoreSystem.addScore(brick.getScoreValue());
-                    scoreSystem.increaseCombo(0.5f);
+                    scoreSystem.increaseCombo(0.25f);
                     collisionSystem.unregister(brick);
+                }
+                // KHÔNG gọi resolveCollision để bóng xuyên qua.
+            } else {
+                if (collisionSystem.resolveCollision(ball, result)) {
+                    if (brick.isDestroyed()) {
+                        // spawn orb via OrbSpawner
+                        ManaOrb orb = orbSpawner.trySpawn(brick);
+                        if (orb != null) {
+                            entities.addManaOrb(orb);
+                        }
+                        // score + combo
+                        scoreSystem.addScore(brick.getScoreValue());
+                        scoreSystem.increaseCombo(0.25f);
+                        collisionSystem.unregister(brick);
+                    }
                 }
             }
         } else if (entity instanceof Shield || entity instanceof Paddle) {
