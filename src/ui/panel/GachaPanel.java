@@ -107,10 +107,6 @@ public class GachaPanel extends JPanel {
         coins.set(coins.get() - COST);
         awardedSkin = openGacha();
 
-        if (!awardedSkin.isBought()) {
-            awardedSkin.setBought(true); // Cập nhật Model
-        }
-
         // 2. Bắt đầu Animation
         generateReel(awardedSkin);
         currentState = State.CHEST_OPENNING;
@@ -131,7 +127,7 @@ public class GachaPanel extends JPanel {
         currentState = State.SPINNING;
         offset = 0;
 
-        final double startSpeed = 80.0;
+        final double startSpeed = 90.0;
         final double totalDistance = 3.0 * SKIN_UNIT * REEL_SKIN_COUNT - 50;
         final int totalFrames = (int) Math.round(2.0 * totalDistance / startSpeed);
         final double acceleration = - startSpeed / totalFrames;
@@ -149,8 +145,9 @@ public class GachaPanel extends JPanel {
                     System.out.println("Trung Skin ... Phai Chiuuuu");
                     ownedScene.setResultMessage("Bạn đã sở hữu skin này");
                 } else {
+                    awardedSkin.setBought(true);
                     System.out.println("Bạn đã nhận được: " + awardedSkin.getName());
-                    ownedScene.setResultMessage("Chúc mừng bạn đã nhận được: "+awardedSkin.getName());
+                    ownedScene.setResultMessage("New SKin : "+awardedSkin.getName());
                 }
 
                 AudioService.playSound("assets/sounds/Ownedscene.wav");
