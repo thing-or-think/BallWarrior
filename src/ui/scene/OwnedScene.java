@@ -17,7 +17,6 @@ public class OwnedScene extends Scene {
     private SkinData awardedSkin;
 
     private final int SKIN_SIZE = 150;
-    private SkinButton awardedSkinButton;
 
     public OwnedScene(InputHandler input, SceneManager sceneManager) {
         super("OwnedScene", input);
@@ -27,9 +26,8 @@ public class OwnedScene extends Scene {
 
     @Override
     public void initUI() {
-        this.background = new ImageIcon("assets/images/ownedscene.gif");
+        this.background = new ImageIcon("assets/images/Bg/ownedscene.gif");
         this.resultMessage = new Label("...", 200, 500, new Font("Monospaced", Font.BOLD, 30), Color.WHITE);
-        this.awardedSkinButton = new SkinButton(0, 0, SKIN_SIZE, SKIN_SIZE, null);
     }
 
     @Override
@@ -53,8 +51,7 @@ public class OwnedScene extends Scene {
             int x = getWidth() / 2 - SKIN_SIZE / 2;
             int y = getHeight() / 2 - SKIN_SIZE / 2;
 
-            awardedSkinButton.setBound(new Rectangle(x, y, SKIN_SIZE, SKIN_SIZE));
-            awardedSkinButton.simpleDraw(g2);
+            SkinButton.simpleDraw(g2,awardedSkin,x,y,SKIN_SIZE,SKIN_SIZE);
 
             g2.setColor(Color.WHITE);
             g2.setFont(new Font("Monospaced", Font.BOLD, 35));
@@ -67,10 +64,6 @@ public class OwnedScene extends Scene {
     /** Setter mới, nhận SkinData */
     public void setOwnedAwardedSkin(SkinData awardedSkin) {
         this.awardedSkin = awardedSkin;
-        // Cập nhật Renderer để vẽ skin mới
-        if (this.awardedSkinButton != null) {
-            this.awardedSkinButton = new SkinButton(0, 0, SKIN_SIZE, SKIN_SIZE, awardedSkin);
-        }
     }
 
     /** Setter giữ nguyên */

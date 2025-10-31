@@ -3,6 +3,7 @@ package ui.button;
 import core.ResourceLoader;
 import data.SkinData;
 import ui.base.Button;
+import entity.Rarity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,11 +14,12 @@ public class SkinButton extends Button {
     private final SkinData skinData;
     private static AtomicInteger equippedSkinId;
 
-    private static final BufferedImage COMMON_BG = ResourceLoader.loadImage("assets/images/CommonBg.jpg");
-    private static final BufferedImage RARE_BG = ResourceLoader.loadImage("assets/images/RareBg.jpg");
-    private static final BufferedImage EPIC_BG = ResourceLoader.loadImage("assets/images/EpicBg.jpg");
-    private static final BufferedImage LEGENDARY_BG = ResourceLoader.loadImage("assets/images/LegendaryBg.jpg");
+    private static final BufferedImage COMMON_BG = ResourceLoader.loadImage("assets/images/Bg/CommonBg.jpg");
+    private static final BufferedImage RARE_BG = ResourceLoader.loadImage("assets/images/Bg/RareBg.jpg");
+    private static final BufferedImage EPIC_BG = ResourceLoader.loadImage("assets/images/Bg/EpicBg.jpg");
+    private static final BufferedImage LEGENDARY_BG = ResourceLoader.loadImage("assets/images/Bg/LegendaryBg.jpg");
 
+    // Constructors
     public SkinButton(int x, int y, int width, int height, SkinData skinData) {
         super("SkinButton", null, x, y, width, height);
         this.skinData = skinData;
@@ -39,27 +41,19 @@ public class SkinButton extends Button {
 
     private void loadDisplay() {
         if (skinData == null || skinData.getDisplay() == null) return;
-
         String type = skinData.getDisplay().getType();
         String value = skinData.getDisplay().getValue();
-
         if ("color".equalsIgnoreCase(type)) {
             try {
                 this.color = Color.decode(value);
-
-                if (color == null) {
-                    color = Color.WHITE;
-                }
-
-            } catch (Exception e) {
-                this.color = Color.WHITE;
-            }
+            } catch (Exception e) { this.color = Color.WHITE; }
         } else if ("image".equalsIgnoreCase(type)) {
             this.icon = ResourceLoader.loadImage(value);
         }
     }
 
-    private BufferedImage getBackgroundByRarity() {
+    private static BufferedImage getBackgroundByRarity(SkinData skinData) {
+        if (skinData == null) return null;
         return switch (skinData.getRarity()) {
             case COMMON -> COMMON_BG;
             case RARE -> RARE_BG;
@@ -67,24 +61,42 @@ public class SkinButton extends Button {
             case LEGENDARY -> LEGENDARY_BG;
         };
     }
-    public void simpleDraw(Graphics2D g2) {
-        // Nền theo độ hiếm
-        g2.drawImage(getBackgroundByRarity(), x, y, width, height, null);
 
-        // Vẽ phần hiển thị skin (đã được loadDisplay() chuẩn bị sẵn)
-        if (!Color.WHITE.equals(color)) {
+    private static Color parseColorValue(String value) {
+        if (value == null) return Color.WHITE;
+        try {
+            return Color.decode(value);
+        } catch (Exception e) {
+            return Color.WHITE;
+        }
+    }
+
+    public static void simpleDraw(Graphics2D g2, SkinData skinData, int x, int y, int width, int height) {
+        if (skinData == null) return;
+        // rarity Bg
+        g2.drawImage(getBackgroundByRarity(skinData), x, y, width, height, null);
+
+        String displayType = skinData.getDisplay().getType();
+        String displayValue = skinData.getDisplay().getValue();
+
+        if ("color".equalsIgnoreCase(displayType)) {    //color
+            Color color = parseColorValue(displayValue);
             g2.setColor(color);
-            if (skinData.getType().equals("ball")) {
+
+            if ("ball".equalsIgnoreCase(skinData.getType())) {
                 g2.fillOval(x + width / 4, y + height / 4 - height/10, width / 2, height / 2);
             } else {
-                g2.fillRect(x + width/2 - 3*width/8, y + height/2 - height/7, 3*width/4, height/5);  // <-- Vẽ paddle (hình chữ nhật)
+                g2.fillRect(x + width/2 - 3*width/8, y + height/2 - height/7, 3*width/4, height/5);
             }
-        } else if (icon != null) {
-            if (skinData.getType().equals("ball")) {
-                g2.drawImage(icon, x + width / 4, y + height / 4 - height/10, width / 2, height / 2, null);
-            } else {
-                g2.drawImage(icon, x+width/2-3*width/8, y+height/2-height/10, 3*width/4, height/5, null);  // <-- Vẽ paddle từ ảnh
-
+        }
+        else if ("image".equalsIgnoreCase(displayType)) {   //img
+            BufferedImage icon = ResourceLoader.loadImage(displayValue);
+            if (icon != null) {
+                if ("ball".equalsIgnoreCase(skinData.getType())) {
+                    g2.drawImage(icon, x + width / 4, y + height / 4 - height/10, width / 2, height / 2, null);
+                } else {
+                    g2.drawImage(icon, x+width/2-3*width/8, y+height/2-height/10, 3*width/4, height/5, null);
+                }
             }
         }
     }
@@ -93,7 +105,8 @@ public class SkinButton extends Button {
     public void draw(Graphics2D g2) {
         if (skinData == null) return;
         isEquipped = (equippedSkinId != null && skinData.getId() == equippedSkinId.get());
-        simpleDraw(g2);
+
+        simpleDraw(g2, skinData, x, y, width, height);
 
         // Nếu chưa mua
         if (!skinData.isBought()) {

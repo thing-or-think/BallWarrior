@@ -1,5 +1,6 @@
 package ui.panel;
 
+import core.AudioService;
 import core.InputHandler;
 import core.ResourceLoader;
 import core.SceneManager;
@@ -125,12 +126,12 @@ public class GachaPanel extends JPanel {
         chestTimer.setRepeats(false);
         chestTimer.start();
     }
-
+    //Run Reel
     private void startReelAnimation() {
         currentState = State.SPINNING;
         offset = 0;
 
-        final double startSpeed = 100.0;
+        final double startSpeed = 80.0;
         final double totalDistance = 3.0 * SKIN_UNIT * REEL_SKIN_COUNT - 50;
         final int totalFrames = (int) Math.round(2.0 * totalDistance / startSpeed);
         final double acceleration = - startSpeed / totalFrames;
@@ -151,6 +152,9 @@ public class GachaPanel extends JPanel {
                     System.out.println("Bạn đã nhận được: " + awardedSkin.getName());
                     ownedScene.setResultMessage("Chúc mừng bạn đã nhận được: "+awardedSkin.getName());
                 }
+
+                AudioService.playSound("assets/sounds/Ownedscene.wav");
+                //run reel xong chuyen sang ownedscene
                 sceneManager.gotoOwned();
                 repaint();
                 return;
@@ -175,6 +179,7 @@ public class GachaPanel extends JPanel {
             spinButton.setHovered(spinButton.contains(mx, my));
             if (spinButton.isHovered() && input.consumeClick()) {
                 spinButton.onClick();
+                AudioService.playSound("assets/sounds/CSGOopencase.wav");
             }
         } else {
             spinButton.setHovered(false);
@@ -241,15 +246,10 @@ public class GachaPanel extends JPanel {
             if (skinX < -SKIN_UNIT || skinX > panelWidth + SKIN_UNIT) continue;
 
             SkinData skinData = skinsToDraw.get(i);
-
-            SkinButton tempButton = new SkinButton(
-                    (int) (skinX - SKIN_SIZE / 2.0),
+            SkinButton.simpleDraw(g2,skinData,(int) (skinX - SKIN_SIZE / 2.0),
                     drawY - SKIN_SIZE / 2,
                     SKIN_SIZE,
-                    SKIN_SIZE,
-                    skinData
-            );
-            tempButton.simpleDraw(g2);
+                    SKIN_SIZE);
         }
 
         // Vẽ marker chính giữa

@@ -48,7 +48,7 @@
         "name": "Basic Yellow",
         "rarity": "COMMON",
         "price": 100,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#FFFF00"
@@ -72,7 +72,7 @@
         "name": "Basic Black",
         "rarity": "RARE",
         "price": 100,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#000000"
@@ -96,7 +96,7 @@
         "name": "Basic Pink",
         "rarity": "RARE",
         "price": 500,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#FFC0CB"
@@ -108,7 +108,7 @@
         "name": "Fire Orb",
         "rarity": "EPIC",
         "price": 1000,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "image",
           "value": "assets/images/Balls/ball.png"

@@ -140,7 +140,7 @@ public class ShopScene extends Scene {
 
     @Override
     public void render(Graphics2D g2) {
-        BufferedImage bar = ResourceLoader.loadImage("assets/images/Bg.png");
+        BufferedImage bar = ResourceLoader.loadImage("assets/images/Bg/Bg.png");
         g2.drawImage(bar,0,0,getWidth(),getHeight(),null);
         drawTitle(g2);
         for (Button button : buttons) {
