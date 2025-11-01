@@ -87,14 +87,15 @@ public class Brick extends Entity {
         g.drawRect((int) position.x, (int) position.y, width, height);
     }
 
-    // hit có damage (skill bom, fireball, v.v.)
+
     public void hit(int damage) {
         if (type == Type.BEDROCK) return;
-
         health -= damage;
-        if (health < 0) {
+
+        if (health <= 0) {
             setAlive(false);
         }
+        // --- KẾT THÚC SỬA LỖI ---
 
         // Tính mức độ nứt dựa trên tỉ lệ máu còn lại
         float percent = 1f - ((float) health / initialHealth);

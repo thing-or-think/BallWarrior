@@ -2,6 +2,7 @@ package ui.scene;
 
 import core.InputHandler;
 import core.SceneManager;
+import data.GameData;
 import data.PlayerData;
 import game.GameWorld;
 import game.skill.ui.SkillPanel;
@@ -9,6 +10,7 @@ import ui.HUD;
 import ui.base.Scene;
 import ui.panel.GamePanel;
 import utils.Constants;
+import ui.LeaderboardDisplay;
 
 import java.awt.*;
 
@@ -19,15 +21,23 @@ public class GameScene extends Scene {
     private final PlayerData playerData;
     private final SkillPanel skillPanel;
     private final GamePanel gamePanel;
+    private final LeaderboardDisplay leaderboardDisplay;
 
-    public GameScene(InputHandler input, SceneManager sceneManager, PlayerData playerData) {
+    private final GameData gameData;
+    private String currentLevelPath;
+    private boolean scoreSaved = false;
+
+    public GameScene(InputHandler input, SceneManager sceneManager, PlayerData playerData, GameData gameData) {
         super("Game", input);
         this.sceneManager = sceneManager;
-        world = new GameWorld(input);
-        hud = new HUD(world.getScoreSystem());
         this.playerData = playerData;
-        skillPanel = new SkillPanel(world.getSkillManager(), 20,  100);
-        gamePanel = new GamePanel(world);
+        this.gameData = gameData; // <-- LƯU THAM CHIẾU
+        this.world = new GameWorld(input);
+        this.hud = new HUD(world.getScoreSystem());
+        this.skillPanel = new SkillPanel(world.getSkillManager(), 20,  100);
+        this.gamePanel = new GamePanel(world);
+        this.leaderboardDisplay = new LeaderboardDisplay();
+
         setBackground(Color.decode("#212121"));
         initUI();
     }
@@ -44,6 +54,33 @@ public class GameScene extends Scene {
         add(gamePanel);
     }
 
+    /**
+     * [MỚI] Phương thức để bắt đầu/tải một màn chơi cụ thể
+     * @param levelPath Đường dẫn file level
+     */
+    public void startGame(String levelPath) {
+        this.currentLevelPath = levelPath;
+        this.scoreSaved = false;
+        world.resetAndLoadLevel(levelPath);
+
+        // <-- THÊM DÒNG NÀY -->
+        // Cập nhật Leaderboard UI với dữ liệu level mới
+        String levelName = levelPath.substring(levelPath.lastIndexOf('/') + 1);
+        leaderboardDisplay.updateData(levelPath, gameData, levelName);
+    }
+
+    // THÊM phương thức này
+    /**
+     * Lưu điểm số hiện tại vào Leaderboard
+     */
+    public void saveCurrentScore() {
+        if (scoreSaved) return; // Nếu đã lưu rồi thì bỏ qua
+
+        int finalScore = world.getScoreSystem().getScore();
+        sceneManager.updateLeaderboard(currentLevelPath, playerData.getPlayerName(), finalScore);
+        scoreSaved = true; // Đánh dấu đã lưu
+    }
+
     @Override
     protected void update() {
         if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_ESCAPE)) {
@@ -51,10 +88,29 @@ public class GameScene extends Scene {
             return;
         }
 
+        if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_TAB)) {
+            leaderboardDisplay.toggleVisibility();
+        }
+
+        // Nếu game đã kết thúc (thắng/thua) thì không update world nữa
+        if (world.isLevelWon() || world.isGameOver()) {
+            return;
+        }
+
         world.update(deltaTime);
 
+        // Kiểm tra THẮNG
+        if (world.isLevelWon()) {
+            saveCurrentScore(); // <-- LƯU ĐIỂM
+            sceneManager.goToWinScene();
+            return;
+        }
+
+        // Kiểm tra THUA
         if (world.isGameOver()) {
+            saveCurrentScore(); // <-- LƯU ĐIỂM
             sceneManager.goToGameOver();
+            return;
         }
     }
 
@@ -62,6 +118,7 @@ public class GameScene extends Scene {
     protected void render(Graphics2D g2) {
         hud.render(g2);
         skillPanel.draw(g2);
+        leaderboardDisplay.draw(g2);
     }
 
     public void forceUpdateGameAssets() {

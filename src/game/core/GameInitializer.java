@@ -12,6 +12,7 @@ import game.LevelData;
 import game.LevelManager;
 import utils.Constants;
 
+import java.util.ArrayList; // Thêm import này
 import java.util.List;
 
 /**
@@ -26,6 +27,9 @@ public class GameInitializer {
     private ScoreSystem scoreSystem;
     private OrbSpawner orbSpawner;
 
+    // Thêm LevelManager để GameWorld có thể truy cập
+    private LevelManager levelManager;
+
     public void initialize(InputHandler input) {
         // Score
         scoreSystem = new ScoreSystem();
@@ -38,16 +42,15 @@ public class GameInitializer {
         entityManager.setPaddle(paddle);
 
         // Level
-        LevelManager levelManager = new LevelManager();
-        levelManager.load("assets/levels/level1.json");
-        LevelData level = levelManager.getCurrentLevel();
-        List<Brick> bricks = LevelBuilder.buildBricks(level);
+        levelManager = new LevelManager(); // Chỉ khởi tạo
+
+        List<Brick> bricks = new ArrayList<>(); // <-- TẠO DANH SÁCH RỖNG
         entityManager.setBricks(bricks);
 
         // Collision system
         collisionSystem = new CollisionSystem(paddle);
         collisionSystem.register(paddle);
-        for (Brick b : bricks) collisionSystem.register(b);
+
 
         // Skills
         skillEffectManager = new SkillEffectManager();
@@ -58,19 +61,23 @@ public class GameInitializer {
                 skillEffectManager,
                 entityManager
         );
-
         // Orb spawner (mặc định)
         orbSpawner = new DefaultOrbSpawner(0.3, 10);
-
         // initially spawn a ball
         entityManager.spawnNewBallAtPaddle();
     }
 
     /* ---------- getters to inject into GameWorld ---------- */
-    public EntityManager getEntityManager() { return entityManager; }
+    public EntityManager getEntityManager() { return entityManager;
+    }
     public CollisionSystem getCollisionSystem() { return collisionSystem; }
-    public SkillManager getSkillManager() { return skillManager; }
+    public SkillManager getSkillManager() { return skillManager;
+    }
     public SkillEffectManager getSkillEffectManager() { return skillEffectManager; }
-    public ScoreSystem getScoreSystem() { return scoreSystem; }
+    public ScoreSystem getScoreSystem() { return scoreSystem;
+    }
     public OrbSpawner getOrbSpawner() { return orbSpawner; }
+
+    // Thêm getter cho LevelManager
+    public LevelManager getLevelManager() { return levelManager; }
 }

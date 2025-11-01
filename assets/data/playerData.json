@@ -1,8 +1,8 @@
 {
   "coins": 17650,
   "equipped": {
-    "ballId": 8,
-    "paddleId": 23
+    "ballId": 11,
+    "paddleId": 24
   },
   "inventory": {
     "items": [

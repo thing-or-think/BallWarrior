@@ -50,7 +50,7 @@ public class PauseScene extends Scene {
                 Constants.WINDOW_WIDTH / 2,
                 startY + gap,
                 fm,
-                () -> sceneManager.goToMenu()
+                this::handleQuitToMenu
         ));
 
         // ====== Nút Setting ======
@@ -102,4 +102,13 @@ public class PauseScene extends Scene {
             button.draw(g2);
         }
     }
+
+    private void handleQuitToMenu() {
+        // Yêu cầu GameScene lưu điểm trước khi thoát
+        if (gameScene instanceof GameScene) {
+            ((GameScene) gameScene).saveCurrentScore();
+        }
+        sceneManager.goToMenu();
+    }
+
 }

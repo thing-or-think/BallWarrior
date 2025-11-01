@@ -15,23 +15,26 @@ public class MenuScene extends Scene {
 
     private final List<Button> buttons = new ArrayList<>();
 
-    public MenuScene(InputHandler input, Runnable onPlay, Runnable onShop, Runnable onInventory, Runnable onQuit) {
+    public MenuScene(InputHandler input, String currentPlayerName, Runnable onPlay, Runnable onShop, Runnable onChangePlayer, Runnable onInventory, Runnable onQuit) {
         super("Menu", input);
 
         Font font = new Font("Serif", Font.PLAIN, 32);
         FontMetrics fm = getFontMetrics(font);
 
-        String[] texts = {"PLAY", "SHOP", "INVENTORY", "QUIT"};
-        Runnable[] runnables = {onPlay, onShop, onInventory, onQuit};
+        String playText = "PLAY AS " + (currentPlayerName != null ? currentPlayerName.toUpperCase() : "PLAYER");
+
+        // Thêm "INVENTORY" vào danh sách
+        String[] texts = {playText, "CHANGE PLAYER", "SHOP", "INVENTORY", "QUIT"};
+        Runnable[] runnables = {onPlay, onChangePlayer, onShop, onInventory, onQuit};
+
         int startY = 350;
-        int spacing = 50;
+        int spacing = 45; // Giảm khoảng cách một chút để vừa 5 nút
 
         for (int i = 0; i < texts.length; i++) {
             buttons.add(new MenuButton(texts[i], Constants.WINDOW_WIDTH / 2, startY + i * spacing, fm, runnables[i]));
         }
 
         initUI();
-
     }
 
     // ==== IMPLEMENT ABSTRACT METHODS ========================================
