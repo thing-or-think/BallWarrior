@@ -8,6 +8,7 @@ import game.core.*;
 import game.collision.CollisionSystem;
 import game.skill.effect.SkillEffectManager;
 import game.skill.SkillManager;
+import game.SoundManager;
 
 import java.awt.*;
 
@@ -17,6 +18,7 @@ public class GameWorld {
     private final SkillManager skillManager;
     private final SkillEffectManager skillEffectManager;
     private final ScoreSystem scoreSystem;
+    private final SoundManager soundManager;
 
     public GameWorld(InputHandler input) {
         GameInitializer init = new GameInitializer();
@@ -27,9 +29,16 @@ public class GameWorld {
         this.skillManager = init.getSkillManager();
         this.skillEffectManager = init.getSkillEffectManager();
         this.scoreSystem = init.getScoreSystem();
+        this.soundManager = init.getSoundManager();
 
         // collision processor wired with orbSpawner
-        this.collisionProcessor = new CollisionProcessor(collisionSystem, init.getOrbSpawner(), entities, scoreSystem);
+        this.collisionProcessor = new CollisionProcessor(
+                collisionSystem,
+                init.getOrbSpawner(),
+                entities,
+                scoreSystem,
+                soundManager
+        );
     }
 
     public void update(float deltaTime) {

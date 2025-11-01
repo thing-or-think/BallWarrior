@@ -5,6 +5,7 @@ import game.collision.CollisionResult;
 import game.collision.CollisionSystem;
 import entity.*;
 import game.ScoreSystem;
+import game.SoundManager;
 
 import java.util.Iterator;
 import java.util.List;
@@ -18,15 +19,18 @@ public class CollisionProcessor {
     private final OrbSpawner orbSpawner;
     private final EntityManager entities;
     private final ScoreSystem scoreSystem;
+    private final SoundManager soundManager;
 
     public CollisionProcessor(CollisionSystem collisionSystem,
                               OrbSpawner orbSpawner,
                               EntityManager entities,
-                              ScoreSystem scoreSystem) {
+                              ScoreSystem scoreSystem,
+                              SoundManager soundManager) {
         this.collisionSystem = collisionSystem;
         this.orbSpawner = orbSpawner;
         this.entities = entities;
         this.scoreSystem = scoreSystem;
+        this.soundManager = soundManager;
     }
 
     /**
@@ -65,6 +69,9 @@ public class CollisionProcessor {
 
                 // Cập nhật điểm và xóa gạch nếu bị phá hủy
                 if (brick.isDestroyed()) {
+                    // PHÁT ÂM THANH: FIZZ (âm thanh xuyên phá/làm tan chảy)
+                    SoundManager.play(SoundManager.FIZZ);
+
                     // spawn orb via OrbSpawner
                     ManaOrb orb = orbSpawner.trySpawn(brick);
                     if (orb != null) {
@@ -78,6 +85,12 @@ public class CollisionProcessor {
                 // KHÔNG gọi resolveCollision để bóng xuyên qua.
             } else {
                 if (collisionSystem.resolveCollision(ball, result)) {
+                    // ⭐ PHÁT ÂM THANH: HIT_BRICK (Âm thanh va chạm)
+                    // Chỉ phát nếu gạch không phải Bedrock (Bedrock không phát tiếng nứt)
+                    if (!isBedrock) {
+                        SoundManager.play(SoundManager.HIT_BRICK);
+                    }
+
                     if (brick.isDestroyed()) {
                         // spawn orb via OrbSpawner
                         ManaOrb orb = orbSpawner.trySpawn(brick);

@@ -1,6 +1,7 @@
 package game.core;
 
 import core.InputHandler;
+import core.ResourceLoader;
 import entity.*;
 import game.collision.CollisionSystem;
 import game.skill.base.ActiveSkill;
@@ -10,6 +11,7 @@ import game.ScoreSystem;
 import game.LevelBuilder;
 import game.LevelData;
 import game.LevelManager;
+import game.SoundManager;
 import utils.Constants;
 
 import java.util.List;
@@ -25,8 +27,11 @@ public class GameInitializer {
     private SkillEffectManager skillEffectManager;
     private ScoreSystem scoreSystem;
     private OrbSpawner orbSpawner;
+    private SoundManager soundManager;
 
     public void initialize(InputHandler input) {
+        SoundManager.initialize();
+        this.soundManager = new SoundManager();
         // Score
         scoreSystem = new ScoreSystem();
         ActiveSkill.setScoreSystem(scoreSystem);
@@ -73,4 +78,5 @@ public class GameInitializer {
     public SkillEffectManager getSkillEffectManager() { return skillEffectManager; }
     public ScoreSystem getScoreSystem() { return scoreSystem; }
     public OrbSpawner getOrbSpawner() { return orbSpawner; }
+    public SoundManager getSoundManager() { return soundManager; }
 }

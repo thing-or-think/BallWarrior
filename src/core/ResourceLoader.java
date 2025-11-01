@@ -52,7 +52,7 @@ public class ResourceLoader {
         return img;
     }
 
-    // ⭐ PHƯƠNG THỨC TẢI VÀ CACHE ÂM THANH
+    // PHƯƠNG THỨC TẢI VÀ CACHE ÂM THANH
     public static Clip loadSound(String path) {
         if (soundCache.containsKey(path)) {
             return soundCache.get(path);
@@ -69,13 +69,13 @@ public class ResourceLoader {
             soundCache.put(path, clip);
             return clip;
         } catch (Exception e) {
-            System.err.println("❌ Lỗi tải âm thanh: " + path);
+            System.err.println(" Lỗi tải âm thanh: " + path);
             e.printStackTrace();
             return null;
         }
     }
 
-    // ⭐ PHƯƠNG THỨC CHƠI NHẠC NỀN (Tùy chọn)
+    // PHƯƠNG THỨC CHƠI NHẠC NỀN (Tùy chọn)
     private static Clip bgMusic;
 
     public static void playBackgroundMusic(String path) {
