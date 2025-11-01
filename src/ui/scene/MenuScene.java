@@ -27,8 +27,8 @@ public class MenuScene extends Scene {
         String[] texts = {playText, "CHANGE PLAYER", "SHOP", "INVENTORY", "QUIT"};
         Runnable[] runnables = {onPlay, onChangePlayer, onShop, onInventory, onQuit};
 
-        int startY = 350;
-        int spacing = 45; // Giảm khoảng cách một chút để vừa 5 nút
+        int startY = 380;
+        int spacing = 50; // Giảm khoảng cách một chút để vừa 5 nút
 
         for (int i = 0; i < texts.length; i++) {
             buttons.add(new MenuButton(texts[i], Constants.WINDOW_WIDTH / 2, startY + i * spacing, fm, runnables[i]));

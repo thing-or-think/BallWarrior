@@ -22,28 +22,37 @@ public class MenuButton extends Button {
 
     @Override
     public void draw(Graphics2D g) {
-        g.setFont(font);
+        FontMetrics fm;
+        int textWidth;
+        int drawX;
+        int drawY;
 
         if (hovered) {
+            // 1. Chỉ đổi font và màu, KHÔNG đổi text
             Font hoverFont = font.deriveFont(Font.PLAIN, 40f);
             g.setFont(hoverFont);
             g.setColor(HOVER_COLOR);
-            String decoratedText = "> " + text + " <";
 
-            int textWidth = g.getFontMetrics().stringWidth(decoratedText);
-            int drawX = (Constants.WINDOW_WIDTH - textWidth) / 2;
-            int drawY = bound.y + bound.height;
+            // 2. Dùng text y hệt như đã được truyền vào (vd: ">> Player 1 <<")
+            fm = g.getFontMetrics();
+            textWidth = fm.stringWidth(text);
+            drawX = (Constants.WINDOW_WIDTH - textWidth) / 2;
+            drawY = bound.y + fm.getAscent() + (bound.height - fm.getHeight()) / 2; // Căn giữa Y tốt hơn
 
-            g.drawString(decoratedText, drawX, drawY);
+            g.drawString(text, drawX, drawY);
         } else {
+            // 3. Vẽ trạng thái bình thường (không hover)
+            g.setFont(font);
             g.setColor(DEFAULT_COLOR);
 
-            int textWidth = g.getFontMetrics().stringWidth(text);
-            int drawX = (Constants.WINDOW_WIDTH - textWidth) / 2;
-            int drawY = bound.y + bound.height;
+            fm = g.getFontMetrics();
+            textWidth = fm.stringWidth(text);
+            drawX = (Constants.WINDOW_WIDTH - textWidth) / 2;
+            drawY = bound.y + fm.getAscent() + (bound.height - fm.getHeight()) / 2; // Căn giữa Y tốt hơn
 
             g.drawString(text, drawX, drawY);
         }
+
     }
 
     @Override

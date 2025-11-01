@@ -1,5 +1,6 @@
 package ui.scene;
 
+import data.LeaderboardEntry;
 import core.InputHandler;
 import core.ResourceLoader;
 import core.ResourceSaver;
@@ -27,17 +28,18 @@ public class PlayerSelectScene extends Scene {
     private final GameData gameData;
     private final List<Button> buttons = new ArrayList<>();
     private JTextField nameField;
+
     private String feedbackMessage = "";
     private Color feedbackColor = Color.RED;
+    private long feedbackTimer = 0L;
+    private static final long FEEDBACK_DURATION = 3000;
 
     private List<PlayerData> playerList;
     private int selectedPlayerIndex = -1;
 
     private PlayerData templateData;
 
-    // --- BIẾN MỚI ĐỂ SỬA LỖI ---
-    private Runnable pendingAction = null;
-    // ---
+    // BIẾN pendingAction ĐÃ BỊ XÓA
 
     public PlayerSelectScene(InputHandler input, SceneManager sceneManager, GameData gameData) {
         super("PlayerSelectScene", input);
@@ -49,11 +51,20 @@ public class PlayerSelectScene extends Scene {
             System.err.println("CRITICAL ERROR: Không thể tải playerData.json template!");
         }
 
+        // Gán chỉ số selected mặc định là người chơi hiện tại
+        String currentPlayerName = gameData.getCurrentPlayerName();
+        this.playerList = gameData.getAllPlayers();
+        for(int i = 0; i < playerList.size(); i++) {
+            if (playerList.get(i).getPlayerName().equals(currentPlayerName)) {
+                this.selectedPlayerIndex = i;
+                break;
+            }
+        }
+
         refreshPlayerList();
 
         initUI();
 
-        // Chỉ thêm KeyListener MỘT LẦN
         nameField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -67,7 +78,7 @@ public class PlayerSelectScene extends Scene {
     public void refreshPlayerList() {
         this.playerList = gameData.getAllPlayers();
         this.buttons.clear();
-        this.removeAll(); // Xóa các thành phần Swing cũ
+        this.removeAll();
 
         Font font = new Font("Serif", Font.PLAIN, 28);
         FontMetrics fm = getFontMetrics(font);
@@ -76,17 +87,21 @@ public class PlayerSelectScene extends Scene {
         for (int i = 0; i < playerList.size(); i++) {
             PlayerData player = playerList.get(i);
             String name = player.getPlayerName();
-            if (name.equals(gameData.getCurrentPlayerName())) {
+            final int index = i;
+
+            // Sửa 'name' TRƯỚC KHI tạo nút
+            if (i == selectedPlayerIndex) {
                 name = ">> " + name + " <<";
             }
 
-            final int index = i; // Biến final cho lambda
+            // Tạo nút VỚI TÊN ĐÃ ĐƯỢC SỬA ĐỔI
             MenuButton playerButton = new MenuButton(name, Constants.WINDOW_WIDTH / 2, yPos, fm, () -> {
                 selectedPlayerIndex = index;
-                refreshPlayerList(); // Gọi đệ quy vẫn an toàn vì nó nằm trong pendingAction
+                refreshPlayerList(); // <-- Sửa lỗi: Gọi trực tiếp
             });
 
-            if (i == selectedPlayerIndex) {
+            // In đậm cho người chơi ĐANG ĐĂNG NHẬP
+            if (player.getPlayerName().equals(gameData.getCurrentPlayerName())) {
                 playerButton.setFont(font.deriveFont(Font.BOLD, 32f));
             }
 
@@ -108,7 +123,6 @@ public class PlayerSelectScene extends Scene {
         backBtn.setActivity(sceneManager::goToMenu);
         buttons.add(backBtn);
 
-        // Thêm lại các thành phần UI
         initUI();
 
         this.revalidate();
@@ -153,13 +167,15 @@ public class PlayerSelectScene extends Scene {
 
         PlayerData newPlayer = new PlayerData(this.templateData);
         newPlayer.setPlayerName(newName);
-        newPlayer.getCoins().set(1000); // Set coin khởi điểm
+        newPlayer.getCoins().set(1000);
 
         gameData.getAllPlayers().add(newPlayer);
         ResourceSaver.saveGameData(gameData);
 
         setFeedback("Player '" + newName + "' added successfully.", Color.GREEN);
         nameField.setText("");
+
+        // Gọi trực tiếp
         refreshPlayerList();
     }
 
@@ -173,6 +189,7 @@ public class PlayerSelectScene extends Scene {
         gameData.setCurrentPlayerName(newPlayerName);
         ResourceSaver.saveGameData(gameData);
 
+        // Chuyển scene (an toàn)
         sceneManager.reloadApplicationState();
     }
 
@@ -188,51 +205,76 @@ public class PlayerSelectScene extends Scene {
         }
 
         PlayerData playerToDelete = playerList.get(selectedPlayerIndex);
+        String nameToDelete = playerToDelete.getPlayerName(); // <-- Lấy tên trước khi xóa
+
+        // --- BẮT ĐẦU SỬA LỖI 2 ---
+
+        // 1. Xóa người chơi khỏi danh sách chính
         gameData.getAllPlayers().remove(playerToDelete);
 
-        if (playerToDelete.getPlayerName().equals(gameData.getCurrentPlayerName())) {
+        // 2. Xóa người chơi khỏi TẤT CẢ leaderboard
+        // Lấy map leaderboard
+        var leaderboards = gameData.getLeaderboards();
+        // Duyệt qua từng danh sách điểm của từng level (mỗi 'scoreList' là 1 List<LeaderboardEntry>)
+        for (List<LeaderboardEntry> scoreList : leaderboards.values()) {
+            // Xóa mọi entry (dòng điểm) có tên trùng với người chơi bị xóa
+            scoreList.removeIf(entry -> entry.playerName.equals(nameToDelete));
+        }
+        System.out.println("Đã xóa tất cả điểm số của " + nameToDelete + " khỏi leaderboard.");
+
+        // --- KẾT THÚC SỬA LỖI 2 ---
+
+        // Cập nhật người chơi hiện tại nếu cần
+        if (nameToDelete.equals(gameData.getCurrentPlayerName())) {
             gameData.setCurrentPlayerName(gameData.getAllPlayers().get(0).getPlayerName());
         }
 
+        // Lưu lại file GameData.json đã được cập nhật
         ResourceSaver.saveGameData(gameData);
-        setFeedback("Player '" + playerToDelete.getPlayerName() + "' deleted.", Color.GREEN);
+        setFeedback("Player '" + nameToDelete + "' deleted.", Color.GREEN);
         selectedPlayerIndex = -1;
+
+        // Làm mới UI
         refreshPlayerList();
     }
 
     private void setFeedback(String message, Color color) {
         this.feedbackMessage = message;
         this.feedbackColor = color;
+        this.feedbackTimer = System.currentTimeMillis() + FEEDBACK_DURATION;
     }
 
-    // --- SỬA LỖI CONCURRENT MODIFICATION ---
+    // --- SỬA LỖI CONCURRENT MODIFICATION (Cách 2) ---
     @Override
     protected void update() {
-        // 1. Thực thi hành động đang chờ (nếu có)
-        // Hành động này (ví dụ: refreshPlayerList) sẽ sửa đổi danh sách 'buttons'
-        if (pendingAction != null) {
-            pendingAction.run();
-            pendingAction = null; // Xóa hành động sau khi thực thi
+        // Hẹn giờ tự động xóa thông báo
+        if (feedbackTimer > 0 && System.currentTimeMillis() > feedbackTimer) {
+            this.feedbackMessage = "";
+            this.feedbackTimer = 0L;
         }
 
         int mx = input.getMouseX();
         int my = input.getMouseY();
 
-        // 2. Vòng lặp 'for' bây giờ đã an toàn,
-        // vì nó đang lặp qua danh sách 'buttons' mới (hoặc cũ) mà không bị sửa đổi
-        for (Button button : buttons) {
-            button.setHovered(button.contains(mx, my));
-            if (button.isHovered() && input.consumeClick()) {
-                // 3. Thay vì gọi button.onClick() ngay lập tức,
-                // chúng ta gán nó vào 'pendingAction' để thực thi ở frame TỚI.
-                pendingAction = button::onClick;
+        // Tạo một bản sao của danh sách CHỈ ĐỂ DUYỆT
+        List<Button> buttonsToUpdate = new ArrayList<>(buttons);
 
-                // 4. Dừng vòng lặp ngay khi tìm thấy một click
-                // để ngăn 'pendingAction' bị ghi đè nếu có 2 nút bị click
+        for (Button button : buttonsToUpdate) {
+            button.setHovered(button.contains(mx, my));
+
+            if (button.isHovered() && input.consumeClick()) {
+                // Gọi onClick() trên nút.
+                // Hành động này (vd: refreshPlayerList) sẽ sửa đổi 'this.buttons' (list gốc),
+                // nhưng không ảnh hưởng đến 'buttonsToUpdate' (list sao chép)
+                // vì vậy vòng lặp này vẫn an toàn.
+                button.onClick();
+
+                // Dừng ngay lập tức để chỉ xử lý 1 click mỗi frame
                 break;
             }
         }
     }
+    // --- KẾT THÚC SỬA LỖI ---
 
     @Override
     protected void render(Graphics2D g2) {
@@ -240,10 +282,17 @@ public class PlayerSelectScene extends Scene {
         g2.setFont(new Font("Serif", Font.BOLD, 36));
         g2.drawString("Player Management", Constants.WINDOW_WIDTH / 2 - 150, 40);
 
-        g2.setFont(new Font("Serif", Font.PLAIN, 18));
-        g2.setColor(feedbackColor);
-        g2.drawString(feedbackMessage, Constants.WINDOW_WIDTH / 2 - 150, 130);
+        if (feedbackMessage != null && !feedbackMessage.isEmpty()) {
+            g2.setFont(new Font("Serif", Font.PLAIN, 18));
+            g2.setColor(feedbackColor);
 
+            FontMetrics fm = g2.getFontMetrics();
+            int msgWidth = fm.stringWidth(feedbackMessage);
+
+            g2.drawString(feedbackMessage, (Constants.WINDOW_WIDTH - msgWidth) / 2, 70);
+        }
+
+        // Vòng lặp render an toàn (vì nó chỉ đọc, không ghi)
         for (Button button : buttons) {
             button.draw(g2);
         }

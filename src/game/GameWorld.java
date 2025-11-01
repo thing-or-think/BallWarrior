@@ -40,27 +40,24 @@ public class GameWorld {
     }
 
     /**
-     * [MỚI] Phương thức để reset và tải một màn chơi mới
      * @param levelPath Đường dẫn đến file JSON của level
+     * @return Trả về LevelData đã được tải (hoặc null nếu lỗi)
      */
-    public void resetAndLoadLevel(String levelPath) {
+    public LevelData resetAndLoadLevel(String levelPath) {
         // 1. Tải dữ liệu level mới
         LevelData level = levelManager.load(levelPath);
         if (level == null) {
             System.err.println("KHÔNG THỂ TẢI LEVEL: " + levelPath);
-            return;
+            return null; // <-- Trả về null nếu lỗi
         }
 
-        // --- BẮT ĐẦU SỬA ---
-        // 1. Reset trạng thái thắng và bộ đếm
+        // 2. Dọn dẹp trạng thái cũ
         this.isLevelWon = false;
         this.breakableBrickCount = 0;
 
-        // 2. Dọn dẹp trạng thái cũ
         scoreSystem.reset();
-        entities.getBalls().clear(); // Xóa bóng cũ
-
-        // Dọn gạch cũ khỏi EntityManager và CollisionSystem
+        entities.getBalls().clear();
+        entities.getManaOrbs().clear();
         List<Brick> oldBricks = entities.getBricks();
         for (Brick b : oldBricks) {
             collisionSystem.unregister(b);
@@ -69,28 +66,21 @@ public class GameWorld {
 
         // 3. Tải dữ liệu level mới
         List<Brick> newBricks = LevelBuilder.buildBricks(level);
-        entities.setBricks(newBricks); // Đặt gạch mới cho EntityManager
+        entities.setBricks(newBricks);
 
-        // Đếm gạch CÓ THỂ PHÁ và đăng ký
+        // 4. Đăng ký gạch mới và đếm
         for (Brick b : newBricks) {
             collisionSystem.register(b);
             if (b.getType() != Brick.Type.BEDROCK) {
-                this.breakableBrickCount++; // <-- Đếm gạch
+                this.breakableBrickCount++;
             }
         }
 
-        // 4. Đăng ký gạch mới vào hệ thống va chạm
-        for (Brick b : newBricks) {
-            collisionSystem.register(b);
-        }
-
-        // 5. Cập nhật SkillManager nếu nó giữ tham chiếu đến bricks
-        // (Trong code merge_feature, nó được inject qua EntityManager nên tự động cập nhật)
-
-        // 6. Reset lại bóng
+        // 5. Reset lại bóng
         entities.spawnNewBallAtPaddle();
-    }
 
+        return level; // <-- Trả về level đã tải thành công
+    }
 
     public void update(float deltaTime) {
         if (isLevelWon) return;

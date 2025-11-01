@@ -1,5 +1,6 @@
 package ui.scene;
 
+import game.LevelData;
 import core.InputHandler;
 import core.SceneManager;
 import data.GameData;
@@ -61,15 +62,20 @@ public class GameScene extends Scene {
     public void startGame(String levelPath) {
         this.currentLevelPath = levelPath;
         this.scoreSaved = false;
-        world.resetAndLoadLevel(levelPath);
 
-        // <-- THÊM DÒNG NÀY -->
-        // Cập nhật Leaderboard UI với dữ liệu level mới
-        String levelName = levelPath.substring(levelPath.lastIndexOf('/') + 1);
-        leaderboardDisplay.updateData(levelPath, gameData, levelName);
+        // [SỬA] Lấy về đối tượng LevelData khi reset
+        LevelData loadedLevel = world.resetAndLoadLevel(levelPath);
+
+        // [SỬA] Cập nhật Leaderboard UI với tên thật
+        if (loadedLevel != null) {
+            // Sử dụng tên "đẹp" từ file JSON (vd: "Level 1: Classic Wall")
+            leaderboardDisplay.updateData(levelPath, gameData, loadedLevel.name);
+        } else {
+            // Fallback (dự phòng) nếu level tải lỗi
+            String levelName = levelPath.substring(levelPath.lastIndexOf('/') + 1);
+            leaderboardDisplay.updateData(levelPath, gameData, levelName);
+        }
     }
-
-    // THÊM phương thức này
     /**
      * Lưu điểm số hiện tại vào Leaderboard
      */

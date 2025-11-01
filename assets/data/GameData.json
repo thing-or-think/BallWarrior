@@ -1,0 +1,683 @@
+{
+  "allPlayers": [
+    {
+      "playerName": "Player 1",
+      "coins": 1000,
+      "equipped": {
+        "ballId": 11,
+        "paddleId": 24
+      },
+      "inventory": {
+        "items": [
+          {
+            "id": 0,
+            "type": "ball",
+            "name": "Basic Red",
+            "rarity": "COMMON",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FF0000"
+            }
+          },
+          {
+            "id": 1,
+            "type": "ball",
+            "name": "Basic Blue",
+            "rarity": "COMMON",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#0000FF"
+            }
+          },
+          {
+            "id": 2,
+            "type": "ball",
+            "name": "Basic Cyan",
+            "rarity": "COMMON",
+            "price": 100,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#00FFFF"
+            }
+          },
+          {
+            "id": 3,
+            "type": "ball",
+            "name": "Basic Yellow",
+            "rarity": "COMMON",
+            "price": 100,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FFFF00"
+            }
+          },
+          {
+            "id": 4,
+            "type": "ball",
+            "name": "Basic Orange",
+            "rarity": "RARE",
+            "price": 100,
+            "isBought": false,
+            "display": {
+              "type": "color",
+              "value": "#FFA500"
+            }
+          },
+          {
+            "id": 5,
+            "type": "ball",
+            "name": "Basic Black",
+            "rarity": "RARE",
+            "price": 100,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#000000"
+            }
+          },
+          {
+            "id": 6,
+            "type": "ball",
+            "name": "Basic Magenta",
+            "rarity": "RARE",
+            "price": 500,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FF00FF"
+            }
+          },
+          {
+            "id": 7,
+            "type": "ball",
+            "name": "Basic Pink",
+            "rarity": "RARE",
+            "price": 500,
+            "isBought": false,
+            "display": {
+              "type": "color",
+              "value": "#FFC0CB"
+            }
+          },
+          {
+            "id": 8,
+            "type": "ball",
+            "name": "Fire Orb",
+            "rarity": "EPIC",
+            "price": 1000,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Balls/ball.png"
+            }
+          },
+          {
+            "id": 9,
+            "type": "ball",
+            "name": "Watermelon",
+            "rarity": "LEGENDARY",
+            "price": 1000,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Balls/watermelon.png"
+            }
+          },
+          {
+            "id": 10,
+            "type": "ball",
+            "name": "Beach Ball",
+            "rarity": "LEGENDARY",
+            "price": 5000,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Balls/ballBeach.png"
+            }
+          },
+          {
+            "id": 11,
+            "type": "ball",
+            "name": "Pokeball",
+            "rarity": "LEGENDARY",
+            "price": 5000,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Balls/pokeball.png"
+            }
+          },
+          {
+            "id": 12,
+            "type": "ball",
+            "name": "UET Ball",
+            "rarity": "LEGENDARY",
+            "price": 5000,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Balls/UET.png"
+            }
+          },
+          {
+            "id": 13,
+            "type": "paddle",
+            "name": "Basic Red",
+            "rarity": "COMMON",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FF0000"
+            }
+          },
+          {
+            "id": 14,
+            "type": "paddle",
+            "name": "Basic Blue",
+            "rarity": "COMMON",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#0000FF"
+            }
+          },
+          {
+            "id": 15,
+            "type": "paddle",
+            "name": "Basic Green",
+            "rarity": "COMMON",
+            "price": 150,
+            "isBought": false,
+            "display": {
+              "type": "color",
+              "value": "#008000"
+            }
+          },
+          {
+            "id": 16,
+            "type": "paddle",
+            "name": "Basic Yellow",
+            "rarity": "COMMON",
+            "price": 150,
+            "isBought": false,
+            "display": {
+              "type": "color",
+              "value": "#FFFF00"
+            }
+          },
+          {
+            "id": 17,
+            "type": "paddle",
+            "name": "Basic Cyan",
+            "rarity": "RARE",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#00FFFF"
+            }
+          },
+          {
+            "id": 18,
+            "type": "paddle",
+            "name": "Basic Orange",
+            "rarity": "RARE",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FFA500"
+            }
+          },
+          {
+            "id": 19,
+            "type": "paddle",
+            "name": "Basic Pink",
+            "rarity": "RARE",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FFC0CB"
+            }
+          },
+          {
+            "id": 20,
+            "type": "paddle",
+            "name": "Shadow Paddle",
+            "rarity": "EPIC",
+            "price": 400,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#000000"
+            }
+          },
+          {
+            "id": 21,
+            "type": "paddle",
+            "name": "Wood Paddle",
+            "rarity": "EPIC",
+            "price": 200,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Paddles/woodPaddle.png"
+            }
+          },
+          {
+            "id": 22,
+            "type": "paddle",
+            "name": "Metal Paddle",
+            "rarity": "EPIC",
+            "price": 600,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Paddles/paddle3.png"
+            }
+          },
+          {
+            "id": 23,
+            "type": "paddle",
+            "name": "☘️RailWay Paddle",
+            "rarity": "EPIC",
+            "price": 1200,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Paddles/railway.png"
+            }
+          },
+          {
+            "id": 24,
+            "type": "paddle",
+            "name": "Dragon Paddle",
+            "rarity": "LEGENDARY",
+            "price": 2500,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Paddles/paddle2.png"
+            }
+          },
+          {
+            "id": 25,
+            "type": "paddle",
+            "name": "Ass Paddle",
+            "rarity": "LEGENDARY",
+            "price": 2500,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Paddles/ass.png"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "playerName": "HoanDepZai",
+      "coins": 1000,
+      "equipped": {
+        "ballId": 11,
+        "paddleId": 24
+      },
+      "inventory": {
+        "items": [
+          {
+            "id": 0,
+            "type": "ball",
+            "name": "Basic Red",
+            "rarity": "COMMON",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FF0000"
+            }
+          },
+          {
+            "id": 1,
+            "type": "ball",
+            "name": "Basic Blue",
+            "rarity": "COMMON",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#0000FF"
+            }
+          },
+          {
+            "id": 2,
+            "type": "ball",
+            "name": "Basic Cyan",
+            "rarity": "COMMON",
+            "price": 100,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#00FFFF"
+            }
+          },
+          {
+            "id": 3,
+            "type": "ball",
+            "name": "Basic Yellow",
+            "rarity": "COMMON",
+            "price": 100,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FFFF00"
+            }
+          },
+          {
+            "id": 4,
+            "type": "ball",
+            "name": "Basic Orange",
+            "rarity": "RARE",
+            "price": 100,
+            "isBought": false,
+            "display": {
+              "type": "color",
+              "value": "#FFA500"
+            }
+          },
+          {
+            "id": 5,
+            "type": "ball",
+            "name": "Basic Black",
+            "rarity": "RARE",
+            "price": 100,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#000000"
+            }
+          },
+          {
+            "id": 6,
+            "type": "ball",
+            "name": "Basic Magenta",
+            "rarity": "RARE",
+            "price": 500,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FF00FF"
+            }
+          },
+          {
+            "id": 7,
+            "type": "ball",
+            "name": "Basic Pink",
+            "rarity": "RARE",
+            "price": 500,
+            "isBought": false,
+            "display": {
+              "type": "color",
+              "value": "#FFC0CB"
+            }
+          },
+          {
+            "id": 8,
+            "type": "ball",
+            "name": "Fire Orb",
+            "rarity": "EPIC",
+            "price": 1000,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Balls/ball.png"
+            }
+          },
+          {
+            "id": 9,
+            "type": "ball",
+            "name": "Watermelon",
+            "rarity": "LEGENDARY",
+            "price": 1000,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Balls/watermelon.png"
+            }
+          },
+          {
+            "id": 10,
+            "type": "ball",
+            "name": "Beach Ball",
+            "rarity": "LEGENDARY",
+            "price": 5000,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Balls/ballBeach.png"
+            }
+          },
+          {
+            "id": 11,
+            "type": "ball",
+            "name": "Pokeball",
+            "rarity": "LEGENDARY",
+            "price": 5000,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Balls/pokeball.png"
+            }
+          },
+          {
+            "id": 12,
+            "type": "ball",
+            "name": "UET Ball",
+            "rarity": "LEGENDARY",
+            "price": 5000,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Balls/UET.png"
+            }
+          },
+          {
+            "id": 13,
+            "type": "paddle",
+            "name": "Basic Red",
+            "rarity": "COMMON",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FF0000"
+            }
+          },
+          {
+            "id": 14,
+            "type": "paddle",
+            "name": "Basic Blue",
+            "rarity": "COMMON",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#0000FF"
+            }
+          },
+          {
+            "id": 15,
+            "type": "paddle",
+            "name": "Basic Green",
+            "rarity": "COMMON",
+            "price": 150,
+            "isBought": false,
+            "display": {
+              "type": "color",
+              "value": "#008000"
+            }
+          },
+          {
+            "id": 16,
+            "type": "paddle",
+            "name": "Basic Yellow",
+            "rarity": "COMMON",
+            "price": 150,
+            "isBought": false,
+            "display": {
+              "type": "color",
+              "value": "#FFFF00"
+            }
+          },
+          {
+            "id": 17,
+            "type": "paddle",
+            "name": "Basic Cyan",
+            "rarity": "RARE",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#00FFFF"
+            }
+          },
+          {
+            "id": 18,
+            "type": "paddle",
+            "name": "Basic Orange",
+            "rarity": "RARE",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FFA500"
+            }
+          },
+          {
+            "id": 19,
+            "type": "paddle",
+            "name": "Basic Pink",
+            "rarity": "RARE",
+            "price": 0,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#FFC0CB"
+            }
+          },
+          {
+            "id": 20,
+            "type": "paddle",
+            "name": "Shadow Paddle",
+            "rarity": "EPIC",
+            "price": 400,
+            "isBought": true,
+            "display": {
+              "type": "color",
+              "value": "#000000"
+            }
+          },
+          {
+            "id": 21,
+            "type": "paddle",
+            "name": "Wood Paddle",
+            "rarity": "EPIC",
+            "price": 200,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Paddles/woodPaddle.png"
+            }
+          },
+          {
+            "id": 22,
+            "type": "paddle",
+            "name": "Metal Paddle",
+            "rarity": "EPIC",
+            "price": 600,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Paddles/paddle3.png"
+            }
+          },
+          {
+            "id": 23,
+            "type": "paddle",
+            "name": "☘️RailWay Paddle",
+            "rarity": "EPIC",
+            "price": 1200,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Paddles/railway.png"
+            }
+          },
+          {
+            "id": 24,
+            "type": "paddle",
+            "name": "Dragon Paddle",
+            "rarity": "LEGENDARY",
+            "price": 2500,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Paddles/paddle2.png"
+            }
+          },
+          {
+            "id": 25,
+            "type": "paddle",
+            "name": "Ass Paddle",
+            "rarity": "LEGENDARY",
+            "price": 2500,
+            "isBought": true,
+            "display": {
+              "type": "image",
+              "value": "assets/images/Paddles/ass.png"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "leaderboards": {
+    "assets\\levels\\level2.json": [
+      {
+        "playerName": "Player 1",
+        "score": 400
+      }
+    ],
+    "assets\\levels\\level3.json": [
+      {
+        "playerName": "HoanDepZai",
+        "score": 1300
+      }
+    ],
+    "assets\\levels\\level1.json": [
+      {
+        "playerName": "Player 1",
+        "score": 3800
+      },
+      {
+        "playerName": "HoanDepZai",
+        "score": 3600
+      }
+    ],
+    "assets\\levels\\level10.json": [
+      {
+        "playerName": "HoanDepZai",
+        "score": 400
+      }
+    ]
+  },
+  "currentPlayerName": "Player 1"
+}
