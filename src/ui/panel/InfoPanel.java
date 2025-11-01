@@ -1,5 +1,6 @@
 package ui.panel;
 
+import core.AudioService;
 import core.InputHandler;
 import core.ResourceLoader;
 import data.SkinData;

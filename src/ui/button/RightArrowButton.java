@@ -55,7 +55,6 @@ public class RightArrowButton extends Button {
 
     @Override
     public void onClick() {
-        if (activity != null)
-            activity.run();
+        performAction();
     }
 }

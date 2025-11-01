@@ -90,6 +90,6 @@ public class LevelButton extends Button {
     @Override
     public void onClick() {
         System.out.println("Level selected: " + text + " (" + difficulty + ")");
-        if (activity != null) activity.run();
+        performAction();
     }
 }

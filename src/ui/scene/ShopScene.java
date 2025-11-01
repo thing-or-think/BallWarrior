@@ -146,7 +146,7 @@ public class ShopScene extends Scene {
         for (Button button : buttons) {
             button.draw(g2);
         }
-
+        moneyLabel.drawBackground(g2,Color.DARK_GRAY);
         moneyLabel.draw(g2);
     }
 

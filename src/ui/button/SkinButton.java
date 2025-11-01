@@ -149,9 +149,7 @@ public class SkinButton extends Button {
         } else {
             clicked = true;
         }
-        if (activity != null) {
-            activity.run();
-        }
+        performAction();
         clicked = true;
     }
 

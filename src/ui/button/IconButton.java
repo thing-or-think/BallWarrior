@@ -32,8 +32,7 @@ public class IconButton extends Button {
         } else {
             clicked = true; // nếu không có group thì toggle bình thường
         }
-        if (activity != null)
-            activity.run();
+        performAction();
     }
 
     public void setButtonGroup(ButtonGroup buttonGroup) {

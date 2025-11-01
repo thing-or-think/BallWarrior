@@ -54,4 +54,49 @@ public class Label extends TextElement {
         }
         g.drawString(text, drawX, drawY);
     }
+    public void drawBackground(Graphics2D g, Color bgColor) {
+        g.setFont(font);
+        FontMetrics fm = g.getFontMetrics();
+
+        int paddingX = 8;
+        int paddingY = 5;
+
+        int textWidth = fm.stringWidth(text);
+        int textHeight = fm.getAscent() + fm.getDescent();
+
+        int rectWidth = textWidth + 2 * paddingX;
+        int rectHeight = textHeight + 2 * paddingY;
+
+        int rectX = x;
+        int rectY = y;
+
+        switch (anchorType) {
+            case TOP_LEFT:
+                rectX = x - paddingX;
+                rectY = y - paddingY;
+                break;
+            case CENTER_BASELINE:
+                rectX = x - textWidth / 2 - paddingX;
+                rectY = y - fm.getAscent() - paddingY;
+                break;
+            case CENTER_TOP:
+                rectX = x - textWidth / 2 - paddingX;
+                rectY = y - paddingY;
+                break;
+            case CENTER_MIDDLE:
+                rectX = x - textWidth / 2 - paddingX;
+                rectY = y - textHeight / 2 - paddingY;
+                break;
+            case BASELINE_LEFT:
+                rectX = x - paddingX;
+                rectY = y - fm.getAscent() - paddingY;
+                break;
+            default:
+                rectX = x - paddingX;
+                rectY = y - paddingY;
+        }
+
+        g.setColor(bgColor);
+        g.fillRoundRect(rectX, rectY, rectWidth, rectHeight, 12, 12);
+    }
 }

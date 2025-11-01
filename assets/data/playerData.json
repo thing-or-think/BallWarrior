@@ -1,5 +1,5 @@
 {
-  "coins": 62500,
+  "coins": 6210,
   "equipped": {
     "ballId": 11,
     "paddleId": 24
@@ -60,7 +60,7 @@
         "name": "Basic Orange",
         "rarity": "RARE",
         "price": 200,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#FFA500"
@@ -156,7 +156,7 @@
         "name": "UET Ball",
         "rarity": "LEGENDARY",
         "price": 5000,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "image",
           "value": "assets/images/Balls/UET.png"
@@ -167,7 +167,7 @@
         "type": "paddle",
         "name": "Basic Red",
         "rarity": "COMMON",
-        "price": 0,
+        "price": 10,
         "isBought": true,
         "display": {
           "type": "color",
@@ -179,7 +179,7 @@
         "type": "paddle",
         "name": "Basic Blue",
         "rarity": "COMMON",
-        "price": 0,
+        "price": 20,
         "isBought": true,
         "display": {
           "type": "color",
@@ -215,7 +215,7 @@
         "type": "paddle",
         "name": "Basic Cyan",
         "rarity": "RARE",
-        "price": 0,
+        "price": 200,
         "isBought": true,
         "display": {
           "type": "color",
@@ -227,8 +227,8 @@
         "type": "paddle",
         "name": "Basic Orange",
         "rarity": "RARE",
-        "price": 0,
-        "isBought": false,
+        "price": 200,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#FFA500"
@@ -239,7 +239,7 @@
         "type": "paddle",
         "name": "Basic Pink",
         "rarity": "RARE",
-        "price": 0,
+        "price": 200,
         "isBought": false,
         "display": {
           "type": "color",
@@ -252,7 +252,7 @@
         "name": "Shadow Paddle",
         "rarity": "EPIC",
         "price": 400,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#000000"
@@ -264,7 +264,7 @@
         "name": "Wood Paddle",
         "rarity": "EPIC",
         "price": 200,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "image",
           "value": "assets/images/Paddles/woodPaddle.png"

@@ -37,7 +37,6 @@ public class PlayButton extends Button {
 
     @Override
     public void onClick() {
-        if (activity != null)
-            activity.run();
+        performAction();
     }
 }

@@ -70,7 +70,8 @@ public class GachaPanel extends JPanel {
 
     private void initUI() {
         Font font = new Font("Serif", Font.PLAIN, 32);
-        spinButton = new BuyButton("SPIN", Constants.WIDTH / 2 - 50, 450, 100, 50, font, this::handleGachaSpin);
+        spinButton = new BuyButton("SPIN", Constants.WIDTH / 2 - 50, 450, 100, 50,
+                font, this::handleGachaSpin);
     }
 
     private SkinData openGacha() {
@@ -103,11 +104,11 @@ public class GachaPanel extends JPanel {
             return;
         }
 
-        // 1. Logic Game: Trừ tiền và chọn Skin
+        // Trừ tiền và chọn Skin
         coins.set(coins.get() - COST);
         awardedSkin = openGacha();
 
-        // 2. Bắt đầu Animation
+        // Bắt đầu Animation mo ruong
         generateReel(awardedSkin);
         currentState = State.CHEST_OPENNING;
 

@@ -49,8 +49,6 @@ public class MenuButton extends Button {
     @Override
     public void onClick() {
         System.out.println("Button clicked: " + text);
-        if (activity != null) {
-            activity.run();
-        }
+        performAction();
     }
 }
