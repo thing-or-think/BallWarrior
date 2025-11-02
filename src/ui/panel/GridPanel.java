@@ -5,6 +5,7 @@ import core.ResourceLoader;
 import data.SkinData;
 import ui.base.Button;
 import ui.button.SkinButton;
+import ui.scene.ShopScene;
 import utils.ScrollManager;
 
 import javax.swing.*;
@@ -17,13 +18,14 @@ public class GridPanel extends JPanel {
     private final InputHandler input;
     private final SkinGrid skinGrid = new SkinGrid();
     private final ScrollManager scroll = new ScrollManager();
-    private final BufferedImage background;
+    //private final BufferedImage background;
     private final InfoPanel infoPanel;
 
     public GridPanel(InputHandler input,
                      InfoPanel infoPanel) {
         this.input = input;
-        this.background = ResourceLoader.loadImage("assets/images/shopBg.jpg");
+        setOpaque(false);
+        //this.background = ResourceLoader.loadImage("assets/images/shopBg.jpg");
         this.infoPanel = infoPanel;
     }
 
@@ -69,13 +71,6 @@ public class GridPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
 
-        if (background != null)
-            g2.drawImage(background, 0, 0, getWidth(), getHeight(), null);
-        else {
-            g2.setColor(Color.DARK_GRAY);
-            g2.fillRect(0, 0, getWidth(), getHeight());
-        }
-
         // giới hạn vùng vẽ
         int clipTop = 80;
         int clipHeight = getHeight() - 95;
@@ -86,7 +81,6 @@ public class GridPanel extends JPanel {
 
         g2.setClip(oldClip);
         drawScrollBar(g2);
-
         g2.dispose();
     }
 

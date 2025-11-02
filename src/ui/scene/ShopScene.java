@@ -49,7 +49,7 @@ public class ShopScene extends Scene {
         this.playerData = playerData;
         this.ownedScene = ownedScene;
         this.sceneManager = sceneManager;
-        this.moneyLabel = new Label(null, 690, 10, new Font("Monospaced", Font.BOLD, 22), Color.YELLOW);
+        this.moneyLabel = new Label(null, 1000, 15, new Font("Monospaced", Font.BOLD, 26), Color.YELLOW);
 
         this.buttonGroup = new ButtonGroup();
         AtomicInteger equippedSkinId = playerData.getEquipped().getBallIdRef();
@@ -70,7 +70,7 @@ public class ShopScene extends Scene {
         this.gachaPanel.setOwnedScene(ownedScene);
         setLayout(null);
 
-        this.infoPanel.setBounds(Constants.WINDOW_WIDTH / 2, 55, 400, Constants.WINDOW_HEIGHT - 55);
+        this.infoPanel.setBounds(Constants.WINDOW_WIDTH / 2, 55, Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT - 55);
         add(infoPanel);
         this.gridPanel.setBounds(0,55,Constants.WINDOW_WIDTH,Constants.WINDOW_HEIGHT -55);
         add(gridPanel);
@@ -88,10 +88,10 @@ public class ShopScene extends Scene {
     }
 
     private void initButtons() {
-        buttons.add(new IconButton("BACK",iconBack,20,0,50,50,() -> onBack.run()));
-        buttons.add(new IconButton("BALLS",iconBall,250,0,50,50,() -> handleBalls()));
-        buttons.add(new IconButton("PADDLES",iconPaddle,350,0,50,50,() -> handlePaddles()));
-        buttons.add(new IconButton("GACHA",iconGacha,450,0,50,50,() -> handleGacha()));
+        buttons.add(new IconButton("BACK",iconBack,20,5,50,50,() -> onBack.run()));
+        buttons.add(new IconButton("BALLS",iconBall,400,0,60,60,() -> handleBalls()));
+        buttons.add(new IconButton("PADDLES",iconPaddle,500,0,60,60,() -> handlePaddles()));
+        buttons.add(new IconButton("GACHA",iconGacha,600,0,60,60,() -> handleGacha()));
         for (Button button : buttons) {
             if (button.getText().equals("BACK")) {
                 button.setColor(new Color(0,0,0,0));

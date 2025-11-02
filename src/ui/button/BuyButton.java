@@ -37,7 +37,7 @@ public class BuyButton extends Button {
         int textX = bound.x + (bound.width - textWidth) / 2;
         int textY = bound.y + (bound.height + textHeight) / 2 - 3;
 
-        g.setColor(Color.BLACK);
+        g.setColor(Color.DARK_GRAY);
         g.drawString(text, textX, textY);
     }
 

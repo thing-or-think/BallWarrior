@@ -38,7 +38,7 @@ public class InfoPanel extends JPanel {
                 skinData.getName(),
                 getWidth() / 2,
                 80,
-                new Font("Serif", Font.BOLD, 32),
+                new Font("Serif", Font.BOLD, 40),
                 AnchorType.CENTER_TOP);
 
 
@@ -71,16 +71,16 @@ public class InfoPanel extends JPanel {
         label.draw(g2);
         if ("image".equals(skinData.getDisplay().getType())) {
             if ("ball".equals(skinData.getType())) {
-                g2.drawImage(icon, getWidth() / 2 - 100, 120, 200, 200, null);
+                g2.drawImage(icon, getWidth() / 2 - 100, 200, 200, 200, null);
             } else {
-                g2.drawImage(icon, getWidth() / 2 - 100, 200, 200, 50, null);
+                g2.drawImage(icon, getWidth() / 2 - 150, 300, 300, 70, null);
             }
         } else {
             g2.setColor(color);
             if ("ball".equals(skinData.getType())) {
-                g2.fillOval(getWidth() / 2 - 80, 140, 160, 160);
+                g2.fillOval(getWidth() / 2 - 100, 200, 200, 200);
             } else {
-                g2.fillRect(getWidth() / 2 - 100, 200, 200, 50);
+                g2.fillRect(getWidth() / 2 - 150, 300, 300, 70);
             }
         }
     }
@@ -137,7 +137,7 @@ public class InfoPanel extends JPanel {
             } else if (this.skinData.isBought()) {
                 buyButton.setText("EQUIP");
             } else {
-                buyButton.setText("BUY");
+                buyButton.setText(skinData.getPrice() + " 💰");
             }
         }
         loadDisplay();

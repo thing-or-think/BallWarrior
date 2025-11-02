@@ -23,7 +23,7 @@ public class MenuScene extends Scene {
 
         String[] texts = {"PLAY", "SHOP", "INVENTORY", "QUIT"};
         Runnable[] runnables = {onPlay, onShop, onInventory, onQuit};
-        int startY = 350;
+        int startY = 400;
         int spacing = 50;
 
         for (int i = 0; i < texts.length; i++) {
@@ -38,7 +38,7 @@ public class MenuScene extends Scene {
 
     @Override
     protected void initUI() {
-        background = new ImageIcon("assets/images/background2.gif");
+        background = new ImageIcon("assets/images/Bg/background2.gif");
     }
 
     @Override

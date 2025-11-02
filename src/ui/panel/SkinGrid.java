@@ -12,8 +12,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SkinGrid {
     private final int cols = 3;
-    private final int itemSize = 100;
-    private final int gap = 10;
+    private final int itemSize = 130;
+    private final int gap = 20;
 
     private final List<Button> buttons = new ArrayList<>();
     private final ButtonGroup buttonGroup = new ButtonGroup();

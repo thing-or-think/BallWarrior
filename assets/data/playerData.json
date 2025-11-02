@@ -1,8 +1,8 @@
 {
-  "coins": 17650,
+  "coins": 9900,
   "equipped": {
-    "ballId": 8,
-    "paddleId": 21
+    "ballId": 9,
+    "paddleId": 25
   },
   "inventory": {
     "items": [
@@ -96,7 +96,7 @@
         "name": "Basic Pink",
         "rarity": "RARE",
         "price": 500,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#FFC0CB"
@@ -192,7 +192,7 @@
         "name": "Basic Green",
         "rarity": "COMMON",
         "price": 150,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#008000"
@@ -204,7 +204,7 @@
         "name": "Basic Yellow",
         "rarity": "COMMON",
         "price": 150,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#FFFF00"
@@ -309,13 +309,13 @@
       {
         "id": 25,
         "type": "paddle",
-        "name": "Ass Paddle",
+        "name": "Nem Chua Paddle",
         "rarity": "LEGENDARY",
-        "price": 2500,
+        "price": 3600,
         "isBought": true,
         "display": {
           "type": "image",
-          "value": "assets/images/Paddles/ass.png"
+          "value": "assets/images/Paddles/nemchua.png"
         }
       }
     ]

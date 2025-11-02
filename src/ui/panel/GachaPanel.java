@@ -33,7 +33,7 @@ public class GachaPanel extends JPanel {
 
     private SkinData awardedSkin;
     private final Random rand = new Random();
-    private final int COST = 0; //1000
+    private final int COST = 1000; //1000
     private BuyButton spinButton;
 
     // Assets Animation
@@ -45,7 +45,7 @@ public class GachaPanel extends JPanel {
     private final ArrayDeque<SkinData> skinReel = new ArrayDeque<>();
     private final int REEL_SKIN_COUNT = 21;
     private final int CENTER_INDEX = REEL_SKIN_COUNT / 2;
-    private final int SKIN_SIZE = 100;
+    private final int SKIN_SIZE = 150;
     private final int SKIN_UNIT = SKIN_SIZE + 30;
     private double offset = 0;
     private Timer reelTimer;
@@ -69,8 +69,8 @@ public class GachaPanel extends JPanel {
     }
 
     private void initUI() {
-        Font font = new Font("Serif", Font.PLAIN, 32);
-        spinButton = new BuyButton("SPIN", Constants.WINDOW_WIDTH / 2 - 50, 450, 100, 50,
+        Font font = new Font("Serif", Font.BOLD, 32);
+        spinButton = new BuyButton(COST + " 💰", Constants.WINDOW_WIDTH / 2 - 70, 530, 140, 50,
                 font, this::handleGachaSpin);
     }
 
@@ -128,8 +128,8 @@ public class GachaPanel extends JPanel {
         currentState = State.SPINNING;
         offset = 0;
 
-        final double startSpeed = 90.0;
-        final double totalDistance = 3.0 * SKIN_UNIT * REEL_SKIN_COUNT - 50;
+        final double startSpeed = 160.0;
+        final double totalDistance = 3.0 * SKIN_UNIT * REEL_SKIN_COUNT - 65;
         final int totalFrames = (int) Math.round(2.0 * totalDistance / startSpeed);
         final double acceleration = - startSpeed / totalFrames;
         currentSpeed = startSpeed;
@@ -194,12 +194,12 @@ public class GachaPanel extends JPanel {
             spinButton.draw(g2);
         }
 
+        int chestWidth = 360, chestHeight = 360;
+        int x = getWidth() / 2 - chestWidth / 2;
+        int y = getHeight() / 2 - chestHeight / 2;
         switch (currentState) {
             case IDLE:
                 if (true) {
-                    int chestWidth = 300, chestHeight = 300;
-                    int x = getWidth() / 2 - chestWidth / 2;
-                    int y = getHeight() / 2 - chestHeight / 2;
                     if (chestBeforeImage != null) {
                         g2.drawImage(chestBeforeImage, x, y, chestWidth, chestHeight, null);
                     }
@@ -208,23 +208,17 @@ public class GachaPanel extends JPanel {
 
             case CHEST_OPENNING:
                 if (chestOpeningGif != null) {
-                    int chestWidth = 300, chestHeight = 300;
-                    int x = getWidth() / 2 - chestWidth / 2;
-                    int y = getHeight() / 2 - chestHeight / 2;
                     g2.drawImage(chestOpeningGif.getImage(), x, y, chestWidth, chestHeight, this);
                 }
                 break;
 
             case SPINNING:
                 if (chestAfterImage != null) {
-                    int chestWidth = 300, chestHeight = 300;
-                    int x = getWidth() / 2 - chestWidth / 2;
-                    int y = getHeight() / 2 - chestHeight / 2;
                     g2.drawImage(chestAfterImage, x, y, chestWidth, chestHeight, null);
                 }
                 g2.setColor(new Color(0,0,0,150));
-                g2.fillRect(0,0,getWidth(),140);
-                g2.fillRect(0,300,getWidth(),300);
+                g2.fillRect(0,0,getWidth(),170);
+                g2.fillRect(0,370,getWidth(),450);
 
                 paintReel(g2);
                 break;
