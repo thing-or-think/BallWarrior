@@ -27,7 +27,7 @@ public class OwnedScene extends Scene {
     @Override
     public void initUI() {
         this.background = new ImageIcon("assets/images/Bg/ownedscene.gif");
-        this.resultMessage = new Label("...", 200, 500, new Font("Monospaced", Font.BOLD, 30), Color.WHITE);
+        this.resultMessage = new Label("...", 330, 600, new Font("Monospaced", Font.BOLD, 30), Color.WHITE);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class OwnedScene extends Scene {
 
         resultMessage.draw(g2);
         g2.setColor(Color.WHITE);
-        g2.drawString("---Press ESC to continue---", 180, 570);
+        g2.drawString("---Press ESC to continue---", 300, 670);
 
         if (awardedSkin != null) {
             int x = getWidth() / 2 - SKIN_SIZE / 2;
@@ -66,7 +66,7 @@ public class OwnedScene extends Scene {
         this.awardedSkin = awardedSkin;
     }
 
-    /** Setter giữ nguyên */
+    /** Setter */
     public void setResultMessage(String message) {
         this.resultMessage.setText(message);
     }
