@@ -2,6 +2,7 @@ package ui.scene;
 
 import core.InputHandler;
 import core.ResourceLoader;
+import core.SceneManager;
 import data.PlayerData;
 import ui.panel.GachaPanel;
 import ui.panel.GridPanel;
@@ -28,19 +29,26 @@ public class ShopScene extends Scene {
     private GridPanel gridPanel;
     private InfoPanel infoPanel;
     private GachaPanel gachaPanel;
+    private OwnedScene ownedScene;
+    private SceneManager sceneManager;
 
     private Tab currentTab = Tab.BALLS;
 
     private final static BufferedImage iconBack = ResourceLoader.loadImage("assets/images/Xbutton.png");
     private final static BufferedImage iconBall = ResourceLoader.loadImage("assets/images/iconBall.png");
     private final static BufferedImage iconPaddle = ResourceLoader.loadImage("assets/images/iconPaddle.png");
-    private final static BufferedImage iconGacha = ResourceLoader.loadImage("assets/images/Xbutton.png");
+    private final static BufferedImage iconGacha = ResourceLoader.loadImage("assets/images/iconChest.png");
 
     private PlayerData playerData;
 
-    public ShopScene(InputHandler input, PlayerData playerData) {
+    public ShopScene(InputHandler input,
+                     PlayerData playerData,
+                     OwnedScene ownedScene,
+                     SceneManager sceneManager) {
         super("ShopScene", input);
         this.playerData = playerData;
+        this.ownedScene = ownedScene;
+        this.sceneManager = sceneManager;
         this.moneyLabel = new Label(null, 690, 10, new Font("Monospaced", Font.BOLD, 22), Color.YELLOW);
 
         this.buttonGroup = new ButtonGroup();
@@ -57,15 +65,16 @@ public class ShopScene extends Scene {
                 infoPanel
         );
 
-        this.gachaPanel = new GachaPanel(input, playerData.getCoins(), playerData.getInventory().getItems());
-
+        this.gachaPanel = new GachaPanel(input, playerData.getCoins(),
+                playerData.getInventory().getItems(),this.sceneManager);
+        this.gachaPanel.setOwnedScene(ownedScene);
         setLayout(null);
 
-        this.infoPanel.setBounds(Constants.WINDOW_WIDTH / 2, 55, 400, Constants.WINDOW_HEIGHT - 60);
+        this.infoPanel.setBounds(Constants.WINDOW_WIDTH / 2, 55, 400, Constants.WINDOW_HEIGHT - 55);
         add(infoPanel);
-        this.gridPanel.setBounds(0,55,Constants.WINDOW_WIDTH,Constants.WINDOW_HEIGHT -60);
+        this.gridPanel.setBounds(0,55,Constants.WINDOW_WIDTH,Constants.WINDOW_HEIGHT -55);
         add(gridPanel);
-        this.gachaPanel.setBounds(0, 55, Constants.WINDOW_WIDTH, Constants.WINDOW_WIDTH - 60);
+        this.gachaPanel.setBounds(0, 55, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT - 55);
         add(gachaPanel);
 
         initUI();
@@ -123,13 +132,21 @@ public class ShopScene extends Scene {
                 break;
         }
     }
+    private void drawTitle(Graphics2D g2) {
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Serif", Font.BOLD, 36));
+        g2.drawString(convert(), 20, 110);
+    }
 
     @Override
     public void render(Graphics2D g2) {
+        BufferedImage bar = ResourceLoader.loadImage("assets/images/Bg/Bg.png");
+        g2.drawImage(bar,0,0,getWidth(),getHeight(),null);
+        drawTitle(g2);
         for (Button button : buttons) {
             button.draw(g2);
         }
-
+        moneyLabel.drawBackground(g2,Color.DARK_GRAY);
         moneyLabel.draw(g2);
     }
 
@@ -169,5 +186,11 @@ public class ShopScene extends Scene {
 
     public void setOnBack(Runnable onBack) {
         this.onBack = onBack;
+    }
+
+    private String convert() {
+        if(currentTab == Tab.BALLS) return "BALLS";
+        else if (currentTab == Tab.PADDLES) return "PADDLES";
+        return "GACHA";
     }
 }

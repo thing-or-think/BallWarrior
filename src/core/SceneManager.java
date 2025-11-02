@@ -1,7 +1,6 @@
 package core;
 
 import data.PlayerData;
-import ui.scene.ShopScene;
 import ui.base.Scene;
 import ui.scene.*;
 
@@ -15,6 +14,7 @@ public class SceneManager {
     private final GameScene gameScene;
     private final MenuScene menuScene;
     private final ShopScene shopScene;
+    private final OwnedScene ownedScene;
     private final PauseScene pauseScene;
     private final LevelSelectScene levelSelectScene;
     private final GameOverScene gameOverScene;
@@ -27,7 +27,8 @@ public class SceneManager {
 
         PlayerData playerData = new PlayerData(ResourceLoader.loadPlayerData());
 
-        shopScene = new ShopScene(input, playerData); // tạm null
+        ownedScene = new OwnedScene(input,this);
+        shopScene = new ShopScene(input, playerData,ownedScene,this); // tạm null
         gameScene = new GameScene(input, this, playerData);
         menuScene = new MenuScene(
                 input,
@@ -42,7 +43,7 @@ public class SceneManager {
         shopScene.setOnBack(() -> setScene(menuScene));
         gameOverScene = new GameOverScene(input, this::goToMenu);
 
-        // 3️⃣ Bắt đầu từ menu
+        // Bắt đầu từ menu
         setScene(menuScene);
     }
 
@@ -63,18 +64,16 @@ public class SceneManager {
         return currentScene;
     }
 
-    public void goToMenu() {
-        setScene(menuScene);
-    }
+    public void goToMenu() { setScene(menuScene); }
 
     public void goToGame() {
         gameScene.forceUpdateGameAssets();
         setScene(gameScene);
     }
 
-    public void goToShop() {
-        setScene(shopScene);
-    }
+    public void goToShop() { setScene(shopScene); }
+
+    public void gotoOwned() { setScene(ownedScene); }
 
     public void goToPause() { setScene(pauseScene); }
 

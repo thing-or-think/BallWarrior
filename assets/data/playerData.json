@@ -2,7 +2,7 @@
   "coins": 17650,
   "equipped": {
     "ballId": 8,
-    "paddleId": 23
+    "paddleId": 21
   },
   "inventory": {
     "items": [
@@ -60,7 +60,7 @@
         "name": "Basic Orange",
         "rarity": "RARE",
         "price": 100,
-        "isBought": false,
+        "isBought": true,
         "display": {
           "type": "color",
           "value": "#FFA500"
