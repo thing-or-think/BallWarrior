@@ -3,6 +3,7 @@ package game.skill.active;
 import core.ResourceLoader;
 import game.skill.effect.SkillEffectManager;
 import game.skill.base.ActiveSkill;
+import game.SoundManager;
 import entity.Ball;
 import entity.Brick;
 import utils.Vector2D;
@@ -51,8 +52,15 @@ public class ExplosionSkill extends ActiveSkill {
             }
             skillEffectManager.spawnExplosion(ballPos.x, ballPos.y, explosionRadius);
         }
-        System.out.println("💥 ExplosionSkill activated! All nearby bricks destroyed.");
+        System.out.println("ExplosionSkill activated! All nearby bricks destroyed.");
         return true;
+    }
+
+    // GHI ĐÈ PHƯƠNG THỨC PHÁT ÂM THANH
+    @Override
+    protected void playActivationSound() {
+        // âm thanh nổ
+        SoundManager.play(SoundManager.EXPLOSION);
     }
 
     /**

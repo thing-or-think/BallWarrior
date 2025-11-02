@@ -85,13 +85,15 @@ public class CollisionProcessor {
                 // KHÔNG gọi resolveCollision để bóng xuyên qua.
             } else {
                 if (collisionSystem.resolveCollision(ball, result)) {
-                    // ⭐ PHÁT ÂM THANH: HIT_BRICK (Âm thanh va chạm)
+                    // PHÁT ÂM THANH: HIT_BRICK (Âm thanh va chạm)
                     // Chỉ phát nếu gạch không phải Bedrock (Bedrock không phát tiếng nứt)
                     if (!isBedrock) {
                         SoundManager.play(SoundManager.HIT_BRICK);
                     }
 
                     if (brick.isDestroyed()) {
+                        // phát âm thanh vỡ
+                        SoundManager.play(SoundManager.BROKEN);
                         // spawn orb via OrbSpawner
                         ManaOrb orb = orbSpawner.trySpawn(brick);
                         if (orb != null) {
@@ -106,6 +108,9 @@ public class CollisionProcessor {
             }
         } else if (entity instanceof Shield || entity instanceof Paddle) {
             if (collisionSystem.resolveCollision(ball, result)) {
+                if(entity instanceof Shield) {
+                    SoundManager.play(SoundManager.BALL_SHIELD);
+                }
                 scoreSystem.resetCombo();
             }
         }

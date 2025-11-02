@@ -13,7 +13,7 @@ import javax.sound.sampled.*;
 public class ResourceLoader {
 
     private static final String DATA_PATH = "assets/data/playerData.json";
-    private static final String SOUND_PATH = "assets/sounds/";
+    private static final String SOUND_PATH = "assets/sound/";
     private static final HashMap<String, Clip> soundCache = new HashMap<>();
 
     public static PlayerData loadPlayerData() {

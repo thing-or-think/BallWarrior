@@ -6,6 +6,7 @@ import ui.base.Scene;
 import ui.base.Button;
 import ui.button.MenuButton;
 import utils.Constants;
+import game.SoundManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,6 +19,9 @@ public class GameOverScene extends Scene {
     public GameOverScene(InputHandler input, Runnable onMainMenu) {
         super("GameOverScene", input);
         this.onMainMenu = onMainMenu;
+
+        // phát âm thanh
+        SoundManager.play(SoundManager.GAME_OVER);
 
         initUI();
     }
@@ -41,6 +45,7 @@ public class GameOverScene extends Scene {
 
     @Override
     protected void update() {
+
         int mx = input.getMouseX();
         int my = input.getMouseY();
 
