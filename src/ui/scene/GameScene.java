@@ -14,6 +14,7 @@ import ui.panel.GamePanel;
 import utils.Constants;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class GameScene extends Scene {
     private final GameWorld world;
@@ -22,6 +23,7 @@ public class GameScene extends Scene {
     private final PlayerData playerData;
     private final SkillPanel skillPanel;
     private final GamePanel gamePanel;
+    private BufferedImage background;
 
     public GameScene(InputHandler input, SceneManager sceneManager, PlayerData playerData) {
         super("Game", input);
@@ -31,7 +33,8 @@ public class GameScene extends Scene {
         this.playerData = playerData;
         skillPanel = new SkillPanel(world.getSkillManager(), 20,  100);
         gamePanel = new GamePanel(world);
-        setBackground(Color.decode("#212121"));
+        background = ResourceLoader.loadImage("assets/images/Bg/gamescene.png");
+        //setBackground(Color.decode("#212121"));
         initUI();
     }
 
@@ -58,6 +61,7 @@ public class GameScene extends Scene {
 
     @Override
     protected void render(Graphics2D g2) {
+        g2.drawImage(background,0,0,Constants.WINDOW_WIDTH,Constants.WINDOW_HEIGHT,null);
         hud.render(g2);
         skillPanel.draw(g2);
     }

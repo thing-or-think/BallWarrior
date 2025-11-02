@@ -1,6 +1,7 @@
 package game;
 
 import core.InputHandler;
+import core.ResourceLoader;
 import data.SkinData;
 import entity.*;
 import game.core.*;
@@ -11,6 +12,7 @@ import game.ScoreSystem;
 import utils.Constants;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class GameWorld {
     private final EntityManager entities;
