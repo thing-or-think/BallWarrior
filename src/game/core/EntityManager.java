@@ -3,6 +3,7 @@ package game.core;
 import entity.*;
 import entity.Ball;
 import utils.Constants;
+import game.SoundManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -115,6 +116,8 @@ public class EntityManager {
             }
 
             if (paddle != null && orb.intersects(paddle)) {
+                // ⭐ PHÁT ÂM THANH NGAY KHI VA CHẠM ĐƯỢC PHÁT HIỆN
+                SoundManager.play(SoundManager.ORB_COLLECT);
                 orb.setAlive(false);
             }
         }

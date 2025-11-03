@@ -59,7 +59,6 @@ public class ScoreSystem {
 
     public boolean isGameOver() {
         if(lives <= 0) {
-            lives = 3;
             return true;
         }
         return false;

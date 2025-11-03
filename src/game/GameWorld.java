@@ -88,7 +88,15 @@ public class GameWorld {
 
         if (entities.noBallsRemaining()) {
             scoreSystem.loseLife();
-            entities.spawnNewBallAtPaddle();
+            // LOGIC MẤT MẠNG VÀ GAME OVER ĐÃ ĐƯỢC ĐƠN GIẢN HÓA
+            if (scoreSystem.isGameOver()) {
+                // nếu thua ko phát âm thanh
+                return;
+            } else {
+                // PHÁT ÂM THANH KHI MẤT MẠNG NHƯNG CÒN MẠNG
+                SoundManager.play(SoundManager.LOST_HEALTH);
+                entities.spawnNewBallAtPaddle();
+            }
         }
 
         skillEffectManager.update(deltaTime);
