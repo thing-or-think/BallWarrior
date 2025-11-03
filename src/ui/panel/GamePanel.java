@@ -14,7 +14,7 @@ public class GamePanel extends JPanel {
 
     public GamePanel(GameWorld world) {
         this.world = world;
-        background = ResourceLoader.loadImage("assets/images/Bg/scene1.png"); // scene 2/3 theo level
+        background = ResourceLoader.loadImage("assets/images/Bg/scene3.png"); // scene 2/3 theo level
     }
 
     @Override

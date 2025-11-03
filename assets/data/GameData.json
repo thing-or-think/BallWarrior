@@ -696,6 +696,22 @@
       {
         "playerName": "HoanDepZai",
         "score": 1500
+      },
+      {
+        "playerName": "Player 1",
+        "score": 11000
+      }
+    ],
+    "assets\\levels\\level7.json": [
+      {
+        "playerName": "Player 1",
+        "score": 100
+      }
+    ],
+    "assets\\levels\\level9.json": [
+      {
+        "playerName": "Player 1",
+        "score": 4000
       }
     ]
   },
