@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ public class PlayerSelectScene extends Scene {
     private int selectedPlayerIndex = -1;
 
     private PlayerData templateData;
+    private BufferedImage background;
 
     // BIẾN pendingAction ĐÃ BỊ XÓA
 
@@ -132,6 +134,7 @@ public class PlayerSelectScene extends Scene {
     @Override
     protected void initUI() {
         setLayout(null);
+        background = ResourceLoader.loadImage("assets/images/Bg/playerselect.jpg");
 
         nameField = new JTextField();
         nameField.setBounds(Constants.WINDOW_WIDTH / 2 - 150, 80, 200, 40);
@@ -278,6 +281,9 @@ public class PlayerSelectScene extends Scene {
 
     @Override
     protected void render(Graphics2D g2) {
+        g2.drawImage(background,0,0,Constants.WINDOW_WIDTH,Constants.WINDOW_HEIGHT,null);
+        g2.setColor(new Color(0,0,0,200));
+        g2.fillRect(0,0,Constants.WINDOW_WIDTH,Constants.WINDOW_HEIGHT);
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Serif", Font.BOLD, 36));
         g2.drawString("Player Management", Constants.WINDOW_WIDTH / 2 - 150, 40);

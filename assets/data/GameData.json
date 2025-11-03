@@ -660,6 +660,10 @@
       {
         "playerName": "HoanDepZai",
         "score": 1300
+      },
+      {
+        "playerName": "Player 1",
+        "score": 7800
       }
     ],
     "assets\\levels\\level1.json": [

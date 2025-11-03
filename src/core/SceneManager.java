@@ -22,6 +22,7 @@ public class SceneManager {
     private GameScene gameScene;
     private MenuScene menuScene;
     private ShopScene shopScene;
+    private InstructionScene instructionScene;
     private OwnedScene ownedScene;
     private PauseScene pauseScene;
     private LevelSelectScene levelSelectScene;
@@ -88,6 +89,7 @@ public class SceneManager {
         loadCurrentPlayer();
         ownedScene = new OwnedScene(input,this);
         shopScene = new ShopScene(input, currentPlayer,ownedScene,this);
+        instructionScene = new InstructionScene(input,this);
         gameScene = new GameScene(input, this, currentPlayer, gameData);
         menuScene = new MenuScene(
                 input,
@@ -95,7 +97,7 @@ public class SceneManager {
                 this::goToLevelSelect,
                 this::goToShop,
                 this::goToPlayerSelect,
-                () -> System.out.println("Instruction!"),
+                this::gotoInstruction,
                 () -> System.exit(0)
         );
 
@@ -210,6 +212,7 @@ public class SceneManager {
     public void goToGame() { goToGame("assets/levels/level1.json"); }
     public void gotoOwned() { setScene(ownedScene); }
     public void goToShop() { setScene(shopScene); }
+    public void gotoInstruction() { setScene(instructionScene); }
     public void goToPause() { setScene(pauseScene); }
     public void goToLevelSelect() { setScene(levelSelectScene); }
     public void goToGameOver() { setScene(gameOverScene); }
