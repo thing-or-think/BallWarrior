@@ -20,6 +20,8 @@ public class GameScene extends Scene {
     private final SkillPanel skillPanel;
     private final GamePanel gamePanel;
 
+    private boolean paused = false;
+
     public GameScene(InputHandler input, SceneManager sceneManager, PlayerData playerData) {
         super("Game", input);
         this.sceneManager = sceneManager;
@@ -44,11 +46,25 @@ public class GameScene extends Scene {
         add(gamePanel);
     }
 
+    /**
+     * Phương thức để bắt đầu/tải một màn chơi cụ thể
+     * @param levelPath Đường dẫn file level
+     */
+    public void startGame(String levelPath) {
+        world.resetAndLoadLevel(levelPath);
+    }
+
+    public void setPaused(boolean value) {
+        paused = value;
+    }
+
     @Override
     protected void update() {
+        if (paused) return;
+
         if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_ESCAPE)) {
-            sceneManager.goToPause();
-            return;
+            paused = true;
+            sceneManager.goToPauseMenu(this);;
         }
 
         world.update(deltaTime);

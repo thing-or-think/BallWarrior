@@ -41,6 +41,11 @@ public class CollisionSystem {
         colliders.removeIf(entity -> !entity.isAlive());
     }
 
+    /** Hủy đăng ký toàn bộ entity khỏi hệ thống va chạm */
+    public void clear() {
+        colliders.clear();
+    }
+
     /** Tìm va chạm gần nhất giữa Ball và toàn bộ colliders */
     public CollisionResult findNearestCollision(Ball ball) {
         if (ball == null || colliders.isEmpty()) return null;
@@ -90,16 +95,6 @@ public class CollisionSystem {
 
             // Broad-phase check
             if (!broadPhaseCheck(ball, e)) continue;
-
-            // Logic đặc biệt cho Fireball vs Brick
-//            if (ball.isFireBall() && e instanceof Brick) {
-//                CollisionResult result = CircleVsAABB.intersect(ball, e);
-//                if (result != null) {
-//                    // Fireball va chạm với gạch, trả về một kết quả va chạm đặc biệt.
-//                    // Điều này cho phép GameScene phá hủy gạch nhưng không xử lý phản xạ.
-//                    return new CollisionResult(e, new Vector2D(), new Vector2D(), 0);
-//                }
-//            }
 
             // Narrow-phase check
             CollisionResult result = null;

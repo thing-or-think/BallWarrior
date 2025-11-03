@@ -126,6 +126,17 @@ public class EntityManager {
         manaOrbs.removeIf(orb -> !orb.isAlive());
     }
 
+    /**
+     * THÊM: Đặt lại danh sách các đối tượng liên quan đến level.
+     */
+    public void resetLevelEntities() {
+        this.balls.clear();
+        this.bricks.clear();
+        this.manaOrbs.clear();
+        this.shield.setAlive(false); // Đảm bảo shield tắt khi level reset
+
+    }
+
     public void render(Graphics2D g2) {
         if (paddle != null) paddle.draw(g2);
         for (Brick b : bricks) if (!b.isDestroyed()) b.draw(g2);

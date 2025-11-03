@@ -47,7 +47,7 @@ public class ScoreSystem {
         return mana;
     }
 
-    public void loseLife() {
+    public void     loseLife() {
         if (lives > 0) {
             lives--;
         }

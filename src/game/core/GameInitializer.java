@@ -28,6 +28,7 @@ public class GameInitializer {
     private ScoreSystem scoreSystem;
     private OrbSpawner orbSpawner;
     private SoundManager soundManager;
+    private LevelManager levelManager;
 
     public void initialize(InputHandler input) {
         SoundManager.initialize();
@@ -43,16 +44,10 @@ public class GameInitializer {
         entityManager.setPaddle(paddle);
 
         // Level
-        LevelManager levelManager = new LevelManager();
-        levelManager.load("assets/levels/level1.json");
-        LevelData level = levelManager.getCurrentLevel();
-        List<Brick> bricks = LevelBuilder.buildBricks(level);
-        entityManager.setBricks(bricks);
+        levelManager = new LevelManager();
 
-        // Collision system
+        // ✅ FIX NPE — KHỞI TẠO HỆ VA CHẠM
         collisionSystem = new CollisionSystem(paddle);
-        collisionSystem.register(paddle);
-        for (Brick b : bricks) collisionSystem.register(b);
 
         // Skills
         skillEffectManager = new SkillEffectManager();
@@ -79,4 +74,8 @@ public class GameInitializer {
     public ScoreSystem getScoreSystem() { return scoreSystem; }
     public OrbSpawner getOrbSpawner() { return orbSpawner; }
     public SoundManager getSoundManager() { return soundManager; }
+
+    public LevelManager getLevelManager() {
+        return levelManager;
+    }
 }

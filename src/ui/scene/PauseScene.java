@@ -15,7 +15,7 @@ import java.util.List;
 public class PauseScene extends Scene {
 
     private final SceneManager sceneManager;
-    private final Scene gameScene; // Tham chiếu đến GameScene để resume
+    private Scene gameScene; // Tham chiếu đến GameScene để resume
     private final List<Button> buttons = new ArrayList<>();
 
     public PauseScene(InputHandler input, SceneManager sceneManager, Scene gameScene) {
@@ -23,6 +23,10 @@ public class PauseScene extends Scene {
         this.sceneManager = sceneManager;
         this.gameScene = gameScene;
         initUI();
+    }
+
+    public void setGameScene(Scene scene) {   // ✅ ADD
+        this.gameScene = scene;
     }
 
     @Override
@@ -41,7 +45,10 @@ public class PauseScene extends Scene {
                 Constants.WINDOW_WIDTH / 2,
                 startY,
                 fm,
-                () -> sceneManager.goToGame() // Resume lại game
+                () -> {
+                    ((GameScene) gameScene).setPaused(false);
+                    sceneManager.backTo(gameScene);
+                }
         ));
 
         // ====== Nút Menu ======
@@ -67,7 +74,8 @@ public class PauseScene extends Scene {
     protected void update() {
         // Ấn ESC để quay lại game
         if (input.isKeyJustPressed(KeyEvent.VK_ESCAPE)) {
-            sceneManager.goToGame();
+            ((GameScene) gameScene).setPaused(false);
+            sceneManager.backTo(gameScene);
         }
 
         int mx = input.getMouseX();

@@ -57,6 +57,11 @@ public class SceneManager {
         currentScene.startRepaintLoop();
     }
 
+    public void backTo(Scene scene) {
+        setScene(scene);
+    }
+
+
     public Scene getCurrentScene() {
         return currentScene;
     }
@@ -65,13 +70,25 @@ public class SceneManager {
         setScene(menuScene);
     }
 
-    public void goToGame() {
-        gameScene.forceUpdateGameAssets();
+    //Sửa đổi goToGame để nhận đường dẫn level
+    public void goToGame(String levelPath) {
+        gameScene.startGame(levelPath); // Yêu cầu GameScene chuẩn bị level
         setScene(gameScene);
+        gameScene.forceUpdateGameAssets();
+    }
+
+    public void goToGame() {
+        goToGame("assets/levels/level1.json"); // Mặc định vào level 1
     }
 
     public void goToShop() {
         setScene(shopScene);
+    }
+
+    //THÊM HÀM PAUSE SCENE
+    public void goToPauseMenu(GameScene gameScene) {
+        pauseScene.setGameScene(gameScene);
+        setScene(pauseScene);
     }
 
     public void goToPause() { setScene(pauseScene); }
