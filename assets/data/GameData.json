@@ -691,6 +691,12 @@
         "playerName": "HoanDepZai",
         "score": 1600
       }
+    ],
+    "assets\\levels\\level8.json": [
+      {
+        "playerName": "HoanDepZai",
+        "score": 1500
+      }
     ]
   },
   "currentPlayerName": "Player 1"

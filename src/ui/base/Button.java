@@ -1,5 +1,6 @@
 package ui.base;
 
+import core.AudioService;
 import utils.TextUtils;
 
 import java.awt.*;
@@ -84,6 +85,7 @@ public abstract class Button extends TextElement {
     }
 
     public void performAction() {
+        AudioService.playSound("assets/sounds/ButtonClick.wav");
         if (activity != null) activity.run();
     }
 
