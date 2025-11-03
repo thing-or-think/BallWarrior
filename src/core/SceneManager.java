@@ -22,6 +22,7 @@ public class SceneManager {
     private GameScene gameScene;
     private MenuScene menuScene;
     private ShopScene shopScene;
+    private OwnedScene ownedScene;
     private PauseScene pauseScene;
     private LevelSelectScene levelSelectScene;
     private GameOverScene gameOverScene;
@@ -85,8 +86,8 @@ public class SceneManager {
 
     private void reloadApplicationState(boolean doSetScene) {
         loadCurrentPlayer();
-
-        shopScene = new ShopScene(input, currentPlayer);
+        ownedScene = new OwnedScene(input,this);
+        shopScene = new ShopScene(input, currentPlayer,ownedScene,this);
         gameScene = new GameScene(input, this, currentPlayer, gameData);
         menuScene = new MenuScene(
                 input,
@@ -207,6 +208,7 @@ public class SceneManager {
     }
 
     public void goToGame() { goToGame("assets/levels/level1.json"); }
+    public void gotoOwned() { setScene(ownedScene); }
     public void goToShop() { setScene(shopScene); }
     public void goToPause() { setScene(pauseScene); }
     public void goToLevelSelect() { setScene(levelSelectScene); }

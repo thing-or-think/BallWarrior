@@ -326,9 +326,9 @@
     },
     {
       "playerName": "HoanDepZai",
-      "coins": 1000,
+      "coins": 0,
       "equipped": {
-        "ballId": 11,
+        "ballId": 12,
         "paddleId": 24
       },
       "inventory": {
@@ -669,7 +669,7 @@
       },
       {
         "playerName": "HoanDepZai",
-        "score": 3600
+        "score": 4800
       }
     ],
     "assets\\levels\\level10.json": [
@@ -677,7 +677,13 @@
         "playerName": "HoanDepZai",
         "score": 400
       }
+    ],
+    "assets\\levels\\level6.json": [
+      {
+        "playerName": "HoanDepZai",
+        "score": 1600
+      }
     ]
   },
-  "currentPlayerName": "Player 1"
+  "currentPlayerName": "HoanDepZai"
 }
