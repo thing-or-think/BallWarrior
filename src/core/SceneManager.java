@@ -95,7 +95,7 @@ public class SceneManager {
                 this::goToLevelSelect,
                 this::goToShop,
                 this::goToPlayerSelect,
-                () -> System.out.println("Inventory!"),
+                () -> System.out.println("Instruction!"),
                 () -> System.exit(0)
         );
 

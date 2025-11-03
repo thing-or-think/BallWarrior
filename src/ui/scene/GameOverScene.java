@@ -25,7 +25,7 @@ public class GameOverScene extends Scene {
     @Override
     protected void initUI() {
         setBackground(Color.BLACK);
-        backgroundImage = ResourceLoader.loadImage("assets/images/gameover.png");
+        backgroundImage = ResourceLoader.loadImage("assets/images/Bg/gameover.png");
 
         Font font = new Font("Serif", Font.PLAIN, 32);
         FontMetrics fm = getFontMetrics(font);

@@ -33,7 +33,7 @@ public class GachaPanel extends JPanel {
 
     private SkinData awardedSkin;
     private final Random rand = new Random();
-    private final int COST = 1000; //1000
+    private final int COST = 0; //1000
     private BuyButton spinButton;
 
     // Assets Animation

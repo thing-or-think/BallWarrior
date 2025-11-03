@@ -80,7 +80,7 @@ public class InfoPanel extends JPanel {
             if ("ball".equals(skinData.getType())) {
                 g2.fillOval(getWidth() / 2 - 100, 200, 200, 200);
             } else {
-                g2.fillRect(getWidth() / 2 - 150, 300, 300, 70);
+                g2.fillRoundRect(getWidth() / 2 - 150, 300, 300, 70,36,36);
             }
         }
     }

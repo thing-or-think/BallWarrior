@@ -4,8 +4,8 @@
       "playerName": "Player 1",
       "coins": 1000,
       "equipped": {
-        "ballId": 11,
-        "paddleId": 24
+        "ballId": 5,
+        "paddleId": 20
       },
       "inventory": {
         "items": [
@@ -108,7 +108,7 @@
           {
             "id": 8,
             "type": "ball",
-            "name": "Fire Orb",
+            "name": "Orb",
             "rarity": "EPIC",
             "price": 1000,
             "isBought": true,
@@ -121,7 +121,7 @@
             "id": 9,
             "type": "ball",
             "name": "Watermelon",
-            "rarity": "LEGENDARY",
+            "rarity": "EPIC",
             "price": 1000,
             "isBought": true,
             "display": {
@@ -312,13 +312,13 @@
           {
             "id": 25,
             "type": "paddle",
-            "name": "Ass Paddle",
+            "name": "36 Paddle",
             "rarity": "LEGENDARY",
             "price": 2500,
             "isBought": true,
             "display": {
               "type": "image",
-              "value": "assets/images/Paddles/ass.png"
+              "value": "assets/images/Paddles/nemchua.png"
             }
           }
         ]
@@ -328,7 +328,7 @@
       "playerName": "HoanDepZai",
       "coins": 0,
       "equipped": {
-        "ballId": 12,
+        "ballId": 6,
         "paddleId": 24
       },
       "inventory": {
@@ -432,7 +432,7 @@
           {
             "id": 8,
             "type": "ball",
-            "name": "Fire Orb",
+            "name": "Orb",
             "rarity": "EPIC",
             "price": 1000,
             "isBought": true,
@@ -445,7 +445,7 @@
             "id": 9,
             "type": "ball",
             "name": "Watermelon",
-            "rarity": "LEGENDARY",
+            "rarity": "EPIC",
             "price": 1000,
             "isBought": true,
             "display": {
@@ -636,13 +636,13 @@
           {
             "id": 25,
             "type": "paddle",
-            "name": "Ass Paddle",
+            "name": "36 Paddle",
             "rarity": "LEGENDARY",
             "price": 2500,
             "isBought": true,
             "display": {
               "type": "image",
-              "value": "assets/images/Paddles/ass.png"
+              "value": "assets/images/Paddles/nemchua.png"
             }
           }
         ]
@@ -653,7 +653,7 @@
     "assets\\levels\\level2.json": [
       {
         "playerName": "Player 1",
-        "score": 400
+        "score": 500
       }
     ],
     "assets\\levels\\level3.json": [
@@ -665,7 +665,7 @@
     "assets\\levels\\level1.json": [
       {
         "playerName": "Player 1",
-        "score": 3800
+        "score": 4000
       },
       {
         "playerName": "HoanDepZai",
@@ -676,6 +676,10 @@
       {
         "playerName": "HoanDepZai",
         "score": 400
+      },
+      {
+        "playerName": "Player 1",
+        "score": 500
       }
     ],
     "assets\\levels\\level6.json": [
@@ -685,5 +689,5 @@
       }
     ]
   },
-  "currentPlayerName": "HoanDepZai"
+  "currentPlayerName": "Player 1"
 }

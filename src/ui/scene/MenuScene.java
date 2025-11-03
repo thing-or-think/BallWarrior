@@ -24,7 +24,7 @@ public class MenuScene extends Scene {
         String playText = "PLAY AS " + (currentPlayerName != null ? currentPlayerName.toUpperCase() : "PLAYER");
 
         // Thêm "INVENTORY" vào danh sách
-        String[] texts = {playText, "CHANGE PLAYER", "SHOP", "INVENTORY", "QUIT"};
+        String[] texts = {playText, "CHANGE PLAYER", "SHOP", "INSTRUCTION", "QUIT"};
         Runnable[] runnables = {onPlay, onChangePlayer, onShop, onInventory, onQuit};
 
         int startY = 380;
@@ -41,7 +41,7 @@ public class MenuScene extends Scene {
 
     @Override
     protected void initUI() {
-        background = new ImageIcon("assets/images/background2.gif");
+        background = new ImageIcon("assets/images/Bg/background2.gif");
     }
 
     @Override

@@ -3,6 +3,7 @@ package ui.scene;
 import game.LevelData;
 import core.InputHandler;
 import core.SceneManager;
+import core.ResourceLoader;
 import data.GameData;
 import data.PlayerData;
 import game.GameWorld;
@@ -12,6 +13,7 @@ import ui.base.Scene;
 import ui.panel.GamePanel;
 import utils.Constants;
 import ui.LeaderboardDisplay;
+import java.awt.image.BufferedImage;
 
 import java.awt.*;
 
@@ -27,6 +29,7 @@ public class GameScene extends Scene {
     private final GameData gameData;
     private String currentLevelPath;
     private boolean scoreSaved = false;
+    private BufferedImage background;
 
     public GameScene(InputHandler input, SceneManager sceneManager, PlayerData playerData, GameData gameData) {
         super("Game", input);
@@ -39,7 +42,8 @@ public class GameScene extends Scene {
         this.gamePanel = new GamePanel(world);
         this.leaderboardDisplay = new LeaderboardDisplay();
 
-        setBackground(Color.decode("#212121"));
+        //setBackground(Color.decode("#212121"));
+        background = ResourceLoader.loadImage("assets/images/Bg/gamescene.png");
         initUI();
     }
 
@@ -122,6 +126,7 @@ public class GameScene extends Scene {
 
     @Override
     protected void render(Graphics2D g2) {
+        g2.drawImage(background,0,0,Constants.WINDOW_WIDTH,Constants.WINDOW_HEIGHT,null);
         hud.render(g2);
         skillPanel.draw(g2);
         leaderboardDisplay.draw(g2);

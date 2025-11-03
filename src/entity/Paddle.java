@@ -79,7 +79,9 @@ public class Paddle extends Entity {
 
         if ("color".equalsIgnoreCase(type)) {
             g.setColor(equippedPaddleColor);
-            g.fillRect((int) position.x, (int) position.y, width, height);
+            g.fillRoundRect((int) position.x, (int) position.y, width, height,20,20);
+            g.setColor(Color.WHITE);
+            g.drawRoundRect((int) position.x, (int) position.y, width, height,20,20);
         }else {
             g.drawImage(img,(int)position.x,(int)position.y,Constants.PADDLE_WIDTH,Constants.PADDLE_HEIGHT,null);
 

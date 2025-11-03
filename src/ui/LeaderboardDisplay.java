@@ -50,7 +50,7 @@ public class LeaderboardDisplay {
 
         int boxWidth = 220;
         int boxHeight = 200;
-        int boxX = Constants.WINDOW_WIDTH - boxWidth - 30; // 30 padding
+        int boxX = Constants.WINDOW_WIDTH - boxWidth - 15; // 30 padding
         int boxY = (Constants.WINDOW_HEIGHT - boxHeight) / 2 - 50; // Đặt ở giữa, hơi cao
 
         // Vẽ nền mờ

@@ -86,6 +86,8 @@ public class Ball extends Entity {
         if ("color".equalsIgnoreCase(type)) {
             g.setColor(equippedBallColor);
             g.fillOval((int) position.x, (int) position.y, width, height);
+            g.setColor(Color.WHITE);
+            g.drawOval((int) position.x, (int) position.y, width, height);
         } else {
             g.drawImage(img, (int) position.x, (int) position.y, Constants.BALL_SIZE, Constants.BALL_SIZE, null);
         }

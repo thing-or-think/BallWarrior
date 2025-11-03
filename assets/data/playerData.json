@@ -105,7 +105,7 @@
       {
         "id": 8,
         "type": "ball",
-        "name": "Fire Orb",
+        "name": "Orb",
         "rarity": "EPIC",
         "price": 1000,
         "isBought": true,
@@ -118,7 +118,7 @@
         "id": 9,
         "type": "ball",
         "name": "Watermelon",
-        "rarity": "LEGENDARY",
+        "rarity": "EPIC",
         "price": 1000,
         "isBought": true,
         "display": {
@@ -309,13 +309,13 @@
       {
         "id": 25,
         "type": "paddle",
-        "name": "Ass Paddle",
+        "name": "36 Paddle",
         "rarity": "LEGENDARY",
         "price": 2500,
         "isBought": true,
         "display": {
           "type": "image",
-          "value": "assets/images/Paddles/ass.png"
+          "value": "assets/images/Paddles/nemchua.png"
         }
       }
     ]

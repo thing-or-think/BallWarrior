@@ -30,7 +30,7 @@ public class WinScene extends Scene {
     protected void initUI() {
         setBackground(Color.BLACK);
         // Tải ảnh nền WinGame.png
-        backgroundImage = ResourceLoader.loadImage("assets/images/WinGame.png");
+        backgroundImage = ResourceLoader.loadImage("assets/images/Bg/WinGame.png");
 
         Font font = new Font("Serif", Font.PLAIN, 32);
         FontMetrics fm = getFontMetrics(font);

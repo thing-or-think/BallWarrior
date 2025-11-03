@@ -86,7 +86,7 @@ public class SkinButton extends Button {
             if ("ball".equalsIgnoreCase(skinData.getType())) {
                 g2.fillOval(x + width / 4, y + height / 4 - height/10, width / 2, height / 2);
             } else {
-                g2.fillRect(x + width/2 - 3*width/8, y + height/2 - height/7, 3*width/4, height/5);
+                g2.fillRoundRect(x + width/2 - 3*width/8, y + height/2 - height/7, 3*width/4, height/5,17,17);
             }
         }
         else if ("image".equalsIgnoreCase(displayType)) {   //img
