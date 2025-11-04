@@ -41,10 +41,7 @@ public class PauseScene extends Scene {
                 Constants.WINDOW_WIDTH / 2,
                 startY,
                 fm,
-                () -> {
-                    ((GameScene) gameScene).setPaused(false);
-                    sceneManager.backTo(gameScene); // Resume lại game
-                }
+                this::goToGame
         ));
 
         // ====== Nút Menu ======
@@ -73,7 +70,7 @@ public class PauseScene extends Scene {
     protected void update() {
         // Ấn ESC để quay lại game
         if (input.isKeyJustPressed(KeyEvent.VK_ESCAPE)) {
-            sceneManager.goToGame();
+            goToGame();
         }
 
         int mx = input.getMouseX();
@@ -121,4 +118,8 @@ public class PauseScene extends Scene {
         this.gameScene = scene;
     }
 
+    public void goToGame() {
+        ((GameScene) gameScene).setPaused(false);
+        sceneManager.backTo(gameScene);
+    }
 }
