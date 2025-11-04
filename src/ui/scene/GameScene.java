@@ -30,6 +30,7 @@ public class GameScene extends Scene {
     private String currentLevelPath;
     private boolean scoreSaved = false;
     private BufferedImage background;
+    private boolean paused = false;
 
     public GameScene(InputHandler input, SceneManager sceneManager, PlayerData playerData, GameData gameData) {
         super("Game", input);
@@ -93,9 +94,12 @@ public class GameScene extends Scene {
 
     @Override
     protected void update() {
-        if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_ESCAPE)) {
-            sceneManager.goToPause();
+        if (paused) {
             return;
+        }
+        if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_ESCAPE)) {
+            paused = true;
+            sceneManager.goToPasuseMenu(this);
         }
 
         if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_TAB)) {
@@ -141,5 +145,9 @@ public class GameScene extends Scene {
                 playerData.getInventory().getItems().get(skinPaddleId)
         );
         System.out.println(playerData.getCoins());
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 }

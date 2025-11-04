@@ -713,6 +713,12 @@
         "playerName": "Player 1",
         "score": 4000
       }
+    ],
+    "assets\\levels\\level4.json": [
+      {
+        "playerName": "Player 1",
+        "score": 100
+      }
     ]
   },
   "currentPlayerName": "Player 1"

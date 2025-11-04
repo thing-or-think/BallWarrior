@@ -209,6 +209,11 @@ public class SceneManager {
         setScene(gameScene);
     }
 
+    public void goToPasuseMenu(GameScene gameScene) {
+        pauseScene.setGameScene(gameScene);
+        setScene(pauseScene);
+    }
+
     public void goToGame() { goToGame("assets/levels/level1.json"); }
     public void gotoOwned() { setScene(ownedScene); }
     public void goToShop() { setScene(shopScene); }
@@ -217,6 +222,10 @@ public class SceneManager {
     public void goToLevelSelect() { setScene(levelSelectScene); }
     public void goToGameOver() { setScene(gameOverScene); }
     public void goToWinScene() { setScene(winScene); }
+
+    public void backTo(Scene scene) {
+        setScene(scene);
+    }
 
     public void goToPlayerSelect() {
         // [SỬA LỖI 4]
