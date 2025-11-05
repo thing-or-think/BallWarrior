@@ -19,13 +19,17 @@ public class LevelBuilder {
 
         for (int r = 0; r < level.rows; r++) {
             for (int c = 0; c < level.cols; c++) {
+                int cell = level.brickMap[r][c];
+                if (cell < 0) continue;
+
                 Brick.Type type;
-                switch (level.brickMap[r][c]) {
+                switch (cell) {
                     case 0: type = Brick.Type.BEDROCK; break;
                     case 1: type = Brick.Type.COBBLESTONE; break;
                     case 2: type = Brick.Type.GOLD; break;
-                    default: type = Brick.Type.DIAMOND; break;
+                    case 3: default: type = Brick.Type.DIAMOND; break;
                 }
+
                 bricks.add(new Brick(
                         startX + c * (brickSize),
                         startY + r * (brickSize),
