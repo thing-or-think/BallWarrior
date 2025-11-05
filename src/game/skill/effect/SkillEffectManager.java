@@ -59,4 +59,12 @@ public class SkillEffectManager {
         }
     }
 
+    /**
+     * Xóa toàn bộ hiệu ứng hình ảnh
+     */
+    public void clearEffects() {
+        explosions.clear();
+        fireBallEffects.clear();
+    }
+
 }

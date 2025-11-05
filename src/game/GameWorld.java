@@ -58,6 +58,9 @@ public class GameWorld {
         scoreSystem.reset();
         entities.getBalls().clear();
         entities.getManaOrbs().clear();
+        skillManager.reset();
+        skillEffectManager.clearEffects();
+
         List<Brick> oldBricks = entities.getBricks();
         for (Brick b : oldBricks) {
             collisionSystem.unregister(b);

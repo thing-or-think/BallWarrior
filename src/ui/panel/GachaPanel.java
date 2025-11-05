@@ -151,7 +151,7 @@ public class GachaPanel extends JPanel {
                     ownedScene.setResultMessage("New SKin : "+awardedSkin.getName());
                 }
 
-                AudioService.playSound("assets/sounds/Ownedscene.wav");
+                AudioService.playSound("Ownedscene.wav");
                 //run reel xong chuyen sang ownedscene
                 sceneManager.gotoOwned();
                 repaint();
@@ -177,7 +177,7 @@ public class GachaPanel extends JPanel {
             spinButton.setHovered(spinButton.contains(mx, my));
             if (spinButton.isHovered() && input.consumeClick()) {
                 spinButton.onClick();
-                AudioService.playSound("assets/sounds/CSGOopencase.wav");
+                AudioService.playSound("CSGOopencase.wav");
             }
         } else {
             spinButton.setHovered(false);

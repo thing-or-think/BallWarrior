@@ -85,7 +85,7 @@ public abstract class Button extends TextElement {
     }
 
     public void performAction() {
-        AudioService.playSound("assets/sounds/ButtonClick.wav");
+        AudioService.playSound("ButtonClick.wav");
         if (activity != null) activity.run();
     }
 

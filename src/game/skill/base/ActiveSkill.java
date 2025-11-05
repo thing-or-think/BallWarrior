@@ -1,6 +1,7 @@
 package game.skill.base;
 
 import game.ScoreSystem;
+import core.AudioService;
 import utils.Constants;
 
 import java.awt.image.BufferedImage;
@@ -83,12 +84,35 @@ public abstract class ActiveSkill extends Skill {
             isReady = false;
             cooldownTimer = cooldownTime;
 
+            //phát âm thanh skill
+            playActivationSound();
+
             if (durationTime > 0) {
                 isActive = true;
                 durationTimer = durationTime;
                 onActivate();
             }
         }
+    }
+
+    // PHÁT ÂM THANH KÍCH HOẠT CHUNG
+    protected void playActivationSound() {
+        // Chỉ phát âm thanh SKILL_ACTIVATE chung
+        AudioService.playSound("skill.wav");
+    }
+
+    public void forceReset() {
+        // 1. Dọn dẹp hiệu ứng nếu đang active
+        if (isActive) {
+            onDeactivate();
+        }
+
+        // 2. Reset trạng thái
+        isActive = false;
+        isReady = true;
+        cooldownTimer = 0;
+        durationTimer = 0;
+
     }
 
     protected void onActivate() {}
