@@ -67,6 +67,14 @@ public class LevelManager {
             currentLevel = gson.fromJson(reader, LevelData.class);
             if (currentLevel != null) {
                 System.out.println("✅ Đã load level: " + currentLevel.name);
+                if (currentLevel.backgroundPath != null && !currentLevel.backgroundPath.isEmpty()) {
+                    String imagePath = "assets/images/Bg/" + currentLevel.backgroundPath;
+                    BufferedImage img = ResourceLoader.loadImage(imagePath);
+                    currentLevel.setBackground(img);
+                    if (img == null) {
+                        System.err.println("CẢNH BÁO: Không tìm thấy ảnh nền: " + imagePath);
+                    }
+                }
             }
             return currentLevel;
         } catch (IOException e) {

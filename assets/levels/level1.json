@@ -6,6 +6,8 @@
     [1,1,1,1,1,1,1,1,1,1,1,1],
     [1,1,1,1,1,1,1,1,1,1,1,1]
   ],
-  "previewImagePath": "level1_preview.png"
+  "previewImagePath": "level1_preview.png",
+  "backgroundPath": "scene1.png",
+  "index": 1
 }
 

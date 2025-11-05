@@ -9,5 +9,7 @@
     [0,1,0,1,0,1,0,1,0,1,0,1],
     [2,0,2,0,2,0,2,0,2,0,2,0]
   ],
-  "previewImagePath": "level6_preview.png"
+  "previewImagePath": "level6_preview.png",
+  "backgroundPath": "scene2.png",
+  "index": 6
 }

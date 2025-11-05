@@ -9,6 +9,7 @@ import game.core.*;
 import game.collision.CollisionSystem;
 import game.skill.effect.SkillEffectManager;
 import game.skill.SkillManager;
+import utils.Constants;
 
 import java.awt.*;
 import java.util.List; // Thêm import
@@ -125,6 +126,20 @@ public class GameWorld {
     }
 
     public void render(Graphics2D g2) {
+        LevelData current = levelManager.getCurrentLevel(); // Lấy level đang hoạt động
+
+        // 1. VẼ HÌNH NỀN
+        if (current != null && current.background != null) {
+            // Vẽ ảnh nền lên toàn bộ màn hình game (Constants.GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT)
+            g2.drawImage(current.background,
+                    0, 0,
+                    Constants.GAME_PANEL_WIDTH, Constants.GAME_PANEL_HEIGHT,
+                    null);
+        } else {
+            // Nếu không có ảnh nền, vẽ màu nền mặc định (ví dụ: đen)
+            g2.setColor(Color.BLACK);
+            g2.fillRect(0, 0, Constants.GAME_PANEL_WIDTH, Constants.GAME_PANEL_HEIGHT);
+        }
         entities.render(g2);
         skillEffectManager.draw(g2);
     }

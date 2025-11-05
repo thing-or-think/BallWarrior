@@ -195,7 +195,7 @@
             "name": "Basic Green",
             "rarity": "COMMON",
             "price": 150,
-            "isBought": false,
+            "isBought": true,
             "display": {
               "type": "color",
               "value": "#008000"
@@ -653,7 +653,7 @@
     "assets\\levels\\level2.json": [
       {
         "playerName": "Player 1",
-        "score": 500
+        "score": 26500
       }
     ],
     "assets\\levels\\level3.json": [
@@ -663,7 +663,7 @@
       },
       {
         "playerName": "Player 1",
-        "score": 7800
+        "score": 28500
       }
     ],
     "assets\\levels\\level1.json": [
@@ -705,7 +705,7 @@
     "assets\\levels\\level7.json": [
       {
         "playerName": "Player 1",
-        "score": 100
+        "score": 800
       }
     ],
     "assets\\levels\\level9.json": [
@@ -717,7 +717,7 @@
     "assets\\levels\\level4.json": [
       {
         "playerName": "Player 1",
-        "score": 100
+        "score": 2000
       }
     ]
   },
