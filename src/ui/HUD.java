@@ -44,6 +44,7 @@ public class HUD {
         scoreLabel.setText("Score: " + scoreSystem.getScore());
         manaLabel.setText("Mana: " + scoreSystem.getMana());
         healthBar.setCurrentHealth(scoreSystem.getLives());
+        comboLabel.setComboValue(scoreSystem.getCombo());
 
         // 2. VẼ HEALTH BAR
         // Vị trí vẽ Health Bar (ví dụ: góc trên bên phải, cùng dòng với Score)
