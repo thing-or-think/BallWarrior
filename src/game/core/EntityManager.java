@@ -1,5 +1,6 @@
 package game.core;
 
+import core.AudioService;
 import entity.*;
 import entity.Ball;
 import utils.Constants;
@@ -115,6 +116,7 @@ public class EntityManager {
             }
 
             if (paddle != null && orb.intersects(paddle)) {
+                AudioService.playSound("orb_collect.wav");
                 orb.setAlive(false);
             }
         }

@@ -1,6 +1,6 @@
 package game.core;
 
-import entity.Ball;
+import core.AudioService;
 import game.collision.CollisionResult;
 import game.collision.CollisionSystem;
 import entity.*;
@@ -66,7 +66,7 @@ public class CollisionProcessor {
                 // Cập nhật điểm và xóa gạch nếu bị phá hủy
                 if (brick.isDestroyed()) {
                     // PHÁT ÂM THANH: FIZZ (âm thanh xuyên phá/làm tan chảy)
-//                    SoundManager.play(SoundManager.FIZZ);
+                    AudioService.playSound("fizz.wav");
 
                     // spawn orb via OrbSpawner
                     ManaOrb orb = orbSpawner.trySpawn(brick);
@@ -82,14 +82,11 @@ public class CollisionProcessor {
             } else {
                 if (collisionSystem.resolveCollision(ball, result)) {
                     // PHÁT ÂM THANH: HIT_BRICK (Âm thanh va chạm)
-                    // Chỉ phát nếu gạch không phải Bedrock (Bedrock không phát tiếng nứt)
-                    if (!isBedrock) {
-//                        SoundManager.play(SoundManager.HIT_BRICK);
-                    }
+                        AudioService.playSound("hit_brick.wav");
 
                     if (brick.isDestroyed()) {
                         // phát âm thanh vỡ
-//                        SoundManager.play(SoundManager.BROKEN);
+                        AudioService.playSound("broken.wav");
                         // spawn orb via OrbSpawner
                         ManaOrb orb = orbSpawner.trySpawn(brick);
                         if (orb != null) {
@@ -105,7 +102,10 @@ public class CollisionProcessor {
         } else if (entity instanceof Shield || entity instanceof Paddle) {
             if (collisionSystem.resolveCollision(ball, result)) {
                 if(entity instanceof Shield) {
-//                    SoundManager.play(SoundManager.BALL_SHIELD);
+                    AudioService.playSound("ball_shield.wav");
+                }
+                else {
+                    AudioService.playSound("Ball-Paddle.wav");
                 }
                 scoreSystem.resetCombo();
             }

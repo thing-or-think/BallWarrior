@@ -1,6 +1,7 @@
 package game;
 
 import core.InputHandler;
+import core.AudioService;
 import data.SkinData;
 import entity.*;
 import entity.Ball;
@@ -98,7 +99,14 @@ public class GameWorld {
 
         if (entities.noBallsRemaining()) {
             scoreSystem.loseLife();
-            entities.spawnNewBallAtPaddle();
+            if(scoreSystem.isGameOver()) {
+                // thua ko làm gì
+                return;
+            }
+            else {
+                AudioService.playSound("lost_health.wav");
+                entities.spawnNewBallAtPaddle();
+            }
         }
 
         if (this.breakableBrickCount > 0) {
