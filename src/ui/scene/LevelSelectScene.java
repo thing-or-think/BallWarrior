@@ -57,7 +57,7 @@ public class LevelSelectScene extends Scene {
         // --- Khởi tạo UI ---
         Font titleFont = new Font("Arial", Font.BOLD, 48);
 
-        // [SỬA LỖI] Tính toán x căn giữa TRƯỚC KHI gọi constructor
+        // Tính toán x căn giữa TRƯỚC KHI gọi constructor
         FontMetrics fmTitle = new Canvas().getFontMetrics(titleFont);
         int titleWidth = fmTitle.stringWidth("SELECT LEVEL");
         int centeredX = (Constants.WINDOW_WIDTH - titleWidth) / 2;

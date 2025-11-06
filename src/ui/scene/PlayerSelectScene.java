@@ -99,7 +99,7 @@ public class PlayerSelectScene extends Scene {
             // Tạo nút VỚI TÊN ĐÃ ĐƯỢC SỬA ĐỔI
             MenuButton playerButton = new MenuButton(name, Constants.WINDOW_WIDTH / 2, yPos, fm, () -> {
                 selectedPlayerIndex = index;
-                refreshPlayerList(); // <-- Sửa lỗi: Gọi trực tiếp
+                refreshPlayerList();
             });
 
             // In đậm cho người chơi ĐANG ĐĂNG NHẬP
@@ -210,8 +210,6 @@ public class PlayerSelectScene extends Scene {
         PlayerData playerToDelete = playerList.get(selectedPlayerIndex);
         String nameToDelete = playerToDelete.getPlayerName(); // <-- Lấy tên trước khi xóa
 
-        // --- BẮT ĐẦU SỬA LỖI 2 ---
-
         // 1. Xóa người chơi khỏi danh sách chính
         gameData.getAllPlayers().remove(playerToDelete);
 
@@ -224,8 +222,6 @@ public class PlayerSelectScene extends Scene {
             scoreList.removeIf(entry -> entry.playerName.equals(nameToDelete));
         }
         System.out.println("Đã xóa tất cả điểm số của " + nameToDelete + " khỏi leaderboard.");
-
-        // --- KẾT THÚC SỬA LỖI 2 ---
 
         // Cập nhật người chơi hiện tại nếu cần
         if (nameToDelete.equals(gameData.getCurrentPlayerName())) {
@@ -247,7 +243,6 @@ public class PlayerSelectScene extends Scene {
         this.feedbackTimer = System.currentTimeMillis() + FEEDBACK_DURATION;
     }
 
-    // --- SỬA LỖI CONCURRENT MODIFICATION (Cách 2) ---
     @Override
     protected void update() {
         // Hẹn giờ tự động xóa thông báo
@@ -266,9 +261,6 @@ public class PlayerSelectScene extends Scene {
             button.setHovered(button.contains(mx, my));
 
             if (button.isHovered() && input.consumeClick()) {
-                // Gọi onClick() trên nút.
-                // Hành động này (vd: refreshPlayerList) sẽ sửa đổi 'this.buttons' (list gốc),
-                // nhưng không ảnh hưởng đến 'buttonsToUpdate' (list sao chép)
                 // vì vậy vòng lặp này vẫn an toàn.
                 button.onClick();
 
@@ -277,7 +269,6 @@ public class PlayerSelectScene extends Scene {
             }
         }
     }
-    // --- KẾT THÚC SỬA LỖI ---
 
     @Override
     protected void render(Graphics2D g2) {

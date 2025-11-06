@@ -14,7 +14,7 @@ public class HUD {
     private static final Font COMBO_FONT = new Font("Arial", Font.BOLD, 35);
 
     private final Label scoreLabel;
-    private final HealthBar healthBar; // KHAI BÁO HEALTH BAR
+    private final HealthBar healthBar;
     private final ComboLabel comboLabel;
     private final Label manaLabel;
 

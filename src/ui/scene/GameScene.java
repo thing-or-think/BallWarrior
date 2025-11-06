@@ -32,6 +32,16 @@ public class GameScene extends Scene {
     private BufferedImage background;
     private boolean paused = false;
 
+    private enum GameState {
+        PLAYING,
+        ENDING_WIN,
+        ENDING_LOSE
+    }
+
+    private GameState currentState = GameState.PLAYING;
+    private final float endGameDelay = 0.5f; // 0.5 giây
+    private float endGameTimer = 0.0f;       // Bộ đếm ngược
+
     private static final int GAME_WORLD_X = (Constants.WINDOW_WIDTH - Constants.GAME_PANEL_WIDTH) / 2;
     private static final int GAME_WORLD_Y = (Constants.WINDOW_HEIGHT - Constants.GAME_PANEL_HEIGHT) / 2;
 
@@ -65,10 +75,13 @@ public class GameScene extends Scene {
         this.currentLevelPath = levelPath;
         this.scoreSaved = false;
 
-        // [SỬA] Lấy về đối tượng LevelData khi reset
+        this.currentState = GameState.PLAYING; // Reset trạng thái về "đang chơi"
+        this.endGameTimer = 0.0f;              // Reset bộ đếm
+
+        //  Lấy về đối tượng LevelData khi reset
         LevelData loadedLevel = world.resetAndLoadLevel(levelPath);
 
-        // [SỬA] Cập nhật Leaderboard UI với tên thật
+        //  Cập nhật Leaderboard UI với tên thật
         if (loadedLevel != null) {
             // Sử dụng tên "đẹp" từ file JSON (vd: "Level 1: Classic Wall")
             leaderboardDisplay.updateData(levelPath, gameData, loadedLevel.name);
@@ -91,38 +104,58 @@ public class GameScene extends Scene {
 
     @Override
     protected void update() {
+        // Kiểm tra nếu game đang pause (bởi PauseScene)
         if (paused) {
             return;
         }
+
+        // Kiểm tra nếu người chơi nhấn ESC
         if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_ESCAPE)) {
             paused = true;
-            sceneManager.goToPasuseMenu(this);
+            sceneManager.goToPause();
+            return; // Dừng update ngay khi pause
         }
 
         if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_TAB)) {
             leaderboardDisplay.toggleVisibility();
         }
 
-        // Nếu game đã kết thúc (thắng/thua) thì không update world nữa
-        if (world.isLevelWon() || world.isGameOver()) {
-            return;
-        }
+        // --- BẮT ĐẦU LOGIC STATE MACHINE (TRỄ 0.5s) ---
+        switch (currentState) {
 
-        world.update(deltaTime);
+            case PLAYING:
+                // Trạng thái chơi bình thường
+                world.update(deltaTime);
 
-        // Kiểm tra THẮNG
-        if (world.isLevelWon()) {
-            coins.set(coins.get() + 100);
-            saveCurrentScore(); // <-- LƯU ĐIỂM
-            sceneManager.goToWinScene();
-            return;
-        }
+                // Kiểm tra THẮNG
+                if (world.isLevelWon()) {
+                    coins.set(coins.get() + 100);    // Thêm coins (logic của bạn)
+                    saveCurrentScore();                  // Lưu điểm
+                    currentState = GameState.ENDING_WIN; // ĐỔI TRẠNG THÁI
+                    endGameTimer = endGameDelay;         // BẮT ĐẦU ĐẾM NGƯỢC
+                }
+                // Kiểm tra THUA
+                else if (world.isGameOver()) {
+                    saveCurrentScore();                  // Lưu điểm
+                    currentState = GameState.ENDING_LOSE;// ĐỔI TRẠNG THÁI
+                    endGameTimer = endGameDelay;         // BẮT ĐẦU ĐẾM NGƯỢC
+                }
+                break;
 
-        // Kiểm tra THUA
-        if (world.isGameOver()) {
-            saveCurrentScore(); // <-- LƯU ĐIỂM
-            sceneManager.goToGameOver();
-            return;
+            case ENDING_WIN:
+
+                endGameTimer -= deltaTime; // Đếm ngược
+                if (endGameTimer <= 0) {
+                    sceneManager.goToWinScene(); // Hết giờ, chuyển cảnh
+                }
+                break;
+
+            case ENDING_LOSE:
+                endGameTimer -= deltaTime; // Đếm ngược
+                if (endGameTimer <= 0) {
+                    sceneManager.goToGameOver(); // Hết giờ, chuyển cảnh
+                }
+                break;
         }
     }
 
