@@ -143,4 +143,11 @@ public class InputHandler extends KeyAdapter {
     public int getLastKeyPressed() {
         return lastKeyPressed;
     }
+
+    public void reset() {
+        mousePressed = false;
+        prevMousePressed = false;
+
+        scrollAmount = 0;
+    }
 }

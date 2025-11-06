@@ -189,6 +189,7 @@ public class SceneManager {
 
         currentScene = scene;
         frame.setContentPane(currentScene);
+        input.reset();
 
         if (currentScene instanceof PlayerSelectScene) {
             frame.revalidate();
