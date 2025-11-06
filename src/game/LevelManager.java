@@ -3,6 +3,7 @@ package game;
 import com.google.gson.Gson;
 import core.ResourceLoader; // Thêm import này
 
+import javax.swing.*;
 import java.awt.image.BufferedImage; // Thêm import này
 import java.io.File; // Thêm import này
 import java.io.FileReader;
@@ -67,6 +68,14 @@ public class LevelManager {
             currentLevel = gson.fromJson(reader, LevelData.class);
             if (currentLevel != null) {
                 System.out.println("✅ Đã load level: " + currentLevel.name);
+                if (currentLevel.backgroundPath != null && !currentLevel.backgroundPath.isEmpty()) {
+                    String imagePath = "assets/images/Bg/" + currentLevel.backgroundPath;
+                    ImageIcon img = new ImageIcon(imagePath);
+                    currentLevel.setBackground(img);
+                    if (img == null) {
+                        System.err.println("CẢNH BÁO: Không tìm thấy ảnh nền: " + imagePath);
+                    }
+                }
             }
             return currentLevel;
         } catch (IOException e) {

@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class AudioService {
 
+    private static final String SOUND_PATH = "assets/sounds/";
     // Lưu trữ Clip đã tải để tránh tải lại nhiều lần (caching)
     private static final Map<String, Clip> cache = new HashMap<>();
 
@@ -19,10 +20,13 @@ public class AudioService {
             return cache.get(filePath);
         }
         try {
-            File file = new File(filePath);
+            File file = new File(SOUND_PATH+filePath);
+
+            // Lấy Audio Stream và mở Clip
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
+
             cache.put(filePath, clip);
             return clip;
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

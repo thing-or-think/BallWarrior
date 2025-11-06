@@ -12,5 +12,7 @@
     [1,1,1,1,1,0,1,1,1,1,1,1],
     [2,2,2,2,2,0,3,3,3,3,3,3]
   ],
-  "previewImagePath": "level8_preview.png"
+  "previewImagePath": "level8_preview.png",
+  "backgroundPath": "scene3.png",
+  "index": 8
 }

@@ -1,6 +1,7 @@
 package game.skill.active;
 
 import core.ResourceLoader;
+import core.AudioService;
 import game.skill.effect.SkillEffectManager;
 import game.skill.base.ActiveSkill;
 import entity.Ball;
@@ -53,6 +54,13 @@ public class ExplosionSkill extends ActiveSkill {
         }
         System.out.println("💥 ExplosionSkill activated! All nearby bricks destroyed.");
         return true;
+    }
+
+    // GHI ĐÈ PHƯƠNG THỨC PHÁT ÂM THANH
+    @Override
+    protected void playActivationSound() {
+        // âm thanh nổ
+        AudioService.playSound("explosion.wav");
     }
 
     /**

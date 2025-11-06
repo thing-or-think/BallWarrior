@@ -10,5 +10,7 @@
     [1,2,1,2,1,2,1,2,1,2,1,2]
 
   ],
-  "previewImagePath": "level3_preview.png"
+  "previewImagePath": "level3_preview.png",
+  "backgroundPath": "scene1.png",
+  "index": 3
 }

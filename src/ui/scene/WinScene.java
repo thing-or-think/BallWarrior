@@ -81,6 +81,12 @@ public class WinScene extends Scene {
             int textWidth = g2.getFontMetrics().stringWidth(winText);
             g2.drawString(winText, (Constants.WINDOW_WIDTH - textWidth) / 2, Constants.WINDOW_HEIGHT / 2 - 50);
         }
+        g2.setFont(new Font("Serif", Font.BOLD, 30));
+        g2.setColor(Color.YELLOW);
+        String reward = "coins + 100";
+        int rewardWidth = g2.getFontMetrics().stringWidth(reward);
+        g2.setColor(Color.YELLOW);
+        g2.drawString(reward, (Constants.WINDOW_WIDTH - rewardWidth) / 2, Constants.WINDOW_HEIGHT / 2 + 10);
 
         // Vẽ các nút
         for (Button button : buttons) {

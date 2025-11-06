@@ -1,6 +1,7 @@
 package game;
 
 import core.InputHandler;
+import core.AudioService;
 import data.SkinData;
 import entity.*;
 import entity.Ball;
@@ -8,9 +9,10 @@ import game.core.*;
 import game.collision.CollisionSystem;
 import game.skill.effect.SkillEffectManager;
 import game.skill.SkillManager;
+import utils.Constants;
 
 import java.awt.*;
-import java.util.List; // Thêm import
+import java.util.List;
 
 public class GameWorld {
     private final EntityManager entities;
@@ -58,6 +60,9 @@ public class GameWorld {
         scoreSystem.reset();
         entities.getBalls().clear();
         entities.getManaOrbs().clear();
+        skillManager.reset();
+        skillEffectManager.clearEffects();
+
         List<Brick> oldBricks = entities.getBricks();
         for (Brick b : oldBricks) {
             collisionSystem.unregister(b);
@@ -95,7 +100,14 @@ public class GameWorld {
 
         if (entities.noBallsRemaining()) {
             scoreSystem.loseLife();
-            entities.spawnNewBallAtPaddle();
+            if(scoreSystem.isGameOver()) {
+                // thua ko làm gì
+                return;
+            }
+            else {
+                AudioService.playSound("lost_health.wav");
+                entities.spawnNewBallAtPaddle();
+            }
         }
 
         if (this.breakableBrickCount > 0) {
@@ -114,6 +126,20 @@ public class GameWorld {
     }
 
     public void render(Graphics2D g2) {
+        LevelData current = levelManager.getCurrentLevel(); // Lấy level đang hoạt động
+
+        // 1. VẼ HÌNH NỀN
+        if (current != null && current.background != null) {
+            // Vẽ ảnh nền lên toàn bộ màn hình game (Constants.GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT)
+            g2.drawImage(current.background.getImage(),
+                    0, 0,
+                    Constants.GAME_PANEL_WIDTH, Constants.GAME_PANEL_HEIGHT,
+                    null);
+        } else {
+            // Nếu không có ảnh nền, vẽ màu nền mặc định (ví dụ: đen)
+            g2.setColor(Color.BLACK);
+            g2.fillRect(0, 0, Constants.GAME_PANEL_WIDTH, Constants.GAME_PANEL_HEIGHT);
+        }
         entities.render(g2);
         skillEffectManager.draw(g2);
     }

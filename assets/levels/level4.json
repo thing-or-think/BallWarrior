@@ -11,5 +11,7 @@
     [1,0,0,0,0,0,0,0,0,1],
     [1,1,1,1,1,1,1,1,1,1],
   ],
-  "previewImagePath": "level4_preview.png"
+  "previewImagePath": "level4_preview.png",
+  "backgroundPath": "scene2.png",
+  "index": 4
 }

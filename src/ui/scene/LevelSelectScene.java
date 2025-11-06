@@ -48,6 +48,12 @@ public class LevelSelectScene extends Scene {
         levelManager.loadAllLevels("assets/levels"); // Quét thư mục
         availableLevels = levelManager.getAllLevels();
 
+        if (availableLevels != null && !availableLevels.isEmpty()) {
+            // Sắp xếp danh sách dựa trên trường 'index' đã được tải từ JSON (index 1, 2, 3... 10, 11)
+            // LƯU Ý: Đảm bảo trường 'index' trong LevelData là public để Comparator truy cập.
+            availableLevels.sort((l1, l2) -> Integer.compare(l1.index, l2.index));
+        }
+
         // --- Khởi tạo UI ---
         Font titleFont = new Font("Arial", Font.BOLD, 48);
 

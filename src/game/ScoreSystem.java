@@ -35,6 +35,10 @@ public class ScoreSystem {
         combo = 1f;
     }
 
+    public float getCombo() {
+        return combo;
+    }
+
     public void addMana(int amount) {
         this.mana += amount;
     }
@@ -55,7 +59,6 @@ public class ScoreSystem {
 
     public boolean isGameOver() {
         if(lives <= 0) {
-            lives = 3;
             return true;
         }
         return false;

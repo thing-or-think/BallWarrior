@@ -1,5 +1,6 @@
 package game;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -19,8 +20,11 @@ public class LevelData {
 
     // --- CÁC TRƯỜNG MỚI ĐỂ PORT ---
     public String previewImagePath;
+    public String backgroundPath;
     public transient String filePath;
     public transient BufferedImage previewImage;
+    public transient ImageIcon background;
+    public int index;
     // --- HẾT TRƯỜNG MỚI ---
 
 
@@ -43,6 +47,15 @@ public class LevelData {
     public void setPreviewImage(BufferedImage previewImage) {
         this.previewImage = previewImage;
     }
+
+    public void setBackground(ImageIcon background) {
+        this.background = background;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     // --- HẾT PHƯƠNG THỨC MỚI ---
 
     @Override

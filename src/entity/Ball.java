@@ -1,5 +1,6 @@
 package entity;
 
+import core.AudioService;
 import data.SkinData;
 import utils.Constants;
 import core.ResourceLoader;
@@ -67,13 +68,16 @@ public class Ball extends Entity {
     @Override
     public void clampPosition() {
         if (position.x <= 0) {
+            AudioService.playSound("hit_brick.wav");
             position.x = 0;
             velocity.x = Math.abs(velocity.x);
         } else if (position.x + width >= Constants.GAME_PANEL_WIDTH) {
+            AudioService.playSound("hit_brick.wav");
             position.x = Constants.GAME_PANEL_WIDTH - width;
             velocity.x = -Math.abs(velocity.x);
         }
         if (position.y <= 0) {
+            AudioService.playSound("hit_brick.wav");
             position.y = 0;
             velocity.y = Math.abs(velocity.y);
         }

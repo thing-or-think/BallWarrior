@@ -79,12 +79,13 @@ public class FireBallSkill extends ActiveSkill {
     /**
      * Tắt cưỡng bức (GameWorld gọi khi tất cả bóng bị mất).
      */
-    public void forceDeactivate() {
+    @Override
+    public void forceReset() {
         if (active) {
             timer = 0;
             active = false;
-            isReady = true; // ĐẶT LẠI TRẠNG THÁI SẴN SÀNG NGAY LẬP TỨC
-            cooldownTimer = 0; // Đảm bảo cooldown reset về 0
+            isReady = true;
+            cooldownTimer = 0;
             onDeactivate();
         }
     }

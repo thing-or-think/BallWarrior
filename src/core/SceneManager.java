@@ -1,5 +1,6 @@
 package core;
 
+import core.AudioService;
 import data.GameData;
 import data.LeaderboardEntry;
 import data.PlayerData;
@@ -90,7 +91,7 @@ public class SceneManager {
         ownedScene = new OwnedScene(input,this);
         shopScene = new ShopScene(input, currentPlayer,ownedScene,this);
         instructionScene = new InstructionScene(input,this);
-        gameScene = new GameScene(input, this, currentPlayer, gameData);
+        gameScene = new GameScene(input, this, currentPlayer, gameData,currentPlayer.getCoins());
         menuScene = new MenuScene(
                 input,
                 currentPlayer.getPlayerName(),
@@ -220,8 +221,14 @@ public class SceneManager {
     public void gotoInstruction() { setScene(instructionScene); }
     public void goToPause() { setScene(pauseScene); }
     public void goToLevelSelect() { setScene(levelSelectScene); }
-    public void goToGameOver() { setScene(gameOverScene); }
-    public void goToWinScene() { setScene(winScene); }
+    public void goToGameOver() {
+        AudioService.playSound("game_over.wav");
+        setScene(gameOverScene);
+    }
+    public void goToWinScene() {
+        AudioService.playSound("win.wav");
+        setScene(winScene);
+    }
 
     public void backTo(Scene scene) {
         setScene(scene);

@@ -39,6 +39,13 @@ public class SkillManager {
         }
     }
 
+    // reset skill
+    public void reset() {
+        for (ActiveSkill skill : activeSkills) {
+            skill.forceReset();
+        }
+    }
+
     public List<ActiveSkill> getActiveSkills() {
         return activeSkills;
     }

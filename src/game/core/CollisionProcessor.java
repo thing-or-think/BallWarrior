@@ -1,6 +1,6 @@
 package game.core;
 
-import entity.Ball;
+import core.AudioService;
 import game.collision.CollisionResult;
 import game.collision.CollisionSystem;
 import entity.*;
@@ -75,6 +75,9 @@ public class CollisionProcessor {
                     brick.hit(brick.getMaxHealth()); // Phá gạch
 
                     if (brick.isDestroyed()) {
+                        AudioService.playSound("fizz.wav");
+
+
                         // (Logic spawn orb, cộng điểm, combo)
                         ManaOrb orb = orbSpawner.trySpawn(brick);
                         if (orb != null) entities.addManaOrb(orb);
@@ -92,11 +95,13 @@ public class CollisionProcessor {
                     // (Bóng thường vs Gạch, Fireball vs Paddle, Fireball vs Bedrock, v.v.)
 
                     // Gọi resolveCollision để NẢY LẠI
+                    AudioService.playSound("hit_brick.wav");
                     if (collisionSystem.resolveCollision(ball, result)) {
 
                         if (entity instanceof Brick brick) {
 
                             if (brick.isDestroyed()) { // Chỉ chạy nếu là gạch thường
+                                AudioService.playSound("broken.wav");
                                 ManaOrb orb = orbSpawner.trySpawn(brick);
                                 if (orb != null) entities.addManaOrb(orb);
                                 scoreSystem.addScore(brick.getScoreValue());
@@ -105,6 +110,12 @@ public class CollisionProcessor {
                             }
                         } else {
                             // (Va chạm với Paddle hoặc Shield)
+                            if(entity instanceof Shield) {
+                                AudioService.playSound("ball_shield.wav");
+                            }
+                            else {
+                                AudioService.playSound("Ball-Paddle.wav");
+                            }
                             scoreSystem.resetCombo();
                         }
                     }

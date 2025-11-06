@@ -27,13 +27,13 @@ public class HUD {
         this.scoreSystem = scoreSystem;
 
         scoreLabel = new Label("Score: 0", 20, 30, FONT, Color.WHITE);
-        manaLabel = new Label("Mana: ", Constants.WINDOW_WIDTH - 80, 50, FONT, Color.WHITE);
+        manaLabel = new Label("Mana: ", 960, 630, FONT, Color.WHITE);
         // KHỞI TẠO HEALTH BAR
         // Vị trí vẽ ở góc trên bên phải
         healthBar = new HealthBar(MAX_LIVES, null);
 
         // combo ở giữa bên phải màn hình
-        comboLabel = new ComboLabel(Constants.WINDOW_WIDTH - 100, Constants.WINDOW_HEIGHT / 2, COMBO_FONT);
+        comboLabel = new ComboLabel(Constants.WINDOW_WIDTH - 270, Constants.WINDOW_HEIGHT / 2, COMBO_FONT);
     }
 
     /**
@@ -44,10 +44,11 @@ public class HUD {
         scoreLabel.setText("Score: " + scoreSystem.getScore());
         manaLabel.setText("Mana: " + scoreSystem.getMana());
         healthBar.setCurrentHealth(scoreSystem.getLives());
+        comboLabel.setComboValue(scoreSystem.getCombo());
 
         // 2. VẼ HEALTH BAR
         // Vị trí vẽ Health Bar (ví dụ: góc trên bên phải, cùng dòng với Score)
-        healthBar.draw(g, Constants.WINDOW_WIDTH - 120, 15);
+        healthBar.draw(g, 255, 630);
         // Vẽ nhãn
         scoreLabel.draw(g);
         comboLabel.draw(g);
