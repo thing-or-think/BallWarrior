@@ -12,7 +12,7 @@
     [1,1,1,1,1,1,1,1,1,1],
   ],
   "previewImagePath": "level4_preview.png",
-  "backgroundPath": "scene2.png",
+  "backgroundPath": "scene4.gif",
   "index": 4,
   "startingMana": 10
 }

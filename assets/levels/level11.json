@@ -13,7 +13,7 @@
     [0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0]
   ],
   "previewImagePath": "level11_preview.png",
-  "backgroundPath": "scene2.png",
+  "backgroundPath": "scene5.gif",
   "index": 11,
   "startingMana": 10
 }
