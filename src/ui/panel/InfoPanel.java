@@ -1,5 +1,6 @@
 package ui.panel;
 
+import core.AudioService;
 import core.InputHandler;
 import core.ResourceLoader;
 import data.SkinData;
@@ -152,6 +153,7 @@ public class InfoPanel extends JPanel {
             return;
         }
         if (!skinData.isBought()) {
+            AudioService.playSound("Buy.wav");
             coins.set(coins.get() - skinData.getPrice());
             skinData.setBought(true);
             equippedSkinId.set(skinData.getId());

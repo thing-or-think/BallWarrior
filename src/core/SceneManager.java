@@ -91,7 +91,7 @@ public class SceneManager {
         ownedScene = new OwnedScene(input,this);
         shopScene = new ShopScene(input, currentPlayer,ownedScene,this);
         instructionScene = new InstructionScene(input,this);
-        gameScene = new GameScene(input, this, currentPlayer, gameData);
+        gameScene = new GameScene(input, this, currentPlayer, gameData,currentPlayer.getCoins());
         menuScene = new MenuScene(
                 input,
                 currentPlayer.getPlayerName(),

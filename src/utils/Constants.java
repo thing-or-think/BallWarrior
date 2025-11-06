@@ -9,10 +9,10 @@ public class Constants {
 
     public static final float COLLISION_EPSILON = 1e-6f;
 
-    public static final int BALL_SIZE = 16;
+    public static final int BALL_SIZE = 20;
     public static final int PADDLE_WIDTH = 100;
     public static final int PADDLE_HEIGHT = 20;
 
-    public static final float BALL_SPEED = 5.0f;
+    public static final float BALL_SPEED = 4.0f;
     public static final float PADDLE_SPEED = 7.0f;
 }

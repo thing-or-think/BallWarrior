@@ -2,10 +2,10 @@
   "allPlayers": [
     {
       "playerName": "Player 1",
-      "coins": 1000,
+      "coins": 2400,
       "equipped": {
-        "ballId": 5,
-        "paddleId": 20
+        "ballId": 10,
+        "paddleId": 25
       },
       "inventory": {
         "items": [
@@ -63,7 +63,7 @@
             "name": "Basic Orange",
             "rarity": "RARE",
             "price": 100,
-            "isBought": false,
+            "isBought": true,
             "display": {
               "type": "color",
               "value": "#FFA500"
@@ -653,7 +653,7 @@
     "assets\\levels\\level2.json": [
       {
         "playerName": "Player 1",
-        "score": 26500
+        "score": 27000
       }
     ],
     "assets\\levels\\level3.json": [
@@ -663,13 +663,13 @@
       },
       {
         "playerName": "Player 1",
-        "score": 28500
+        "score": 32700
       }
     ],
     "assets\\levels\\level1.json": [
       {
         "playerName": "Player 1",
-        "score": 4000
+        "score": 4300
       },
       {
         "playerName": "HoanDepZai",
@@ -699,7 +699,7 @@
       },
       {
         "playerName": "Player 1",
-        "score": 11000
+        "score": 37500
       }
     ],
     "assets\\levels\\level7.json": [
@@ -718,6 +718,12 @@
       {
         "playerName": "Player 1",
         "score": 2000
+      }
+    ],
+    "assets\\levels\\level5.json": [
+      {
+        "playerName": "Player 1",
+        "score": 1300
       }
     ]
   },

@@ -1,5 +1,6 @@
 package game;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -22,7 +23,7 @@ public class LevelData {
     public String backgroundPath;
     public transient String filePath;
     public transient BufferedImage previewImage;
-    public transient BufferedImage background;
+    public transient ImageIcon background;
     public int index;
     // --- HẾT TRƯỜNG MỚI ---
 
@@ -47,7 +48,7 @@ public class LevelData {
         this.previewImage = previewImage;
     }
 
-    public void setBackground(BufferedImage background) {
+    public void setBackground(ImageIcon background) {
         this.background = background;
     }
 

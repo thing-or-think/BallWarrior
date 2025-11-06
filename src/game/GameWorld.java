@@ -12,7 +12,7 @@ import game.skill.SkillManager;
 import utils.Constants;
 
 import java.awt.*;
-import java.util.List; // Thêm import
+import java.util.List;
 
 public class GameWorld {
     private final EntityManager entities;
@@ -131,7 +131,7 @@ public class GameWorld {
         // 1. VẼ HÌNH NỀN
         if (current != null && current.background != null) {
             // Vẽ ảnh nền lên toàn bộ màn hình game (Constants.GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT)
-            g2.drawImage(current.background,
+            g2.drawImage(current.background.getImage(),
                     0, 0,
                     Constants.GAME_PANEL_WIDTH, Constants.GAME_PANEL_HEIGHT,
                     null);
