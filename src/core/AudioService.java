@@ -12,10 +12,8 @@ public class AudioService {
     // Lưu trữ Clip đã tải để tránh tải lại nhiều lần (caching)
     private static final Map<String, Clip> cache = new HashMap<>();
 
-    private static final float MUSIC_VOLUME_ADJUSTMENT = -10.0f; // Giảm 10 dB (decibels)
-
     /** * Tải file âm thanh vào bộ nhớ đệm.
-     * @param filePath Đường dẫn đến file âm thanh (nên là .wav)
+     * @param filePath Đường dẫn đến file âm thanh
      */
     private static Clip loadClip(String filePath) {
         if (cache.containsKey(filePath)) {
@@ -32,7 +30,7 @@ public class AudioService {
             cache.put(filePath, clip);
             return clip;
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            System.err.println("❌ Lỗi tải âm thanh: " + filePath);
+            System.err.println("Lỗi tải âm thanh: " + filePath);
             e.printStackTrace();
             return null;
         }

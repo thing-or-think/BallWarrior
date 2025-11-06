@@ -653,7 +653,7 @@
     "assets\\levels\\level2.json": [
       {
         "playerName": "Player 1",
-        "score": 69100
+        "score": 500
       },
       {
         "playerName": "HoanDepZai",
@@ -667,7 +667,7 @@
       },
       {
         "playerName": "Player 1",
-        "score": 26500
+        "score": 7800
       }
     ],
     "assets\\levels\\level1.json": [
@@ -709,7 +709,7 @@
     "assets\\levels\\level7.json": [
       {
         "playerName": "Player 1",
-        "score": 200
+        "score": 100
       },
       {
         "playerName": "HoanDepZai",
@@ -739,5 +739,5 @@
       }
     ]
   },
-  "currentPlayerName": "Player 1"
+  "currentPlayerName": "HoanDepZai"
 }
