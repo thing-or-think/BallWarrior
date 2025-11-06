@@ -2,6 +2,7 @@ package game.skill.active;
 
 import core.ResourceLoader;
 import core.AudioService;
+import game.collision.CollisionSystem;
 import game.skill.effect.SkillEffectManager;
 import game.skill.base.ActiveSkill;
 import entity.Ball;
@@ -18,10 +19,12 @@ public class ExplosionSkill extends ActiveSkill {
     private final List<Brick> bricks;
     private final float explosionRadius = 100f;
     private final SkillEffectManager skillEffectManager;
+    private final CollisionSystem collisionSystem;
 
     public ExplosionSkill(List<Ball> balls,
                           List<Brick> bricks,
-                          SkillEffectManager skillEffectManager) {
+                          SkillEffectManager skillEffectManager,
+                          CollisionSystem collisionSystem) {
         super("Explosion",
                 ResourceLoader.loadImage(path),
                 3.5f,
@@ -30,6 +33,7 @@ public class ExplosionSkill extends ActiveSkill {
         this.balls = balls;
         this.bricks = bricks;
         this.skillEffectManager = skillEffectManager;
+        this.collisionSystem = collisionSystem;
     }
 
     @Override
@@ -47,6 +51,13 @@ public class ExplosionSkill extends ActiveSkill {
                     float distance = (float) Math.sqrt(dx * dx + dy * dy);
                     if (distance < explosionRadius) {
                         brick.hit(getDamageByDistance(distance,explosionRadius));
+
+                        if(brick.isDestroyed()) {
+                            // score + combo
+                            scoreSystem.addScore(brick.getScoreValue());
+                            scoreSystem.increaseCombo(0.25f);
+                            collisionSystem.unregister(brick);
+                        }
                     }
                 }
             }

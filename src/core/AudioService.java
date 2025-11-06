@@ -12,6 +12,8 @@ public class AudioService {
     // Lưu trữ Clip đã tải để tránh tải lại nhiều lần (caching)
     private static final Map<String, Clip> cache = new HashMap<>();
 
+    private static final float MUSIC_VOLUME_ADJUSTMENT = -10.0f; // Giảm 10 dB (decibels)
+
     /** * Tải file âm thanh vào bộ nhớ đệm.
      * @param filePath Đường dẫn đến file âm thanh (nên là .wav)
      */
@@ -48,13 +50,27 @@ public class AudioService {
         }
     }
 
-    /** * Phát nhạc nền lặp lại.
-     * @param filePath Đường dẫn đến file nhạc nền.
+    /** * Phát nhạc nền lặp lại, giảm âm lượng 10 dB.
+     * @param fileName Tên file nhạc nền.
      */
-    public static void loopMusic(String filePath) {
-        Clip clip = loadClip(filePath);
+    public static void loopMusic(String fileName) {
+        Clip clip = loadClip(fileName);
         if (clip != null) {
-            clip.loop(Clip.LOOP_CONTINUOUSLY); // Phát và lặp lại
+            // GIẢM 10 dB
+            final float VOLUME_ADJUSTMENT_DB = -10.0f;
+
+            if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                // Đặt giá trị Gain mới
+                float minGain = gainControl.getMinimum();
+                float newGain = VOLUME_ADJUSTMENT_DB;
+
+                // Đảm bảo giá trị không nhỏ hơn ngưỡng min cho phép
+                gainControl.setValue(Math.max(minGain, newGain));
+            }
+
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.start();
         }
     }
 

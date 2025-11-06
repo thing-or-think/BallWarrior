@@ -27,7 +27,7 @@ public class SkillManager {
         this.input = input;
         activeSkills = new ArrayList<>();
         activeSkills.add(new MultiBallSkill(entityManager.getBalls(), skillEffectManager));
-        activeSkills.add(new ExplosionSkill(entityManager.getBalls(), entityManager.getBricks(), skillEffectManager));
+        activeSkills.add(new ExplosionSkill(entityManager.getBalls(), entityManager.getBricks(), skillEffectManager,collisionSystem));
         activeSkills.add(new ShieldSkill(collisionSystem, entityManager.getShield()));
         activeSkills.add(new FireBallSkill(entityManager.getBalls(), skillEffectManager));
     }

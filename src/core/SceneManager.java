@@ -52,6 +52,7 @@ public class SceneManager {
         // --- KẾT THÚC SỬA LỖI 1 ---
 
         setScene(menuScene);
+        AudioService.loopMusic("music.wav");
     }
 
     private void loadCurrentPlayer() {
@@ -202,7 +203,10 @@ public class SceneManager {
     }
 
     public Scene getCurrentScene() { return currentScene; }
-    public void goToMenu() { setScene(menuScene); }
+    public void goToMenu() {
+        AudioService.loopMusic("music.wav");
+        setScene(menuScene);
+    }
 
     public void goToGame(String levelPath) {
         gameScene.startGame(levelPath);
@@ -220,12 +224,17 @@ public class SceneManager {
     public void goToShop() { setScene(shopScene); }
     public void gotoInstruction() { setScene(instructionScene); }
     public void goToPause() { setScene(pauseScene); }
-    public void goToLevelSelect() { setScene(levelSelectScene); }
+    public void goToLevelSelect() {
+        AudioService.loopMusic("music.wav");
+        setScene(levelSelectScene);
+    }
     public void goToGameOver() {
+        AudioService.stopSound("music.wav");
         AudioService.playSound("game_over.wav");
         setScene(gameOverScene);
     }
     public void goToWinScene() {
+        AudioService.stopSound("music.wav");
         AudioService.playSound("win.wav");
         setScene(winScene);
     }
@@ -235,7 +244,6 @@ public class SceneManager {
     }
 
     public void goToPlayerSelect() {
-        // [SỬA LỖI 4]
         // Gọi phương thức public, không phải private
         playerSelectScene.refreshPlayerList();
         setScene(playerSelectScene);
