@@ -10,13 +10,13 @@ import java.util.List;
 
 /**
  * Hệ thống kiểm soát va chạm.
- * Hỗ trợ ignoreList để xử lý Fireball.
  */
 public class CollisionSystem {
 
     // ==================== Fields ====================
     private Paddle paddle;
     private final List<Entity> colliders;
+    private static final float MAX_ANGLE_RADIANS = (float) Math.toRadians(75);
 
     // ==================== Constructor ====================
     public CollisionSystem(Paddle paddle) {
@@ -41,18 +41,13 @@ public class CollisionSystem {
 
     /**
      * Tìm va chạm gần nhất, NGOẠI TRỪ các entity trong danh sách ignored.
-     * @param ball Quả bóng
-     * @param ignoredEntities Danh sách các entity cần bỏ qua (có thể là null)
      */
     public CollisionResult findNearestCollision(Ball ball, List<Entity> ignoredEntities) {
         if (ball == null || colliders.isEmpty()) return null;
-        // Gọi hàm helper với danh sách ignored
         return checkBallVsEntities(ball, colliders, ignoredEntities);
     }
 
-    /** * Quá tải (Overload) phương thức cũ để tương thích
-     * (Gọi mà không cần danh sách bỏ qua)
-     */
+    /** Quá tải (Overload) phương thức cũ để tương thích */
     public CollisionResult findNearestCollision(Ball ball) {
         return findNearestCollision(ball, null);
     }
@@ -66,28 +61,34 @@ public class CollisionSystem {
         Vector2D curr = ball.getPosition(); // Vị trí cuối frame (nếu không va chạm)
         Vector2D travel = curr.subtracted(prev); // Vector di chuyển của cả frame
 
-        // Di chuyển bóng đến GẦN điểm va chạm (t - epsilon)
         float t = Math.max(0f, Math.min(1f, result.getTime() - 0.01f));
         Vector2D newCenter = prev.added(travel.multiplied(t));
         ball.setPosition(newCenter);
 
-        // Đẩy bóng ra khỏi mặt va chạm 1 epsilon
         Vector2D pushOut = result.getNormal().normalized().multiplied(Constants.COLLISION_EPSILON);
         ball.setPosition(ball.getPosition().added(pushOut));
 
-        // Cập nhật vận tốc sau phản xạ
         if (result.getEntity() instanceof Paddle) {
-            Vector2D center = ball.getCenter();
-            if (center.x < paddle.getX() + (int) (paddle.getWidth() / 2)) {
-                ball.setVelocity(new Vector2D(-1, -1).normalized().multiplied(Constants.BALL_SPEED));
-            } else {
-                ball.setVelocity(new Vector2D(1, -1).normalized().multiplied(Constants.BALL_SPEED));
-            }
+
+            Vector2D ballCenter = ball.getCenter();
+            float paddleCenter = paddle.getX() + (paddle.getWidth() / 2f);
+            float offset = ballCenter.x - paddleCenter;
+
+            float normalizedOffset = offset / (paddle.getWidth() / 2f);
+
+            normalizedOffset = Math.max(-1f, Math.min(1f, normalizedOffset));
+
+            float newAngle = (float) (Math.toRadians(90) - (normalizedOffset * MAX_ANGLE_RADIANS));
+
+            float newVx = (float) Math.cos(newAngle) * Constants.BALL_SPEED;
+            float newVy = (float) -Math.sin(newAngle) * Constants.BALL_SPEED;
+
+            ball.setVelocity(new Vector2D(newVx, newVy));
+
         } else {
             ball.setVelocity(result.getReflectedVelocity());
         }
 
-        // Xử lý hiệu ứng tùy loại entity
         Entity hit = result.getEntity();
         if (hit instanceof Brick) {
             ((Brick) hit).hit(1); // Gây 1 damage (nếu là bóng thường)
@@ -100,29 +101,23 @@ public class CollisionSystem {
 
     // ==================== Private Helpers ====================
 
-    /** * Kiểm tra va chạm Ball với danh sách entity, bỏ qua danh sách ignored
-     */
     private CollisionResult checkBallVsEntities(Ball ball, List<Entity> entities, List<Entity> ignoredEntities) {
         CollisionResult nearest = null;
 
         for (Entity e : entities) {
             if (e == null || e == ball) continue;
 
-            // Bỏ qua nếu entity nằm trong danh sách ignored
             if (ignoredEntities != null && ignoredEntities.contains(e)) {
                 continue;
             }
 
-            // Broad-phase check
             if (!broadPhaseCheck(ball, e)) continue;
 
-            // Narrow-phase check
             CollisionResult result = null;
             if (e instanceof Paddle || e instanceof Brick || e instanceof Shield) {
                 result = CircleVsAABB.intersect(ball, e);
             }
 
-            // Chọn va chạm gần nhất
             if (result != null && (nearest == null || result.getTime() < nearest.getTime())) {
                 nearest = result;
             }

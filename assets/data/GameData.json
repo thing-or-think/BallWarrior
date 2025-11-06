@@ -326,10 +326,10 @@
     },
     {
       "playerName": "HoanDepZai",
-      "coins": 900,
+      "coins": 700,
       "equipped": {
-        "ballId": 12,
-        "paddleId": 25
+        "ballId": 8,
+        "paddleId": 22
       },
       "inventory": {
         "items": [
@@ -423,7 +423,7 @@
             "name": "Basic Pink",
             "rarity": "RARE",
             "price": 500,
-            "isBought": false,
+            "isBought": true,
             "display": {
               "type": "color",
               "value": "#FFC0CB"
@@ -657,7 +657,7 @@
       },
       {
         "playerName": "HoanDepZai",
-        "score": 57700
+        "score": 58700
       }
     ],
     "assets\\levels\\level3.json": [
