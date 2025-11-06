@@ -33,7 +33,7 @@ public class GachaPanel extends JPanel {
 
     private SkinData awardedSkin;
     private final Random rand = new Random();
-    private final int COST = 0; //1000
+    private final int COST = 500; //1000
     private BuyButton spinButton;
 
     // Assets Animation
@@ -98,6 +98,7 @@ public class GachaPanel extends JPanel {
 
     private void handleGachaSpin() {
         if (currentState != State.IDLE) return;
+        AudioService.stopSound("music.wav");
 
         if (coins.get() < COST) {
             System.out.println("KHÔNG ĐỦ TIỀN!");

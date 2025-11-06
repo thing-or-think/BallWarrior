@@ -1,5 +1,6 @@
 package ui.scene;
 
+import core.AudioService;
 import core.InputHandler;
 import core.SceneManager;
 import data.SkinData;
@@ -33,6 +34,7 @@ public class OwnedScene extends Scene {
     @Override
     public void update() {
         if (input.isKeyJustPressed(java.awt.event.KeyEvent.VK_ESCAPE)) {
+            AudioService.playSound("music.wav");
             sceneManager.goToShop();
         }
     }
