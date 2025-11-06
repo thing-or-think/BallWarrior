@@ -326,7 +326,7 @@
     },
     {
       "playerName": "HoanDepZai",
-      "coins": 700,
+      "coins": 900,
       "equipped": {
         "ballId": 12,
         "paddleId": 25
@@ -730,6 +730,12 @@
       {
         "playerName": "HoanDepZai",
         "score": 2200
+      }
+    ],
+    "assets\\levels\\level11.json": [
+      {
+        "playerName": "HoanDepZai",
+        "score": 36600
       }
     ]
   },

@@ -58,6 +58,7 @@ public class GameWorld {
         this.breakableBrickCount = 0;
 
         scoreSystem.reset();
+        scoreSystem.addMana(level.startingMana);
         entities.getBalls().clear();
         entities.getManaOrbs().clear();
         skillManager.reset();

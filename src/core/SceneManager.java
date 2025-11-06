@@ -41,15 +41,12 @@ public class SceneManager {
 
         loadCurrentPlayer();
         reloadApplicationState(false);
-
-        // [SỬA LỖI 1 - PHẦN SAVE]
         // Thêm hook để lưu GameData khi tắt
         SceneManager self = this;
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             ResourceSaver.saveGameData(self.gameData);
             System.out.println("GameData saved on exit!");
         }));
-        // --- KẾT THÚC SỬA LỖI 1 ---
 
         setScene(menuScene);
         AudioService.loopMusic("music.wav");
@@ -68,8 +65,7 @@ public class SceneManager {
         if (this.currentPlayer == null) {
             if (gameData.getAllPlayers().isEmpty()) {
                 System.out.println("Không có người chơi nào, tạo 'Player 1'");
-                // [SỬA LỖI 2]
-                PlayerData template = ResourceLoader.loadPlayerDataTemplate(); // <-- Sửa ở đây
+                PlayerData template = ResourceLoader.loadPlayerDataTemplate();
                 this.currentPlayer = new PlayerData(template);
                 this.currentPlayer.setPlayerName("Player 1");
                 this.currentPlayer.setCoins(1000);
@@ -125,8 +121,8 @@ public class SceneManager {
             throw new IllegalArgumentException("Tên người chơi đã tồn tại.");
         }
 
-        // [SỬA LỖI 3]
-        PlayerData template = ResourceLoader.loadPlayerDataTemplate(); // <-- Sửa ở đây
+
+        PlayerData template = ResourceLoader.loadPlayerDataTemplate();
         PlayerData newPlayer = new PlayerData(template);
         newPlayer.setPlayerName(newName);
         newPlayer.setCoins(1000);
@@ -176,7 +172,7 @@ public class SceneManager {
     }
 
 
-    // --- Các phương thức điều hướng (Giữ nguyên và thêm mới) ---
+    // --- Các phương thức điều hướng ---
 
     public void setScene(Scene scene) {
         if (currentScene != null) {

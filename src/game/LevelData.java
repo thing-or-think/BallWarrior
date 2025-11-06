@@ -25,6 +25,7 @@ public class LevelData {
     public transient BufferedImage previewImage;
     public transient ImageIcon background;
     public int index;
+    public int startingMana;
     // --- HẾT TRƯỜNG MỚI ---
 
 

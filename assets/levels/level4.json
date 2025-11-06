@@ -13,5 +13,6 @@
   ],
   "previewImagePath": "level4_preview.png",
   "backgroundPath": "scene2.png",
-  "index": 4
+  "index": 4,
+  "startingMana": 10
 }

@@ -11,13 +11,10 @@ import java.io.*;
 
 public class ResourceLoader {
 
-    // Đổi đường dẫn chính sang GameData
+
     private static final String GAME_DATA_PATH = "assets/data/GameData.json";
-    // Giữ đường dẫn đến file template
     private static final String PLAYER_TEMPLATE_PATH = "assets/data/playerData.json";
 
-    // [SỬA LỖI 2, 3, 5, 6]
-    // Đổi tên 'loadPlayerData' thành 'loadPlayerDataTemplate' và trỏ về file template
     public static PlayerData loadPlayerDataTemplate() {
         try (FileReader reader = new FileReader(PLAYER_TEMPLATE_PATH)) {
             // Đọc JSON thành đối tượng PlayerData
