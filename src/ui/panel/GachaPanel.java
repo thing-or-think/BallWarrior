@@ -98,13 +98,14 @@ public class GachaPanel extends JPanel {
 
     private void handleGachaSpin() {
         if (currentState != State.IDLE) return;
-        AudioService.stopSound("music.wav");
 
         if (coins.get() < COST) {
             System.out.println("KHÔNG ĐỦ TIỀN!");
             return;
         }
 
+        AudioService.stopSound("music.wav");
+        AudioService.playSound("CSGOopencase.wav");
         // Trừ tiền và chọn Skin
         coins.set(coins.get() - COST);
         awardedSkin = openGacha();
@@ -178,7 +179,6 @@ public class GachaPanel extends JPanel {
             spinButton.setHovered(spinButton.contains(mx, my));
             if (spinButton.isHovered() && input.consumeClick()) {
                 spinButton.onClick();
-                AudioService.playSound("CSGOopencase.wav");
             }
         } else {
             spinButton.setHovered(false);
