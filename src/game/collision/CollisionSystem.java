@@ -76,7 +76,16 @@ public class CollisionSystem {
         ball.setPosition(ball.getPosition().added(pushOut));
 
         // Cập nhật vận tốc sau phản xạ
-        ball.setVelocity(result.getReflectedVelocity());
+        if (result.getEntity() instanceof Paddle) {
+            Vector2D center = ball.getCenter();
+            if (center.x < paddle.getX() + (int) (paddle.getWidth() / 2)) {
+                ball.setVelocity(new Vector2D(-1, -1).normalized().multiplied(Constants.BALL_SPEED));
+            } else {
+                ball.setVelocity(new Vector2D(1, -1).normalized().multiplied(Constants.BALL_SPEED));
+            }
+        } else {
+            ball.setVelocity(result.getReflectedVelocity());
+        }
 
         // Xử lý hiệu ứng tùy loại entity
         Entity hit = result.getEntity();

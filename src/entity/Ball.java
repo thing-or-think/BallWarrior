@@ -100,7 +100,7 @@ public class Ball extends Entity {
     public void launch() {
         if (stuck) {
             stuck = false;
-            this.velocity.set(Constants.BALL_SPEED, -Constants.BALL_SPEED);
+            this.velocity.set(new Vector2D(0, -1).normalized().multiplied(Constants.BALL_SPEED));
         }
     }
 
