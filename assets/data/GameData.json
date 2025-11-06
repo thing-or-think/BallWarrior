@@ -654,12 +654,16 @@
       {
         "playerName": "Player 1",
         "score": 500
+      },
+      {
+        "playerName": "HoanDepZai",
+        "score": 400
       }
     ],
     "assets\\levels\\level3.json": [
       {
         "playerName": "HoanDepZai",
-        "score": 1300
+        "score": 38100
       },
       {
         "playerName": "Player 1",
@@ -679,7 +683,7 @@
     "assets\\levels\\level10.json": [
       {
         "playerName": "HoanDepZai",
-        "score": 400
+        "score": 189300
       },
       {
         "playerName": "Player 1",
@@ -711,15 +715,15 @@
     "assets\\levels\\level9.json": [
       {
         "playerName": "Player 1",
-        "score": 4000
+        "score": 16000
       }
     ],
     "assets\\levels\\level4.json": [
       {
         "playerName": "Player 1",
-        "score": 100
+        "score": 1600
       }
     ]
   },
-  "currentPlayerName": "Player 1"
+  "currentPlayerName": "HoanDepZai"
 }

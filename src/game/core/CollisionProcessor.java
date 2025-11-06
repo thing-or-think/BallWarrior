@@ -6,11 +6,13 @@ import game.collision.CollisionSystem;
 import entity.*;
 import game.ScoreSystem;
 
+import java.util.ArrayList; // THÊM IMPORT
 import java.util.Iterator;
 import java.util.List;
 
 /**
- * Xử lý collision hậu va chạm, tách responsibility ra khỏi GameWorld.
+ * Xử lý collision hậu va chạm.
+ * [SỬA LỖI FIREBALL V2.0 - Dùng Ignore List]
  */
 public class CollisionProcessor {
 
@@ -30,86 +32,90 @@ public class CollisionProcessor {
     }
 
     /**
-     * Duyệt qua tất cả ball và xử lý va chạm gần nhất (nếu có).
-     * Giữ logic giống trước: spawn orb, add score, combo, unregister brick,...
+     * [SỬA] Duyệt qua tất cả ball và xử lý va chạm.
+     * Sử dụng một vòng lặp lồng nhau và một "danh sách bỏ qua" (ignore list)
+     * để xử lý chính xác các va chạm xuyên thấu (piercing) của Fireball.
      */
     public void processCollisions() {
         List<Ball> balls = entities.getBalls();
         Iterator<Ball> it = balls.iterator();
+
+        // Danh sách tạm thời để lưu các entity bị Fireball phá hủy TRONG frame này
+        List<Entity> ignoredEntities = new ArrayList<>();
+
         while (it.hasNext()) {
             Ball ball = it.next();
-            CollisionResult result = collisionSystem.findNearestCollision(ball);
-            if (result != null) {
-                handleCollision(ball, result);
-            }
-        }
-    }
+            // Xóa danh sách bỏ qua cho mỗi quả bóng mới
+            ignoredEntities.clear();
 
-    private void handleCollision(Ball ball, CollisionResult result) {
-        Entity entity = result.getEntity();
+            // Bắt đầu vòng lặp xử lý nhiều va chạm cho MỘT quả bóng
+            while (true) {
 
-        if (entity instanceof Brick brick) {
-            // 1. Xác định gạch có phải là Bedrock không
-            // Dùng getType() == Brick.Type.BEDROCK
-            boolean isBedrock = brick.getType() == Brick.Type.BEDROCK;
-
-            // 2. Fire Ball chỉ xuyên phá nếu nó đang active VÀ gạch KHÔNG phải là Bedrock
-            boolean shouldPierce = ball.isFireBall() && !isBedrock;
-
-            if (shouldPierce) {
-                // --- XỬ LÝ XUYÊN PHÁ (Fire Ball vs Gạch thường) ---
-
-                // Gây sát thương tối đa, đảm bảo gạch phá hủy được sẽ vỡ ngay lập tức.
-                // Hàm hit() trong Brick.java đã tự return nếu là Bedrock, nên an toàn.
-                brick.hit(brick.getMaxHealth());
-
-                // Cập nhật điểm và xóa gạch nếu bị phá hủy
-                if (brick.isDestroyed()) {
-                    // PHÁT ÂM THANH: FIZZ (âm thanh xuyên phá/làm tan chảy)
-//                    SoundManager.play(SoundManager.FIZZ);
-
-                    // spawn orb via OrbSpawner
-                    ManaOrb orb = orbSpawner.trySpawn(brick);
-                    if (orb != null) {
-                        entities.addManaOrb(orb);
-                    }
-                    // score + combo
-                    scoreSystem.addScore(brick.getScoreValue());
-                    scoreSystem.increaseCombo(0.25f);
-                    collisionSystem.unregister(brick);
+                // 1. Tìm va chạm gần nhất, bỏ qua các gạch đã bị phá
+                CollisionResult result = collisionSystem.findNearestCollision(ball, ignoredEntities);
+                // 2. Nếu không còn va chạm nào, thoát vòng lặp
+                if (result == null) {
+                    break; // Thoát khỏi while(true), xử lý bóng tiếp theo
                 }
-                // KHÔNG gọi resolveCollision để bóng xuyên qua.
-            } else {
-                if (collisionSystem.resolveCollision(ball, result)) {
-                    // PHÁT ÂM THANH: HIT_BRICK (Âm thanh va chạm)
-                    // Chỉ phát nếu gạch không phải Bedrock (Bedrock không phát tiếng nứt)
-                    if (!isBedrock) {
-//                        SoundManager.play(SoundManager.HIT_BRICK);
+
+                Entity entity = result.getEntity();
+
+                // 3. Phân loại va chạm
+                boolean isPiercingCollision = false; // Cờ
+
+                if (ball.isFireBall() && entity instanceof Brick brick) {
+                    if (brick.getType() != Brick.Type.BEDROCK) {
+                        isPiercingCollision = true;
                     }
+                }
+
+                if (isPiercingCollision) {
+                    // --- TRƯỜNG HỢP 1: XUYÊN GẠCH (Piercing) ---
+                    Brick brick = (Brick) entity;
+                    brick.hit(brick.getMaxHealth()); // Phá gạch
 
                     if (brick.isDestroyed()) {
-                        // phát âm thanh vỡ
-//                        SoundManager.play(SoundManager.BROKEN);
-                        // spawn orb via OrbSpawner
+                        // (Logic spawn orb, cộng điểm, combo)
                         ManaOrb orb = orbSpawner.trySpawn(brick);
-                        if (orb != null) {
-                            entities.addManaOrb(orb);
-                        }
-                        // score + combo
+                        if (orb != null) entities.addManaOrb(orb);
                         scoreSystem.addScore(brick.getScoreValue());
                         scoreSystem.increaseCombo(0.25f);
                         collisionSystem.unregister(brick);
+                        // Thêm gạch này vào danh sách bỏ qua
+                        ignoredEntities.add(brick);
                     }
+
+                    continue;
+
+                } else {
+                    // --- TRƯỜNG HỢP 2: VA CHẠM RẮN (Solid) ---
+                    // (Bóng thường vs Gạch, Fireball vs Paddle, Fireball vs Bedrock, v.v.)
+
+                    // Gọi resolveCollision để NẢY LẠI
+                    if (collisionSystem.resolveCollision(ball, result)) {
+
+                        if (entity instanceof Brick brick) {
+
+                            if (brick.isDestroyed()) { // Chỉ chạy nếu là gạch thường
+                                ManaOrb orb = orbSpawner.trySpawn(brick);
+                                if (orb != null) entities.addManaOrb(orb);
+                                scoreSystem.addScore(brick.getScoreValue());
+                                scoreSystem.increaseCombo(0.25f);
+                                collisionSystem.unregister(brick);
+                            }
+                        } else {
+                            // (Va chạm với Paddle hoặc Shield)
+                            scoreSystem.resetCombo();
+                        }
+                    }
+
+                    // Vì đây là va chạm "rắn", bóng đã đổi hướng.
+                    // Dừng xử lý va chạm cho bóng này.
+                    break;
                 }
-            }
-        } else if (entity instanceof Shield || entity instanceof Paddle) {
-            if (collisionSystem.resolveCollision(ball, result)) {
-                if(entity instanceof Shield) {
-//                    SoundManager.play(SoundManager.BALL_SHIELD);
-                }
-                scoreSystem.resetCombo();
             }
         }
     }
+
 
 }

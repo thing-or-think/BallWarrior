@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Hệ thống kiểm soát va chạm đơn giản cho các Ball vs Entity (Paddle, Brick,...)
- * - Sửa lỗi broad-phase (swept AABB) và sử dụng interpolation giữa previous->current khi đặt vị trí sau va chạm.
- * - Đẩy bóng ra khỏi mặt va chạm một khoảng epsilon để tránh "sticking".
- * - Trả về CollisionResult gần nhất trong frame.
+ * Hệ thống kiểm soát va chạm.
+ * Hỗ trợ ignoreList để xử lý Fireball.
  */
 public class CollisionSystem {
 
@@ -41,21 +39,34 @@ public class CollisionSystem {
         colliders.removeIf(entity -> !entity.isAlive());
     }
 
-    /** Tìm va chạm gần nhất giữa Ball và toàn bộ colliders */
-    public CollisionResult findNearestCollision(Ball ball) {
+    /**
+     * Tìm va chạm gần nhất, NGOẠI TRỪ các entity trong danh sách ignored.
+     * @param ball Quả bóng
+     * @param ignoredEntities Danh sách các entity cần bỏ qua (có thể là null)
+     */
+    public CollisionResult findNearestCollision(Ball ball, List<Entity> ignoredEntities) {
         if (ball == null || colliders.isEmpty()) return null;
-        return checkBallVsEntities(ball, colliders);
+        // Gọi hàm helper với danh sách ignored
+        return checkBallVsEntities(ball, colliders, ignoredEntities);
+    }
+
+    /** * Quá tải (Overload) phương thức cũ để tương thích
+     * (Gọi mà không cần danh sách bỏ qua)
+     */
+    public CollisionResult findNearestCollision(Ball ball) {
+        return findNearestCollision(ball, null);
     }
 
     /** Xử lý kết quả va chạm, trả về true nếu bóng thay đổi trạng thái */
     public boolean resolveCollision(Ball ball, CollisionResult result) {
         if (result == null || ball == null)
             return false;
-        Vector2D prev = ball.getPreviousPosition();
-        Vector2D curr = ball.getPosition();
-        Vector2D travel = curr.subtracted(prev);
 
-        // Di chuyển bóng đến gần điểm va chạm
+        Vector2D prev = ball.getPreviousPosition();
+        Vector2D curr = ball.getPosition(); // Vị trí cuối frame (nếu không va chạm)
+        Vector2D travel = curr.subtracted(prev); // Vector di chuyển của cả frame
+
+        // Di chuyển bóng đến GẦN điểm va chạm (t - epsilon)
         float t = Math.max(0f, Math.min(1f, result.getTime() - 0.01f));
         Vector2D newCenter = prev.added(travel.multiplied(t));
         ball.setPosition(newCenter);
@@ -70,35 +81,31 @@ public class CollisionSystem {
         // Xử lý hiệu ứng tùy loại entity
         Entity hit = result.getEntity();
         if (hit instanceof Brick) {
-            ((Brick) hit).hit(1);
+            ((Brick) hit).hit(1); // Gây 1 damage (nếu là bóng thường)
         } else if (hit instanceof Paddle) {
             CircleVsAABB.handleBallInsideEntity(ball, hit);
-            // Có thể thêm logic điều chỉnh góc theo vị trí chạm
         }
 
         return true;
     }
 
     // ==================== Private Helpers ====================
-    /** Kiểm tra va chạm Ball với danh sách entity (Paddle, Brick…) */
-    private CollisionResult checkBallVsEntities(Ball ball, List<Entity> entities) {
+
+    /** * Kiểm tra va chạm Ball với danh sách entity, bỏ qua danh sách ignored
+     */
+    private CollisionResult checkBallVsEntities(Ball ball, List<Entity> entities, List<Entity> ignoredEntities) {
         CollisionResult nearest = null;
 
         for (Entity e : entities) {
             if (e == null || e == ball) continue;
 
+            // Bỏ qua nếu entity nằm trong danh sách ignored
+            if (ignoredEntities != null && ignoredEntities.contains(e)) {
+                continue;
+            }
+
             // Broad-phase check
             if (!broadPhaseCheck(ball, e)) continue;
-
-            // Logic đặc biệt cho Fireball vs Brick
-//            if (ball.isFireBall() && e instanceof Brick) {
-//                CollisionResult result = CircleVsAABB.intersect(ball, e);
-//                if (result != null) {
-//                    // Fireball va chạm với gạch, trả về một kết quả va chạm đặc biệt.
-//                    // Điều này cho phép GameScene phá hủy gạch nhưng không xử lý phản xạ.
-//                    return new CollisionResult(e, new Vector2D(), new Vector2D(), 0);
-//                }
-//            }
 
             // Narrow-phase check
             CollisionResult result = null;
@@ -136,5 +143,4 @@ public class CollisionSystem {
         return (ballMinX <= entityMaxX && ballMaxX >= entityMinX &&
                 ballMinY <= entityMaxY && ballMaxY >= entityMinY);
     }
-
 }
