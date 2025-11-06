@@ -4,8 +4,8 @@
       "playerName": "Player 1",
       "coins": 1000,
       "equipped": {
-        "ballId": 5,
-        "paddleId": 20
+        "ballId": 12,
+        "paddleId": 24
       },
       "inventory": {
         "items": [
@@ -711,7 +711,7 @@
     "assets\\levels\\level9.json": [
       {
         "playerName": "Player 1",
-        "score": 4000
+        "score": 55800
       }
     ],
     "assets\\levels\\level4.json": [
