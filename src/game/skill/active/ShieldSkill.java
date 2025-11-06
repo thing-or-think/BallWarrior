@@ -21,7 +21,7 @@ public class ShieldSkill extends ActiveSkill {
                 ResourceLoader.loadImage(path),
                 4.5f,
                 KeyEvent.VK_Q,
-                10,
+                4,
                 3f);
         this.collisionSystem = collisionSystem;
         this.shield = shield;

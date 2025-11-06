@@ -20,14 +20,14 @@ public class FireBallSkill extends ActiveSkill {
 
     // Thời gian duy trì Fire Ball
     private static final float FIREBALL_DURATION = 10.0f;
-    private static final float FIREBALL_COOLDOWN = 0.0f;
+    private static final float FIREBALL_COOLDOWN = 5.0f;
 
     public FireBallSkill(List<Ball> balls, SkillEffectManager skillEffectManager) {
         super("FIRE_BALL",
                 ResourceLoader.loadImage(path),
                 FIREBALL_COOLDOWN,
                 KeyEvent.VK_R,
-                10,
+                5,
                 FIREBALL_DURATION);
         this.balls = balls;
         this.skillEffectManager = skillEffectManager;

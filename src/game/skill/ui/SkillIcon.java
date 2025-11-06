@@ -47,7 +47,7 @@ public class SkillIcon {
             g.drawString(timeText, x + (size - tw) / 2, y + size / 2 + 5);
         }
 
-        g.setColor(Color.CYAN);
+        g.setColor(Color.DARK_GRAY);
         String manaText = String.valueOf(skill.getManaCost());
         FontMetrics fm = g.getFontMetrics();
         int tw = fm.stringWidth(manaText);

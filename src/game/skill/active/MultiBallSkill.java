@@ -21,7 +21,7 @@ public class MultiBallSkill extends ActiveSkill {
                 ResourceLoader.loadImage(path),
                 5f,
                 KeyEvent.VK_W,
-                10);
+                6);
         this.balls = balls;
         this.skillEffectManager = skillEffectManager;
     }
