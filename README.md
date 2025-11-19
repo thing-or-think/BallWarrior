@@ -197,4 +197,4 @@ OOP design
 Pull requests được hoan nghênh.
 Nếu phát hiện bug, vui lòng tạo issue trong repo.
 
-Gameplay demo: ![BallWarrior2025](https://drive.google.com/file/d/1ioLZHJUYgCq26w67vLNrHM2oBPz7r5xQ/view?usp=drive_link)
+Gameplay demo: https://drive.google.com/file/d/1ioLZHJUYgCq26w67vLNrHM2oBPz7r5xQ/view?usp=drive_link
